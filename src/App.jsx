@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import XMLParser from "react-xml-parser";
-
 import "./App.css";
+import { Footer } from "./components/Footer";
 
 function App() {
   const [arr, setArr] = useState();
@@ -20,7 +20,11 @@ function App() {
       .catch(() => console.log("err"));
   }, []);
 
-  return <div></div>;
+  return (
+    <>
+      <Footer />
+    </>
+  );
 }
 
 export default App;
