@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import XMLParser from "react-xml-parser";
-
-import "./App.css";
+import { AdminHome } from "./pages/admin";
 
 function App() {
   const [arr, setArr] = useState();
@@ -20,7 +19,11 @@ function App() {
       .catch(() => console.log("err"));
   }, []);
 
-  return <div></div>;
+  return (
+    <div>
+      <AdminHome></AdminHome>
+    </div>
+  );
 }
 
 export default App;
