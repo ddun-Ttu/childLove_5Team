@@ -32,7 +32,7 @@ function App() {
       <Container>
         <Button />
         <NavigationBar />
-      <Footer />
+        <Footer />
       </Container>
     </>
   );

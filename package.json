@@ -11,10 +11,7 @@
     "react-scripts": "5.0.1",
     "react-xml-parser": "^1.1.8",
     "styled-components": "^5.3.11",
-<<<<<<< HEAD
     "styled-reset": "^4.4.7",
-=======
->>>>>>> dev_FooterCss
     "web-vitals": "^2.1.4"
   },
   "scripts": {
