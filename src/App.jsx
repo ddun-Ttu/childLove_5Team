@@ -8,6 +8,7 @@ import { NavigationBar } from "./components/navigationBar";
 import { Container } from "./components/container";
 
 import "./App.css";
+import { Footer } from "./components/Footer";
 
 function App() {
   const [arr, setArr] = useState();
@@ -31,6 +32,7 @@ function App() {
       <Container>
         <Button />
         <NavigationBar />
+      <Footer />
       </Container>
     </>
   );
