@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import XMLParser from "react-xml-parser";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import { Button } from "./components/button";
 import { NavigationBar } from "./components/navigationBar";
@@ -9,6 +10,9 @@ import { Container } from "./components/container";
 
 import "./App.css";
 import { Footer } from "./components/Footer";
+import SearchPage from "./pages/search/SearchPage";
+
+const queryClient = new QueryClient();
 
 function App() {
   const [arr, setArr] = useState();
@@ -30,9 +34,11 @@ function App() {
   return (
     <>
       <Container>
-        <Button />
+      <QueryClientProvider client={queryClient}>
+        <SearchPage />
         <NavigationBar />
         <Footer />
+        </QueryClientProvider>
       </Container>
     </>
   );
