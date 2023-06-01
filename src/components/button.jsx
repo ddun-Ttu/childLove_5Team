@@ -14,20 +14,23 @@ export const Button = ({
   height,
   label,
   onClick,
+  LinkTo,
 }) => {
   return (
     <>
-      <ButtonStyle
-        onClick={onClick}
-        fontSize={btnFontSize}
-        color={btnColor}
-        bgcolor={bgcolor}
-        borderOutLine={borderOutLine}
-        width={width}
-        height={height}
-      >
-        {label}
-      </ButtonStyle>
+      <Link to={LinkTo}>
+        <ButtonStyle
+          onClick={onClick}
+          fontSize={btnFontSize}
+          color={btnColor}
+          bgcolor={bgcolor}
+          borderOutLine={borderOutLine}
+          width={width}
+          height={height}
+        >
+          {label}
+        </ButtonStyle>
+      </Link>
     </>
   );
 };

@@ -8,6 +8,7 @@ import { Button } from "./components/button";
 import { NavigationBar } from "./components/navigationBar";
 import { Container } from "./components/container";
 import { Footer } from "./components/Footer";
+import { CardBox } from "./components/CardBox";
 
 import "./App.css";
 
@@ -34,20 +35,21 @@ function App() {
   return (
     <>
       <Container>
-        <Button
-          onClick={() => {
-            console.log("Button was clicked!");
-          }}
-          label={"안녕"}
-          btnFontSize={fontSize.but}
-          btnColor={"white"}
-          bgcolor={colors.primary}
-          // width={"30px"}
-          // height={"90px"}
-          borderOutLine={colors.BtnborderOut}
-        />
         <Router>
-          <Button />
+          <Button
+            LinkTo={"https://www.naver.com/"}
+            onClick={() => {
+              console.log("Button was clicked!");
+            }}
+            label={"안녕"}
+            btnFontSize={fontSize.but}
+            btnColor={"white"}
+            bgcolor={colors.primary}
+            // width={"30px"}
+            // height={"90px"}
+            borderOutLine={colors.BtnborderOut}
+          />
+          <CardBox linkTo={"https://www.naver.com/"} children={"안녕"} />
           <NavigationBar />
           <Footer />
         </Router>
