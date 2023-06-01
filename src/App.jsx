@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import XMLParser from "react-xml-parser";
-import { AdminHome } from "./pages/admin";
+import { AdminHome } from "./pages/AdminHome";
 
 function App() {
   const [arr, setArr] = useState();

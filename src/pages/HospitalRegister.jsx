@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Checkbox, InfoBox, InfoTab, PersonalTitle } from "./personalClient";
+import { Checkbox, InfoBox, InfoTab, PersonalTitle } from "./PersonalClient";
 
 export const HospitalRegister = () => {
   return (

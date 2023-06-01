@@ -2,17 +2,17 @@ import React, { useState, Suspense } from "react";
 import styled from "styled-components";
 
 const HospitalClient = React.lazy(() =>
-  import("./hospitalClient").then((module) => ({
+  import("./HospitalClient").then((module) => ({
     default: module.HospitalClient,
   }))
 );
 const HospitalRegister = React.lazy(() =>
-  import("./hospitalRegister").then((module) => ({
+  import("./HospitalRegister").then((module) => ({
     default: module.HospitalRegister,
   }))
 );
 const PersonalClient = React.lazy(() =>
-  import("./personalClient").then((module) => ({
+  import("./PersonalClient").then((module) => ({
     default: module.PersonalClient,
   }))
 );
