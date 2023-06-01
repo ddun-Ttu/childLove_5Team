@@ -9,6 +9,8 @@ import { Container } from "./components/container";
 
 import "./App.css";
 import { Footer } from "./components/Footer";
+import { RegisterForm } from "./pages/RegisterForm";
+import { Post } from "./pages/Post";
 
 function App() {
   const [arr, setArr] = useState();
@@ -30,9 +32,7 @@ function App() {
   return (
     <>
       <Container>
-        <Button />
-        <NavigationBar />
-        <Footer />
+        <RegisterForm />
       </Container>
     </>
   );

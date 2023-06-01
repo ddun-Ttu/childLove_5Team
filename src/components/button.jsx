@@ -9,14 +9,14 @@ export const Button = () => {
   );
 };
 
-const ButtonStyle = styled.button`
+export const ButtonStyle = styled.button`
   font-size: 20px;
 
   font-weight: 700;
   color: white;
   border: 1px solid #00954f;
   border-radius: 5px;
-  background-color: #00ad5c;
+  background-color: #00954f;
   cursor: pointer;
 
   padding: 1% 3.5%;
