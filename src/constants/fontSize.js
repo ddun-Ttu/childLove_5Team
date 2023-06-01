@@ -1,0 +1,9 @@
+/* eslint-disable */
+
+const fontSize = {
+  h1: "30px",
+  h2: "20px",
+  h3: "18px",
+};
+
+export default fontSize;
