@@ -6,7 +6,7 @@ import XMLParser from "react-xml-parser";
 import { Button } from "./components/button";
 import { NavigationBar } from "./components/navigationBar";
 import { Container } from "./components/container";
-
+import { MapHospital } from "../src/pages/map/MapHospital.jsx";
 import "./App.css";
 import { Footer } from "./components/Footer";
 
@@ -30,8 +30,8 @@ function App() {
   return (
     <>
       <Container>
-        <Button />
-        <NavigationBar />
+        <MapHospital />
+        {/* <NavigationBar /> */}
         <Footer />
       </Container>
     </>
