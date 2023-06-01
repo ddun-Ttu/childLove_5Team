@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-const CardBox = () => {
-  return <CardBoxStyle></CardBoxStyle>;
+const CardBox = ({ children }) => {
+  return <CardBoxStyle>{children}</CardBoxStyle>;
 };
 
 export default CardBox;
