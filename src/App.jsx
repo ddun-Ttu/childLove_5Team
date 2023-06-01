@@ -10,6 +10,9 @@ import { Container } from "./components/container";
 import "./App.css";
 import { Footer } from "./components/Footer";
 
+import colors from "./constants/colors";
+import fontSize from "./constants/fontSize";
+
 function App() {
   const [arr, setArr] = useState();
 
@@ -30,9 +33,15 @@ function App() {
   return (
     <>
       <Container>
-        <Button />
-        <NavigationBar />
-        <Footer />
+        <Button
+          onClick={() => {
+            console.log("Button was clicked!");
+          }}
+          label={"안녕"}
+          height={"300px"}
+          width={"500px"}
+          bgcolor={colors.primary}
+        />
       </Container>
     </>
   );
