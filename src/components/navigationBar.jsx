@@ -57,6 +57,7 @@ const Nav = styled.div`
   width: 100%;
   border-top: 1px solid #b2b2b2;
   margin: auto;
+  z-index: 99;
 `;
 
 const NavUl = styled.ul`

@@ -45,6 +45,7 @@ function App() {
           // height={"90px"}
           borderOutLine={colors.BtnborderOut}
         />
+        <NavigationBar />
       </Container>
     </>
   );
