@@ -6,9 +6,9 @@ import XMLParser from "react-xml-parser";
 import { Button } from "./components/button";
 import { NavigationBar } from "./components/navigationBar";
 import { Container } from "./components/container";
+import { Footer } from "./components/Footer";
 
 import "./App.css";
-import { Footer } from "./components/Footer";
 
 import colors from "./constants/colors";
 import fontSize from "./constants/fontSize";
@@ -38,9 +38,12 @@ function App() {
             console.log("Button was clicked!");
           }}
           label={"안녕"}
-          height={"300px"}
-          width={"500px"}
+          btnFontSize={fontSize.but}
+          btnColor={"white"}
           bgcolor={colors.primary}
+          // width={"30px"}
+          // height={"90px"}
+          borderOutLine={colors.BtnborderOut}
         />
       </Container>
     </>
