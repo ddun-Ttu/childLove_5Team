@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import XMLParser from "react-xml-parser";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import { Button } from "./components/button";
 import { NavigationBar } from "./components/navigationBar";
@@ -45,7 +46,11 @@ function App() {
           // height={"90px"}
           borderOutLine={colors.BtnborderOut}
         />
-        <NavigationBar />
+        <Router>
+          <Button />
+          <NavigationBar />
+          <Footer />
+        </Router>
       </Container>
     </>
   );
