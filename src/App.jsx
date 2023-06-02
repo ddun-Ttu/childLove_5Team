@@ -29,17 +29,7 @@ function App() {
       .catch(() => console.log("err"));
   }, []);
 
-  return (
-    <>
-      <Container>
-        <Router>
-          <Button />
-          <NavigationBar />
-          <Footer />
-        </Router>
-      </Container>
-    </>
-  );
+  return <></>;
 }
 
 export default App;
