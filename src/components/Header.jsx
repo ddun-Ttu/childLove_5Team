@@ -3,7 +3,7 @@ import styled from "styled-components";
 import IconLeft from "../assets/iconLeft.svg";
 
 // eslint-disable-next-line react/prop-types
-export const Header = ({ label, onClick }) => {
+const Header = ({ label, onClick }) => {
   return (
     <>
       <HeaderWrap>
@@ -17,6 +17,8 @@ export const Header = ({ label, onClick }) => {
     </>
   );
 };
+
+export default Header;
 
 const HeaderWrap = styled.div`
   width: 100%;
