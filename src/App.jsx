@@ -1,6 +1,16 @@
+/* eslint-disable */
+
 import React, { useEffect, useState } from "react";
 import XMLParser from "react-xml-parser";
-import { AdminHome } from "./pages/AdminHome";
+
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
+import { Button } from "./components/button";
+import { NavigationBar } from "./components/navigationBar";
+import { Container } from "./components/container";
+
+import "./App.css";
+import { Footer } from "./components/Footer";
 
 function App() {
   const [arr, setArr] = useState();
@@ -20,9 +30,15 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <AdminHome></AdminHome>
-    </div>
+    <>
+      <Container>
+        <Router>
+          <Button />
+          <NavigationBar />
+          <Footer />
+        </Router>
+      </Container>
+    </>
   );
 }
 
