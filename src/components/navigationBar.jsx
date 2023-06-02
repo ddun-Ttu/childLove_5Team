@@ -7,7 +7,7 @@ import miniLogo from "../assets/miniLogo.svg";
 import myInfo from "../assets/myInfo.svg";
 import reservation from "../assets/reservation.svg";
 
-// 상수값 연결
+// 상수값 연결 링크
 import colors from "../constants/colors";
 import fontSize from "../constants/fontSize";
 
