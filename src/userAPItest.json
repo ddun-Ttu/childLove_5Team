@@ -1,0 +1,142 @@
+//일반 유저 회원가입
+
+//path: POST(localhost:3000/user/signup)
+//요청
+{
+    "name":"firstman",
+    "email":"first@test.good",
+    "password":"1",
+    "phoneNumber":"1"
+}
+
+/*응답(이 필드는 필요에 따라 응답 필드를 줄일 수 있습니다.
+현재는 개발단계이므로 불필요한 필드가 많습니다.)*/
+{
+    "id": "6477e996a90e409f1a487221",
+    "name": "firstman",
+    "email": "first@test.good",
+    "emailVerified": null,
+    "password": "$2b$10$Qng9Wd3DEKfjznzh1mZBW.U/hrs4x/MhS6Ol5LIakwIkxlumqa90C",
+    "phoneNumber": "1",
+    "role": "client",
+    "createdAt": "2023-06-01T00:43:02.262Z",
+    "updatedAt": "2023-06-01T00:43:02.262Z",
+    "hospitalId": null,
+    "adminVerified": null,
+    "address": null
+}
+
+
+
+//일반 유저 로그인
+
+//path: POST(localhost:3000/user/login)
+//요청
+{
+    "email":"first@test.good",
+    "password":"1"
+}
+
+/*응답(로그인 성공하면 토큰을 줍니다. 이 토큰을 먼저 헤더에 담아서
+GET()요청을 한번 더 해주시면 유저의 타입을 드리고 그 타입별로 메인페이지
+경로로 이동하는 로직을 프론트에서는 구현할 필요가 있습니다.
+경로는 미정입니다.)*/
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZpcnN0QHRlc3QuZ29vZCIsInN1YiI6IjY0NzdlOTk2YTkwZTQwOWYxYTQ4NzIyMSIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE2ODU1ODA0MTQsImV4cCI6MTcxNzEzODAxNH0.cWYJrF8kSJrmC4csSlR2x5B4v_ASZhinvKl5NFoShGc"
+}
+
+
+
+//일반 유저 조회 API
+
+//path: GET(localhost:3000/user/:id)
+
+//요청은 헤더에 토큰만 필요합니다
+//header
+{"key":"Authorization","value":"Bearer <token>"}
+
+//응답
+{
+    "id": "6477e996a90e409f1a487221",
+    "name": "firstman",
+    "email": "first@test.good",
+    "emailVerified": null,
+    "password": "$2b$10$Qng9Wd3DEKfjznzh1mZBW.U/hrs4x/MhS6Ol5LIakwIkxlumqa90C",
+    "phoneNumber": "1",
+    "role": "client",
+    "createdAt": "2023-06-01T00:43:02.262Z",
+    "updatedAt": "2023-06-01T00:43:02.262Z",
+    "hospitalId": null,
+    "adminVerified": null,
+    "address": null,
+    "haveChild": []
+}
+/*미완성 필드들이 좀 많지만, 자녀가 있는 경우 배열 안에 자녀들의
+Document도 같이 응답해 줍니다. 또한, 예약, 알림창, 즐겨찾기 또한
+자녀들 필드처럼 배열 안에 담아서 응답 드릴 계획입니다.*/
+
+
+
+//유저 정보 수정
+
+//path: PATCH(localhost:3000/user/:id)
+
+//header
+{"key":"Authorization","value":"Bearer <token>"}
+
+//요청
+{
+    "email":"first@test.bad"
+}
+
+//응답(지금은 JSON이 아니라 쌩 string만 출력되고 있습니다만 픽스 예정입니다.)
+{"error":"email은 변경할 수 없습니다"}
+
+//요청
+{
+    "password":"111",
+    "address":"busan",
+    "name":"한글이름"
+}
+
+//응답(비밀번호는 변경해도 해쉬값으로 저장됩니다.)
+{
+    "id": "6477e996a90e409f1a487221",
+    "name": "한글이름",
+    "email": "first@test.good",
+    "emailVerified": null,
+    "password": "$2b$10$c3fskyxB0rfI4XX6XE/WQud4BaqrPe6K2ugz4w8JKJTfbo81GAJXq",
+    "phoneNumber": "1",
+    "role": "client",
+    "createdAt": "2023-06-01T00:43:02.262Z",
+    "updatedAt": "2023-06-01T00:59:47.418Z",
+    "hospitalId": null,
+    "adminVerified": null,
+    "address": "busan"
+}
+
+
+
+// 회원 탈퇴 API
+
+//path: DELETE(localhost:3000/user/:id)
+//요청은 헤더만 필요합니다.
+//header
+{"key":"Authorization","value":"Bearer <token>"}
+
+/*응답(성공 실패 정도만 드릴 계획입니다.
+응답은 그 유저의 DB가 출력되고 실제 DB에서는 제거됩니다.)*/
+{
+    "id": "6477e996a90e409f1a487221",
+    "name": "한글이름",
+    "email": "first@test.good",
+    "emailVerified": null,
+    "password": "$2b$10$c3fskyxB0rfI4XX6XE/WQud4BaqrPe6K2ugz4w8JKJTfbo81GAJXq",
+    "phoneNumber": "1",
+    "role": "client",
+    "createdAt": "2023-06-01T00:43:02.262Z",
+    "updatedAt": "2023-06-01T00:59:47.418Z",
+    "hospitalId": null,
+    "adminVerified": null,
+    "address": "busan"
+}

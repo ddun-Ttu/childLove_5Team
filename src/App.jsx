@@ -9,8 +9,8 @@ import { Button } from "./components/button";
 import { NavigationBar } from "./components/navigationBar";
 import { Container } from "./components/container";
 
-import "./App.css";
 import { Footer } from "./components/Footer";
+import { AdminHome } from "./pages/AdminHome";
 
 function App() {
   const [arr, setArr] = useState();
@@ -31,13 +31,7 @@ function App() {
 
   return (
     <>
-      <Container>
-        <Router>
-          <Button />
-          <NavigationBar />
-          <Footer />
-        </Router>
-      </Container>
+      <AdminHome />
     </>
   );
 }
