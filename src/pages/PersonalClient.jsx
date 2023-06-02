@@ -6,23 +6,31 @@ import { fetchList } from "../server/Fetcher";
 export const PersonalClient = () => {
   const token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZpcnN0QHRlc3QuZ29vZCIsInN1YiI6IjY0NzdlOTk2YTkwZTQwOWYxYTQ4NzIyMSIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE2ODU1ODA0MTQsImV4cCI6MTcxNzEzODAxNH0.cWYJrF8kSJrmC4csSlR2x5B4v_ASZhinvKl5NFoShGc";
-  const { isLoading, data } = useQuery("data", () => fetchList(token));
+  const { isLoading, list } = useQuery("list", () => fetchList(token));
 
-  if (!data) return console.log(data);
+  console.log(list);
   if (isLoading) return <h1>로딩중입니다..</h1>;
-  return (
-    <>
-      <PersonalTitle>개인 클라이언트 관리</PersonalTitle>
-      <InfoBox>
-        <Checkbox type="checkbox" />
-        <InfoTab>가입날짜</InfoTab>
-        <InfoTab>이름</InfoTab>
-        <InfoTab>아이디</InfoTab>
-        <InfoTab>연락처</InfoTab>
-        <div></div>
-      </InfoBox>
-    </>
-  );
+  if (!isLoading)
+    return (
+      <>
+        <PersonalTitle>개인 클라이언트 관리</PersonalTitle>
+        <InfoBox>
+          <Checkbox type="checkbox" />
+          <InfoTab>가입날짜</InfoTab>
+          <InfoTab>이름</InfoTab>
+          <InfoTab>아이디</InfoTab>
+          <InfoTab>연락처</InfoTab>
+          <div></div>
+        </InfoBox>
+        {list &&
+          list.map((item) => (
+            <InfoBox key={item._id}>
+              {/* name 값을 출력 */}
+              <span>{item.name}</span>
+            </InfoBox>
+          ))}
+      </>
+    );
 };
 
 export const PersonalTitle = styled.p`

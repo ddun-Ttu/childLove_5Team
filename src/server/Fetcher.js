@@ -1,4 +1,4 @@
-const url = "http://localhost:3000/user/:6477e996a90e409f1a487221";
+const url = "http://localhost:9999/list";
 
 export const fetchList = async (token) => {
   const res = await fetch(url, {
@@ -7,6 +7,7 @@ export const fetchList = async (token) => {
     },
   });
 
-  const data = await res.json();
-  return data;
+  const list = await res.json();
+
+  return list;
 };
