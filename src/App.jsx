@@ -3,13 +3,21 @@
 import React, { useEffect, useState } from "react";
 import XMLParser from "react-xml-parser";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import { Button } from "./components/button";
-import { NavigationBar } from "./components/navigationBar";
-import { Container } from "./components/container";
+// 공통 컴포넌트 연결해서 테스트함
+import { Button } from "./components/Button";
+import { NavigationBar } from "./components/NavigationBar";
+import { Container } from "./components/Container";
+import { Footer } from "./components/Footer";
+import { CardBox } from "./components/CardBox";
+import { Header } from "./components/Header";
+
+// 상수로 뽑아둔 color, fontSize 연결 링크
+import colors from "./constants/colors";
+import fontSize from "./constants/fontSize";
 
 import "./App.css";
-import { Footer } from "./components/Footer";
 // import SearchPageTest from "./pages/search/infiniteScrollTest/SearchPageTest";
 import SearchPage from "./pages/search/SearchPage";
 
