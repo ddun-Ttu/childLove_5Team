@@ -32,15 +32,11 @@ function App() {
   return (
     <>
       <Container>
-<<<<<<< HEAD
-        <RegisterForm />
-=======
         <Router>
           <Button />
           <NavigationBar />
           <Footer />
         </Router>
->>>>>>> dev
       </Container>
     </>
   );
