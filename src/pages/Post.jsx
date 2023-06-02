@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import DaumPostCode from "react-daum-postcode";
 import styled from "styled-components";
 import { ButtonStyle } from "../components/button";
+import { InputBox, InputContent, InputName } from "./RegisterForm";
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -17,13 +18,13 @@ const ModalContainer = styled.div`
 `;
 
 const Modal = styled.div`
-  position: relative;
   padding: 20px;
   background-color: white;
 `;
 
-const DaumPostModal = () => {
+export const Post = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [fullAddress, setFullAddress] = useState("");
 
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -47,32 +48,51 @@ const DaumPostModal = () => {
       }
       fullAddress += `${extraAddress !== "" ? ` ${extraAddress}` : ""}`;
     }
-    console.log(fullAddress);
 
-    // 주소 선택 후에 필요한 로직을 추가할 수 있습니다.
+    setFullAddress(fullAddress);
 
     handleCloseModal();
   };
 
   return (
     <>
-      <ButtonStyle onClick={handleOpenModal}>주소 찾기</ButtonStyle>
-      {isOpen && (
-        <ModalContainer>
-          <Modal>
-            <DaumPostCode onComplete={handleComplete} className="post-code" />
-            <button onClick={handleCloseModal}>닫기</button>
-          </Modal>
-        </ModalContainer>
-      )}
+      <InputBox>
+        <PostBox>
+          <InputName>주소</InputName>
+          <ButtonStyle onClick={handleOpenModal}>주소 찾기</ButtonStyle>
+          {isOpen && (
+            <ModalContainer>
+              <Modal>
+                <PostCodeContainer>
+                  <DaumPostCode
+                    onComplete={handleComplete}
+                    className="post-code"
+                  />
+                </PostCodeContainer>
+                <button onClick={handleCloseModal}>닫기</button>
+              </Modal>
+            </ModalContainer>
+          )}
+        </PostBox>
+        {/* 수정: 주소 선택 후에 fullAddress 값을 인풋 태그에 표현하는 부분 */}
+        {fullAddress && (
+          <InputContent type="text" value={fullAddress} readOnly />
+        )}
+      </InputBox>
     </>
   );
 };
 
-export const Post = () => {
-  return (
-    <>
-      <DaumPostModal />
-    </>
-  );
-};
+const PostCodeContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 800px;
+  height: 600px;
+`;
+
+const PostBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+`;

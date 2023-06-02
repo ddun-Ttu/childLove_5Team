@@ -10,7 +10,6 @@ import { Container } from "./components/container";
 import "./App.css";
 import { Footer } from "./components/Footer";
 import { RegisterForm } from "./pages/RegisterForm";
-import { Post } from "./pages/Post";
 
 function App() {
   const [arr, setArr] = useState();

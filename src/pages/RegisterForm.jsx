@@ -8,7 +8,7 @@ export const RegisterForm = () => {
       <FormBox>
         <InputBox>
           <InputName>병원명</InputName>
-          <InputContent />
+          <InputContent type="text" />
         </InputBox>
         <InputBox>
           <InputName>병원 대표번호</InputName>
@@ -22,13 +22,12 @@ export const RegisterForm = () => {
           <InputName>점심시간</InputName>
           <InputContent />
         </InputBox>
+        <Post />
         <InputBox>
-          <PostBox>
-            <InputName>주소</InputName>
-            <Post />
-          </PostBox>
-
-          <InputContent />
+          <InputName>병원 사진</InputName>
+          <ImageBox>
+            <InputImage type="file" />
+          </ImageBox>
         </InputBox>
       </FormBox>
     </>
@@ -47,13 +46,13 @@ const FormBox = styled.div`
   align-items: center;
 `;
 
-const InputBox = styled.div`
+export const InputBox = styled.div`
   box-sizing: border-box;
   width: 455px;
   height: 90px;
 `;
 
-const InputName = styled.span`
+export const InputName = styled.span`
   font-family: "Inter";
   font-style: normal;
   font-weight: 500;
@@ -64,14 +63,39 @@ const InputName = styled.span`
   color: #121212;
 `;
 
-const InputContent = styled.input`
+export const InputContent = styled.input`
   width: 100%;
   box-sizing: border-box;
-  height: 68px;
+  height: 50px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  border: 1px solid #a8a8a8;
+  border-radius: 5px;
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 15px;
 `;
 
-const PostBox = styled.div`
+const ImageBox = styled.div`
+  width: 100%;
+  box-sizing: border-box;
+  height: 50px;
+  border: 1px solid #a8a8a8;
+  border-radius: 5px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 10px;
+`;
+
+const InputImage = styled.input`
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 15px;
 `;
