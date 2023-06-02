@@ -1,8 +1,6 @@
 /* eslint-disable */
 import React from "react";
 import styled from "styled-components";
-import colors from "../constants/colors";
-import fontSize from "../constants/fontSize";
 import { Link } from "react-router-dom";
 
 export const Button = ({
