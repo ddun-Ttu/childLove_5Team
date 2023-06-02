@@ -9,7 +9,7 @@ export const Footer = () => {
         <FooterLink href="https://kdt-gitlab.elice.io/sw_track/class_04/web_2_project/team05/front-end">
           https://kdt-gitlab.elice.io/sw_track/class_04/web_2_project/team05/front-end
         </FooterLink>
-        <p>2023-05-26 ~ 2023-06-16</p>
+        <FooterP>2023-05-26 ~ 2023-06-16</FooterP>
       </FooterBox>
     </>
   );
@@ -26,9 +26,13 @@ const FooterBox = styled.div`
 `;
 
 const FooterTitle = styled.p`
-  padding-top: 23px;
+  padding: 5% 0 1% 0;
 `;
 
 const FooterLink = styled.a`
   color: #606060;
+`;
+
+const FooterP = styled.p`
+  padding: 0.6% 0 0 0;
 `;
