@@ -2,16 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import IconLeft from "../assets/iconLeft.svg";
 
-export const Header = ({label, onClick}) => {
+// eslint-disable-next-line react/prop-types
+export const Header = ({ label, onClick }) => {
   return (
     <>
       <HeaderWrap>
         <BtnBack onClick={onClick}>
           <img alt="icon-left" src={IconLeft}></img>
         </BtnBack>
-        <HeaderTitle>
+        <div>
           <h2>{label}</h2>
-        </HeaderTitle>
+        </div>
       </HeaderWrap>
     </>
   );
@@ -24,7 +25,7 @@ const HeaderWrap = styled.div`
   text-align: center;
   justify-content: center;
 
-  & > h2 {
+  & h2 {
     font-size: 20px;
     color: #00ad5c;
   }

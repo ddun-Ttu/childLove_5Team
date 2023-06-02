@@ -39,7 +39,12 @@ function App() {
     <>
       <Container>
         <Router>
-          <Header />
+          <Header 
+            label={"지도보기"}
+            onClick={() => {
+                console.log("Button was clicked!");
+            }}
+          />
           <Button
             LinkTo={"https://www.naver.com/"}
             onClick={() => {
