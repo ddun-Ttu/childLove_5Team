@@ -10,6 +10,7 @@ import { NavigationBar } from "./components/NavigationBar";
 import { Container } from "./components/Container";
 import { Footer } from "./components/Footer";
 import { CardBox } from "./components/CardBox";
+import { Header } from "./components/Header";
 
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import colors from "./constants/colors";
@@ -38,6 +39,7 @@ function App() {
     <>
       <Container>
         <Router>
+          <Header />
           <Button
             LinkTo={"https://www.naver.com/"}
             onClick={() => {

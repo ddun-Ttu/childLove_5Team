@@ -2,18 +2,20 @@ import React from "react";
 import styled from "styled-components";
 import IconLeft from "../assets/iconLeft.svg";
 
-const Header = () => {
+export const Header = ({label, onClick}) => {
   return (
-    <HeaderWrap>
-      <BtnBack>
-        <img alt="icon-left" src={IconLeft}></img>
-      </BtnBack>
-      <h2>병원 찾기</h2>
-    </HeaderWrap>
+    <>
+      <HeaderWrap>
+        <BtnBack onClick={onClick}>
+          <img alt="icon-left" src={IconLeft}></img>
+        </BtnBack>
+        <HeaderTitle>
+          <h2>{label}</h2>
+        </HeaderTitle>
+      </HeaderWrap>
+    </>
   );
 };
-
-export default Header;
 
 const HeaderWrap = styled.div`
   width: 100%;
