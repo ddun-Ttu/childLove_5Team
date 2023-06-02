@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Button } from "./components/button";
 import { NavigationBar } from "./components/navigationBar";
 import { Container } from "./components/container";
+import { Header } from "./components/Header";
 
 import "./App.css";
 import { Footer } from "./components/Footer";
@@ -32,6 +33,7 @@ function App() {
     <>
       <Container>
         <Router>
+          <Header />
           <Button />
           <NavigationBar />
           <Footer />
