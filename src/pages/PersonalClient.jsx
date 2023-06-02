@@ -9,35 +9,36 @@ export const PersonalClient = () => {
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZpcnN0QHRlc3QuZ29vZCIsInN1YiI6IjY0NzdlOTk2YTkwZTQwOWYxYTQ4NzIyMSIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE2ODU1ODA0MTQsImV4cCI6MTcxNzEzODAxNH0.cWYJrF8kSJrmC4csSlR2x5B4v_ASZhinvKl5NFoShGc";
   const { isLoading, data: list } = useQuery("list", () => fetchList(token));
 
-  console.log(list);
-  if (isLoading) return <h1>로딩중입니다..</h1>;
-  if (!isLoading)
-    return (
-      <>
-        <PersonalTitle>개인 클라이언트 관리</PersonalTitle>
-        <InfoBox>
-          <Checkbox type="checkbox" />
-          <InfoTab>가입날짜</InfoTab>
-          <InfoTab>이름</InfoTab>
-          <InfoTab>아이디</InfoTab>
-          <InfoTab>연락처</InfoTab>
-          <InfoTab></InfoTab>
-        </InfoBox>
-        <div>
-          {list &&
-            list.map((item) => (
-              <ListBox key={item._id.$oid}>
-                <Checkbox type="checkbox" />
-                <InfoTab>{item.createdAt.$date.slice(0, 10)}</InfoTab>
-                <InfoTab>{item.name}</InfoTab>
-                <InfoTab>{item.email}</InfoTab>
-                <InfoTab>{item.phoneNumber}</InfoTab>
-                <Button></Button>
-              </ListBox>
-            ))}
-        </div>
-      </>
-    );
+  if (isLoading) {
+    return <h1>로딩중입니다..</h1>;
+  }
+
+  return (
+    <>
+      <PersonalTitle>개인 클라이언트 관리</PersonalTitle>
+      <InfoBox>
+        <Checkbox type="checkbox" />
+        <InfoTab>가입날짜</InfoTab>
+        <InfoTab>이름</InfoTab>
+        <InfoTab>아이디</InfoTab>
+        <InfoTab>연락처</InfoTab>
+        <InfoTab></InfoTab>
+      </InfoBox>
+      <div>
+        {list &&
+          list.map((item) => (
+            <ListBox key={item._id.$oid}>
+              <Checkbox type="checkbox" />
+              <InfoTab>{item.createdAt.$date.slice(0, 10)}</InfoTab>
+              <InfoTab>{item.name}</InfoTab>
+              <InfoTab>{item.email}</InfoTab>
+              <InfoTab>{item.phoneNumber}</InfoTab>
+              <Button></Button>
+            </ListBox>
+          ))}
+      </div>
+    </>
+  );
 };
 
 export const PersonalTitle = styled.p`
