@@ -26,7 +26,6 @@ export const MyCalendar = () => {
 
 const ShowDate = styled.div`
   width: 100%;
-  border-bottom: 1px solid #b2b2b2;
   display: flex;
   text-align: center;
   justify-content: center;
@@ -41,7 +40,6 @@ const ShowDate = styled.div`
 
 const ShowCalendar = styled.div`
   width: 100%;
-  border-bottom: 1px solid #b2b2b2;
   display: flex;
   text-align: center;
   justify-content: center;
