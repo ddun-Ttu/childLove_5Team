@@ -10,7 +10,8 @@ import { Container } from "./components/container";
 
 import "./App.css";
 import { Footer } from "./components/Footer";
-import SearchPageTest from "./pages/search/infiniteScrollTest/SearchPageTest";
+// import SearchPageTest from "./pages/search/infiniteScrollTest/SearchPageTest";
+import SearchPage from "./pages/search/SearchPage";
 
 const queryClient = new QueryClient();
 
@@ -34,8 +35,8 @@ function App() {
   return (
     <>
       <Container>
-      <QueryClientProvider client={queryClient}>
-        <SearchPageTest />
+        <QueryClientProvider client={queryClient}>
+          <SearchPage />
         </QueryClientProvider>
       </Container>
     </>
