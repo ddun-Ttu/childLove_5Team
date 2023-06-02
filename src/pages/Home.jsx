@@ -21,6 +21,13 @@ import { SearchBar } from "../components/SearchBar";
 import colors from "../constants/colors";
 import fontSize from "../constants/fontSize";
 
+// react-slick 라이브러리
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+// 더미 데이터
+import { dataHome } from "./data";
+
 export const Home = ({ LinkTo }) => {
   return (
     <>
@@ -78,6 +85,10 @@ export const Home = ({ LinkTo }) => {
             </Link>
           </BannerSeb>
 
+          <SiliderMargin>
+            <SimpleSlider />
+          </SiliderMargin>
+
           <Footer />
           <NavigationBar />
         </Router>
@@ -86,6 +97,10 @@ export const Home = ({ LinkTo }) => {
   );
 };
 export default Home;
+
+const SiliderMargin = styled.div`
+  margin: 5% 0 8% 0;
+`;
 
 const MainLogoImg = styled.img`
   margin-top: 4%;
@@ -178,4 +193,93 @@ const BannerSebH1 = styled.p`
   font-weight: 700;
   color: #383838;
   padding: 1%;
+`;
+
+// 캐러셀 라이브러리
+const SimpleSlider = () => {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 4,
+    initialSlide: 0,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
+  return (
+    <>
+      <Slider {...settings}>
+        {dataHome.map((item) => (
+          <Card>
+            <CardTop>
+              <CardImg src={item.linkImg} alt={item.linkImg}></CardImg>
+            </CardTop>
+            <CardBottom>
+              <CardTitle>{item.hospitalName}</CardTitle>
+              <CardAddress>{item.address}</CardAddress>
+            </CardBottom>
+          </Card>
+        ))}
+      </Slider>
+    </>
+  );
+};
+
+const Card = styled.div`
+  position: relative;
+`;
+
+const CardTop = styled.div`
+  margin: 0 2% 0 2%;
+`;
+const CardBottom = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  color: #ffffff;
+`;
+
+const CardTitle = styled.p`
+  font-size: 28px;
+  font-weight: 700;
+`;
+
+const CardAddress = styled.p`
+  font-size: 18px;
+  font-weight: 500;
+`;
+
+const CardImg = styled.img`
+  width: 100%;
+  hieght: 100%;
+  object-fit: cover;
+  border-radius: 20px;
 `;
