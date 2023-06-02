@@ -30,21 +30,20 @@ export const ReservationMemo = () => {
           </div>
         </ModalHeader>
         <MemoBlock />
-        <MemoSave>
-          <Button
-            LinkTo={"#"}
-            onClick={() => {
-              console.log("Button was clicked!");
-            }}
-            label={"안녕"}
-            btnFontSize={fontSize.but}
-            btnColor={"white"}
-            bgcolor={colors.primary}
-            // width={"30px"}
-            // height={"90px"}
-            borderOutLine={colors.BtnborderOut}
-          />
-        </MemoSave>
+  
+        <Button
+          LinkTo={"#"}
+          onClick={() => {
+            console.log("Button was clicked!");
+          }}
+          label={"저장"}
+          btnFontSize={fontSize.but}
+          btnColor={"white"}
+          bgcolor={colors.primary}
+          // width={"30px"}
+          // height={"90px"}
+          borderOutLine={colors.BtnborderOut}
+        />
       </CardBox>
     </>
   );
@@ -89,16 +88,16 @@ const MemoBlock = styled.div`
   border: 1px solid #b2b2b2;
 `;
 
-const MemoSave = styled.button`
-  font-size: ${(props) => props.fontSize};
-  font-weight: 700;
-  color: ${(props) => props.color};
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  border: 1px solid ${(props) => props.borderOutLine};
-  border-radius: 5px;
-  background-color: ${(props) => props.bgcolor};
-  cursor: pointer;
+// const MemoSave = styled.button`
+//   font-size: ${(props) => props.fontSize};
+//   font-weight: 700;
+//   color: ${(props) => props.color};
+//   width: ${(props) => props.width};
+//   height: ${(props) => props.height};
+//   border: 1px solid ${(props) => props.borderOutLine};
+//   border-radius: 5px;
+//   background-color: ${(props) => props.bgcolor};
+//   cursor: pointer;
 
-  padding: 1% 3.5%;
-`;
+//   padding: 1% 3.5%;
+// `;
