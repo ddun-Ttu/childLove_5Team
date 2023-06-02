@@ -21,7 +21,7 @@ export const Header = ({ label, onClick }) => {
 const HeaderWrap = styled.div`
   width: 100%;
   border-bottom: 1px solid #b2b2b2;
-  display: flex;
+  display: inline-block;
   text-align: center;
   justify-content: center;
 
@@ -34,4 +34,5 @@ const HeaderWrap = styled.div`
 const BtnBack = styled.button`
   background: none;
   border: none;
+  float: left;
 `;
