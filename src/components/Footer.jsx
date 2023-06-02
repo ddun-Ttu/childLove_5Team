@@ -19,7 +19,7 @@ const FooterBox = styled.div`
   font-size: 12px;
   text-align: center;
   color: #606060;
-  width: 834px;
+  width: 100%;
   height: 126px;
   background-color: #f3f3f3;
   margin: 0px auto 0px auto;
