@@ -10,4 +10,4 @@ export const fetchList = async (token) => {
   const list = await res.json();
 
   return list;
-};
+}; /* 아에이오우 */
