@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import XMLParser from "react-xml-parser";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import { Button } from "./components/button";
 import { NavigationBar } from "./components/navigationBar";
@@ -31,7 +32,15 @@ function App() {
   return (
     <>
       <Container>
+<<<<<<< HEAD
         <RegisterForm />
+=======
+        <Router>
+          <Button />
+          <NavigationBar />
+          <Footer />
+        </Router>
+>>>>>>> dev
       </Container>
     </>
   );
