@@ -63,7 +63,6 @@ export default SearchHeader;
 
 const Wrapper = styled.div`
   position: relative;
-  max-width: 833px;
   border-bottom: 1px solid #121212;
   box-sizing: border-box;
 

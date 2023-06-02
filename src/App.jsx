@@ -18,28 +18,11 @@ import colors from "./constants/colors";
 import fontSize from "./constants/fontSize";
 
 import "./App.css";
-// import SearchPageTest from "./pages/search/infiniteScrollTest/SearchPageTest";
 import SearchPage from "./pages/search/SearchPage";
 
 const queryClient = new QueryClient();
 
 function App() {
-  const [arr, setArr] = useState();
-
-  console.log(arr);
-
-  useEffect(() => {
-    fetch(
-      "https://apis.data.go.kr/B552657/HsptlAsembySearchService/getHsptlMdcncFullDown?serviceKey=aQFwyyURxZPboOkpSx1uUEC9mvyECY1ClICrCdzJ9lNT9JZC0oGtU%2BKwiY7dSTrZm3wodyTWqkdltlLRwKFafQ%3D%3D&pageNo=1&numOfRows=10"
-    )
-      .then((res) => res.text())
-      .then((data) => {
-        const xml = new XMLParser().parseFromString(data);
-        setArr(xml.children[1].children[0].children);
-      })
-      .catch(() => console.log("err"));
-  }, []);
-
   return (
     <>
       <Container>
