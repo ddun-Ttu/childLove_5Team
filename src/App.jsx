@@ -10,6 +10,7 @@ import { NavigationBar } from "./components/NavigationBar";
 import { Container } from "./components/Container";
 import { Footer } from "./components/Footer";
 import { CardBox } from "./components/CardBox";
+import { Home } from "./pages/Home";
 
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import colors from "./constants/colors";
@@ -36,26 +37,7 @@ function App() {
 
   return (
     <>
-      <Container>
-        <Router>
-          <Button
-            LinkTo={"https://www.naver.com/"}
-            onClick={() => {
-              console.log("Button was clicked!");
-            }}
-            label={"안녕"}
-            btnFontSize={fontSize.but}
-            btnColor={"white"}
-            bgcolor={colors.primary}
-            // width={"30px"}
-            // height={"90px"}
-            borderOutLine={colors.BtnborderOut}
-          />
-          <CardBox linkTo={"https://www.naver.com/"} children={"안녕"} />
-          <NavigationBar />
-          <Footer />
-        </Router>
-      </Container>
+      <Home />
     </>
   );
 }
