@@ -45,16 +45,17 @@ export const Login = () => {
                 type="password"
               ></LoginInput>
 
-              <LoginBtn></LoginBtn>
-              <Button
-                btnFontSize={fontSize.but}
-                label={"로그인하기"}
-                btnColor={"white"}
-                bgcolor={colors.primary}
-                borderOutLine={colors.BtnborderOut}
-                width={"90%"}
-                height={"70px"}
-              />
+              <LoginBtn>
+                <Button
+                  btnFontSize={fontSize.but}
+                  label={"로그인하기"}
+                  btnColor={"white"}
+                  bgcolor={colors.primary}
+                  borderOutLine={colors.BtnborderOut}
+                  width={"90%"}
+                  height={"70px"}
+                />
+              </LoginBtn>
             </LoginForm>
           </LoginFormDiv>
           <Footer />
