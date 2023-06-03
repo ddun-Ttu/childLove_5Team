@@ -1,4 +1,4 @@
-/* eslint-disable */
+// /* eslint-disable */
 
 import React from "react";
 import styled from "styled-components";
@@ -31,36 +31,42 @@ export const Login = () => {
   return (
     <>
       <Container>
-        <Router>
-          <MainLogoDiv>
-            <MainLogoImg src={mainLogo}></MainLogoImg>
-            <H1>환영합니다!</H1>
-          </MainLogoDiv>
+        <MainLogoDiv>
+          <MainLogoImg src={mainLogo}></MainLogoImg>
+          <H1>환영합니다!</H1>
+        </MainLogoDiv>
 
-          <LoginFormDiv>
-            <LoginForm>
-              <LoginInput placeholder="test@naver.com" type="text"></LoginInput>
-              <LoginInput
-                placeholder="8자리 이상 입력해주세요"
-                type="password"
-              ></LoginInput>
+        <LoginFormDiv>
+          <LoginForm>
+            <LoginInput placeholder="test@naver.com" type="text"></LoginInput>
+            <LoginInput
+              placeholder="8자리 이상 입력해주세요"
+              type="password"
+            ></LoginInput>
 
-              <LoginBtn>
-                <Button
-                  btnFontSize={fontSize.but}
-                  label={"로그인하기"}
-                  btnColor={"white"}
-                  bgcolor={colors.primary}
-                  borderOutLine={colors.BtnborderOut}
-                  width={"90%"}
-                  height={"70px"}
-                />
-              </LoginBtn>
-            </LoginForm>
-          </LoginFormDiv>
-          <Footer />
-          <NavigationBar />
-        </Router>
+            <LoginBtn>
+              <Button
+                btnFontSize={fontSize.but}
+                label={"로그인하기"}
+                btnColor={"white"}
+                bgcolor={colors.primary}
+                borderOutLine={colors.BtnborderOut}
+                width={"90%"}
+                height={"70px"}
+              />
+            </LoginBtn>
+          </LoginForm>
+        </LoginFormDiv>
+
+        <Div>
+          <LoginUl>
+            <LoginLi>아이디찾기</LoginLi>
+            <LoginLi> | </LoginLi>
+            <LoginLi>비밀번호찾기</LoginLi>
+            <LoginLi> | </LoginLi>
+            <LoginLi>회원가입</LoginLi>
+          </LoginUl>
+        </Div>
       </Container>
     </>
   );
@@ -105,4 +111,17 @@ const LoginInput = styled.input`
 `;
 const LoginBtn = styled.div`
   margin: 5%;
+`;
+const Div = styled.div`
+  padding-bottom: 3%;
+`;
+const LoginUl = styled.div`
+display: flex;
+justify-content: center; /* 좌우정렬 */
+padding: 1%;
+}`;
+
+const LoginLi = styled.div`
+  padding: 0.5%;
+  color: #b2b2b2;
 `;
