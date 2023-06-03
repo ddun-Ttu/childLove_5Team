@@ -8,7 +8,8 @@ import CardBox from "../../components/CardBox";
 import colors from "../../constants/colors";
 import fontSize from "../../constants/fontSize";
 
-export const ReservationMemo = () => {
+// eslint-disable-next-line react/prop-types
+export const ReservationMemo = ({ label }) => {
   // const [modalIsOpen, setModalIsOpen] = useState(false);
 
   // const openModal = () => {
@@ -29,8 +30,14 @@ export const ReservationMemo = () => {
             <span>메모</span>
           </div>
         </ModalHeader>
-        <MemoBlock />
-  
+        <MemoBlock>
+          <HospitalName>
+            <h2>{label}</h2>
+          </HospitalName>
+          <MemoInput>
+            <InputBox type="text" placeholder="메모를 입력하세요" />
+          </MemoInput>
+        </MemoBlock>
         <Button
           LinkTo={"#"}
           onClick={() => {
@@ -43,6 +50,7 @@ export const ReservationMemo = () => {
           // width={"30px"}
           // height={"90px"}
           borderOutLine={colors.BtnborderOut}
+          
         />
       </CardBox>
     </>
@@ -83,9 +91,51 @@ const BtnCloseModal = styled.button`
 `;
 
 const MemoBlock = styled.div`
-  width: 90%;
-  height: 90%
+  display: table-cell;
+  vertical-align: middle;
+
+  width: 100%;
+  height: 100%
   border: 1px solid #b2b2b2;
+`;
+
+const HospitalName = styled.h2`
+  font-size: 20px;
+  font-weight: bold;
+  color: #h2h2h2;
+
+  width: 100%;
+  height: 100%;
+`;
+
+const MemoInput = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+  }
+`;
+
+const InputBox = styled.input`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%
+  border: 1px solid #b2b2b2;
+  border-radius: 20px;
+  margin: 2% 2% 5% 2%;
+  padding: 20%;
+
+  font-size: 14px;
+  
+  &::placeholder{
+    color: #d9d9d9;
+    text-indent: left;
+  }
 `;
 
 // const MemoSave = styled.button`

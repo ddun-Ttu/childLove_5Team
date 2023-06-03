@@ -6,7 +6,7 @@ const ReservationChk = () => {
   return (
     <>
       <MyCalendar />
-      <ReservationMemo />
+      <ReservationMemo label={"아이사랑 소아과"} />
     </>
   );
 };
