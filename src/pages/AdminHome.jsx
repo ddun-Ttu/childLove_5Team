@@ -16,6 +16,11 @@ const PersonalClient = React.lazy(() =>
     default: module.PersonalClient,
   }))
 );
+const Array = [
+  "개인 클라이언트 관리",
+  "병원 클라이언트 관리",
+  "병원 등록 관리",
+];
 
 export const AdminHome = () => {
   const [content, setContent] = useState(null);
@@ -45,24 +50,17 @@ export const AdminHome = () => {
     <>
       <AdminBox>
         <AdminMenuBox>
-          <AdminMenu
-            onClick={() => handleMenuClick("개인 클라이언트 관리")}
-            selected={selectedMenu === "개인 클라이언트 관리"}
-          >
-            개인 클라이언트 관리
-          </AdminMenu>
-          <AdminMenu
-            onClick={() => handleMenuClick("병원 클라이언트 관리")}
-            selected={selectedMenu === "병원 클라이언트 관리"}
-          >
-            병원 클라이언트 관리
-          </AdminMenu>
-          <AdminMenu
-            onClick={() => handleMenuClick("병원 등록 관리")}
-            selected={selectedMenu === "병원 등록 관리"}
-          >
-            병원 등록 관리
-          </AdminMenu>
+          {Array.map((menuValue) => {
+            return (
+              <AdminMenu
+                key={menuValue}
+                onClick={() => handleMenuClick(menuValue)}
+                selected={selectedMenu === menuValue}
+              >
+                {menuValue}
+              </AdminMenu>
+            );
+          })}
         </AdminMenuBox>
         <AdminContentBox>
           <Suspense fallback={<div>Loading...</div>}>{content}</Suspense>

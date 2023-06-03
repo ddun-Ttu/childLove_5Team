@@ -23,48 +23,49 @@ export const PersonalClient = () => {
       queryClient.prefetchQuery(["posts", nextPage], () => fetchList(nextPage));
     }
   }, [currentPage, queryClient]);
-  console.log(list);
-  if (isLoading) return <h1>로딩중입니다..</h1>;
-  if (!isLoading)
-    return (
-      <>
-        <PersonalTitle>개인 클라이언트 관리</PersonalTitle>
-        <InfoBox>
-          <Checkbox type="checkbox" />
-          <InfoTab>가입날짜</InfoTab>
-          <InfoTab>이름</InfoTab>
-          <InfoTab>아이디</InfoTab>
-          <InfoTab>연락처</InfoTab>
-          <InfoTab></InfoTab>
-        </InfoBox>
-        <div>
-          {list &&
-            list.map((item) => (
-              <ListBox key={item._id.$oid}>
-                <Checkbox type="checkbox" />
-                <InfoTab>{item.createdAt.$date.slice(0, 10)}</InfoTab>
-                <InfoTab>{item.name}</InfoTab>
-                <InfoTab>{item.email}</InfoTab>
-                <InfoTab>{item.phoneNumber}</InfoTab>
-                <Button></Button>
-              </ListBox>
-            ))}
-        </div>
-        <button
-          disabled={currentPage <= 0} // 현재페이지가 0 이하면 previous 버튼 비활성화
-          onClick={() => setCurrentPage((prev) => prev - 1)}
-        >
-          Previous page
-        </button>
-        <span>Page {currentPage + 1}</span>
-        <button
-          disabled={currentPage >= maxPostPage - 1} // 현재페이지가 9 이상이면 next 버튼 비활성화
-          onClick={() => setCurrentPage((prev) => prev + 1)}
-        >
-          Next page
-        </button>
-      </>
-    );
+  if (isLoading) {
+    return <h1>로딩중입니다..</h1>;
+  }
+
+  return (
+    <>
+      <PersonalTitle>개인 클라이언트 관리</PersonalTitle>
+      <InfoBox>
+        <Checkbox type="checkbox" />
+        <InfoTab>가입날짜</InfoTab>
+        <InfoTab>이름</InfoTab>
+        <InfoTab>아이디</InfoTab>
+        <InfoTab>연락처</InfoTab>
+        <InfoTab></InfoTab>
+      </InfoBox>
+      <div>
+        {list &&
+          list.map((item) => (
+            <ListBox key={item._id.$oid}>
+              <Checkbox type="checkbox" />
+              <InfoTab>{item.createdAt.$date.slice(0, 10)}</InfoTab>
+              <InfoTab>{item.name}</InfoTab>
+              <InfoTab>{item.email}</InfoTab>
+              <InfoTab>{item.phoneNumber}</InfoTab>
+              <Button></Button>
+            </ListBox>
+          ))}
+      </div>
+      <button
+        disabled={currentPage <= 0} // 현재페이지가 0 이하면 previous 버튼 비활성화
+        onClick={() => setCurrentPage((prev) => prev - 1)}
+      >
+        Previous page
+      </button>
+      <span>Page {currentPage + 1}</span>
+      <button
+        disabled={currentPage >= maxPostPage - 1} // 현재페이지가 9 이상이면 next 버튼 비활성화
+        onClick={() => setCurrentPage((prev) => prev + 1)}
+      >
+        Next page
+      </button>
+    </>
+  );
 };
 
 export const PersonalTitle = styled.p`
