@@ -11,6 +11,7 @@ import { Container } from "./components/Container";
 import { Footer } from "./components/Footer";
 import { CardBox } from "./components/CardBox";
 import { Home } from "./pages/Home";
+import { Login } from "./pages/Login";
 
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import colors from "./constants/colors";
