@@ -92,7 +92,7 @@ const H1 = styled.p`
 const LoginFormDiv = styled.div`
   width: 100%;
   /* background-color: rgb(255, 212, 212); */
-  padding: 10% 16% 2% 16%;
+  padding: 10% 5% 2% 5%;
 `;
 const LoginForm = styled.form`
   border: 1px solid #a9a9a9;

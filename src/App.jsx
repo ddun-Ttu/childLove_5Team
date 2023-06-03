@@ -25,8 +25,8 @@ function App() {
     <>
       <Container>
         <Router>
-          {/* <SignUp /> */}
           <Login />
+          <SignUp />
           <Footer />
           <NavigationBar />
         </Router>
