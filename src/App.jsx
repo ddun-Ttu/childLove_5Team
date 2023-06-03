@@ -39,9 +39,7 @@ function App() {
   return (
     <>
       <Container>
-        <Router>
-          <Button />
-        </Router>
+        <Login />
       </Container>
     </>
   );
