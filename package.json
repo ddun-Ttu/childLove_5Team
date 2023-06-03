@@ -8,14 +8,10 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
     "react": "^18.2.0",
-<<<<<<< HEAD
+    "react-calendar": "^4.2.1",
     "react-daum-postcode": "^3.1.1",
     "react-dom": "^18.2.0",
-=======
-    "react-calendar": "^4.2.1",
-    "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
->>>>>>> dev
     "react-router-dom": "^6.11.2",
     "react-scripts": "5.0.1",
     "react-xml-parser": "^1.1.8",

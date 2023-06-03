@@ -1,5 +1,5 @@
 /* eslint-disable */
-
+import { RegisterForm } from "./pages/RegisterForm";
 import React, { useEffect, useState } from "react";
 import XMLParser from "react-xml-parser";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -27,13 +27,12 @@ function App() {
   return (
     <>
       <Container>
-        <QueryClientProvider client={queryClient}>
-          <SearchPage />
-        </QueryClientProvider>
+        <Router>
+          <RegisterForm />
+        </Router>
       </Container>
     </>
   );
-
 }
 
 export default App;

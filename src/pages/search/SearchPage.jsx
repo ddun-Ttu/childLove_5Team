@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+// import styled from "styled-components";
 import { useQuery } from "react-query";
 import SearchHeader from "./SearchHeader";
 import HospitalCard from "./HospitalCard";
