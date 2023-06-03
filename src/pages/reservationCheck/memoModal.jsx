@@ -50,7 +50,6 @@ export const ReservationMemo = ({ label }) => {
           // width={"30px"}
           // height={"90px"}
           borderOutLine={colors.BtnborderOut}
-          
         />
       </CardBox>
     </>
