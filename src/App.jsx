@@ -12,6 +12,7 @@ import { Footer } from "./components/Footer";
 import { CardBox } from "./components/CardBox";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
+import { SignUp } from "./pages/SignUp";
 
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import colors from "./constants/colors";
@@ -24,6 +25,8 @@ function App() {
     <>
       <Container>
         <Router>
+          {/* <SignUp /> */}
+          <Login />
           <Footer />
           <NavigationBar />
         </Router>
