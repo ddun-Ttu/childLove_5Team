@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useQuery, useQueryClient } from "react-query";
-import { fetchList } from "../server/Fetcher";
-import { Button } from "../components/button";
+import { fetchList } from "../../server/Fetcher";
+import { Button } from "../../components/Button";
 
 export const PersonalClient = () => {
   const [currentPage, setCurrentPage] = useState(0);
