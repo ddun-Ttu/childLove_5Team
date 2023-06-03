@@ -1,14 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { fetchList } from "../server/Fetcher";
 import { Button } from "../components/button";
 
 export const PersonalClient = () => {
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const maxPostPage = 10;
+  const queryClient = useQueryClient();
+
   const token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZpcnN0QHRlc3QuZ29vZCIsInN1YiI6IjY0NzdlOTk2YTkwZTQwOWYxYTQ4NzIyMSIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE2ODU1ODA0MTQsImV4cCI6MTcxNzEzODAxNH0.cWYJrF8kSJrmC4csSlR2x5B4v_ASZhinvKl5NFoShGc";
-  const { isLoading, data: list } = useQuery("list", () => fetchList(token));
+  const { isLoading, data: list } = useQuery(["list", currentPage], () =>
+    fetchList(token, currentPage + 1)
+  );
 
+  useEffect(() => {
+    if (currentPage <= maxPostPage - 2) {
+      // 마지막 페이지가 10이므로 9페이지까지만 다음페이지 데이터를 받음
+      const nextPage = currentPage + 1;
+      queryClient.prefetchQuery(["posts", nextPage], () => fetchList(nextPage));
+    }
+  }, [currentPage, queryClient]);
   console.log(list);
   if (isLoading) return <h1>로딩중입니다..</h1>;
   if (!isLoading)
@@ -36,6 +50,19 @@ export const PersonalClient = () => {
               </ListBox>
             ))}
         </div>
+        <button
+          disabled={currentPage <= 0} // 현재페이지가 0 이하면 previous 버튼 비활성화
+          onClick={() => setCurrentPage((prev) => prev - 1)}
+        >
+          Previous page
+        </button>
+        <span>Page {currentPage + 1}</span>
+        <button
+          disabled={currentPage >= maxPostPage - 1} // 현재페이지가 9 이상이면 next 버튼 비활성화
+          onClick={() => setCurrentPage((prev) => prev + 1)}
+        >
+          Next page
+        </button>
       </>
     );
 };
