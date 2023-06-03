@@ -17,6 +17,11 @@ import colors from "./constants/colors";
 import fontSize from "./constants/fontSize";
 
 import "./App.css";
+<<<<<<< HEAD
+=======
+import { Footer } from "./components/Footer";
+import { RegisterForm } from "./pages/RegisterForm";
+>>>>>>> dev_registerForm
 
 function App() {
   const [arr, setArr] = useState();
@@ -35,11 +40,15 @@ function App() {
       .catch(() => console.log("err"));
   }, []);
 
+<<<<<<< HEAD
   return (
     <>
       <Home />
     </>
   );
+=======
+  return <></>;
+>>>>>>> dev_registerForm
 }
 
 export default App;
