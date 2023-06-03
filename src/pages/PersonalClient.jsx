@@ -16,6 +16,18 @@ export const PersonalClient = () => {
     fetchList(token, currentPage + 1)
   );
 
+  const [checkValue, setCheckValue] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const onChange = (e) => {
+    setCheckValue(e.target.value);
+    setSubmitted(false);
+    console.log(checkValue);
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
   useEffect(() => {
     if (currentPage <= maxPostPage - 2) {
       // 마지막 페이지가 10이므로 9페이지까지만 다음페이지 데이터를 받음
@@ -30,26 +42,33 @@ export const PersonalClient = () => {
   return (
     <>
       <PersonalTitle>개인 클라이언트 관리</PersonalTitle>
+      <SearchBox>
+        <form onSubmit={onSubmit}>
+          <InputContent type="text" value={checkValue} onChange={onChange} />
+        </form>
+      </SearchBox>
       <InfoBox>
         <Checkbox type="checkbox" />
         <InfoTab>가입날짜</InfoTab>
         <InfoTab>이름</InfoTab>
         <InfoTab>아이디</InfoTab>
         <InfoTab>연락처</InfoTab>
-        <InfoTab></InfoTab>
+        <InfoTab />
       </InfoBox>
       <div>
         {list &&
-          list.map((item) => (
-            <ListBox key={item._id.$oid}>
-              <Checkbox type="checkbox" />
-              <InfoTab>{item.createdAt.$date.slice(0, 10)}</InfoTab>
-              <InfoTab>{item.name}</InfoTab>
-              <InfoTab>{item.email}</InfoTab>
-              <InfoTab>{item.phoneNumber}</InfoTab>
-              <Button></Button>
-            </ListBox>
-          ))}
+          list
+            .filter((item) => !submitted || item.email === checkValue)
+            .map((item) => (
+              <ListBox key={item._id.$oid}>
+                <Checkbox type="checkbox" />
+                <InfoTab>{item.createdAt.$date.slice(0, 10)}</InfoTab>
+                <InfoTab>{item.name}</InfoTab>
+                <InfoTab>{item.email}</InfoTab>
+                <InfoTab>{item.phoneNumber}</InfoTab>
+                <Button></Button>
+              </ListBox>
+            ))}
       </div>
       <button
         disabled={currentPage <= 0} // 현재페이지가 0 이하면 previous 버튼 비활성화
@@ -91,12 +110,16 @@ export const InfoBox = styled.div`
   align-items: center;
 `;
 
-export const Checkbox = styled.input``;
+export const Checkbox = styled.input`
+  width: 20%;
+`;
 export const InfoTab = styled.span`
+  text-align: center;
   font-family: "Inter";
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
+  width: 20%;
   line-height: 29px;
 `;
 
@@ -108,4 +131,41 @@ const ListBox = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+`;
+
+const SearchBox = styled.div`
+  width: 30%;
+  border: 1px solid #b2b2b2;
+  margin-top: 2%;
+  padding: 2% 2.5%;
+  box-sizing: border-box;
+  border-radius: 28px;
+  text-align: center;
+
+  & > input {
+    font-size: 24px;
+    border: none;
+    width: 100%;
+  }
+  & > input::placeholder {
+    color: #d9d9d9;
+  }
+  & > input:focus {
+    outline: none;
+  }
+`;
+
+const InputContent = styled.input`
+  width: 100%;
+  box-sizing: border-box;
+  height: 50px;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 15px;
 `;
