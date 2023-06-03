@@ -12,9 +12,7 @@ export const PersonalClient = () => {
 
   const token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZpcnN0QHRlc3QuZ29vZCIsInN1YiI6IjY0NzdlOTk2YTkwZTQwOWYxYTQ4NzIyMSIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE2ODU1ODA0MTQsImV4cCI6MTcxNzEzODAxNH0.cWYJrF8kSJrmC4csSlR2x5B4v_ASZhinvKl5NFoShGc";
-  const { isLoading, data: list } = useQuery(["list", currentPage], () =>
-    fetchList(token, currentPage + 1)
-  );
+  const { isLoading, data: list } = useQuery("list", () => fetchList(token));
 
   const [checkValue, setCheckValue] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -28,16 +26,25 @@ export const PersonalClient = () => {
     e.preventDefault();
     setSubmitted(true);
   };
+
   useEffect(() => {
     if (currentPage <= maxPostPage - 2) {
-      // 마지막 페이지가 10이므로 9페이지까지만 다음페이지 데이터를 받음
       const nextPage = currentPage + 1;
       queryClient.prefetchQuery(["posts", nextPage], () => fetchList(nextPage));
     }
   }, [currentPage, queryClient]);
+
   if (isLoading) {
     return <h1>로딩중입니다..</h1>;
   }
+
+  const filteredList = list.filter(
+    (item) => !submitted || item.email === checkValue
+  );
+
+  const startIndex = currentPage * 10;
+  const endIndex = startIndex + 10;
+  const paginatedList = filteredList.slice(startIndex, endIndex);
 
   return (
     <>
@@ -56,29 +63,26 @@ export const PersonalClient = () => {
         <InfoTab />
       </InfoBox>
       <div>
-        {list &&
-          list
-            .filter((item) => !submitted || item.email === checkValue)
-            .map((item) => (
-              <ListBox key={item._id.$oid}>
-                <Checkbox type="checkbox" />
-                <InfoTab>{item.createdAt.$date.slice(0, 10)}</InfoTab>
-                <InfoTab>{item.name}</InfoTab>
-                <InfoTab>{item.email}</InfoTab>
-                <InfoTab>{item.phoneNumber}</InfoTab>
-                <Button></Button>
-              </ListBox>
-            ))}
+        {paginatedList.map((item) => (
+          <ListBox key={item._id.$oid}>
+            <Checkbox type="checkbox" />
+            <InfoTab>{item.createdAt.$date.slice(0, 10)}</InfoTab>
+            <InfoTab>{item.name}</InfoTab>
+            <InfoTab>{item.email}</InfoTab>
+            <InfoTab>{item.phoneNumber}</InfoTab>
+            <Button></Button>
+          </ListBox>
+        ))}
       </div>
       <button
-        disabled={currentPage <= 0} // 현재페이지가 0 이하면 previous 버튼 비활성화
+        disabled={currentPage <= 0}
         onClick={() => setCurrentPage((prev) => prev - 1)}
       >
         Previous page
       </button>
       <span>Page {currentPage + 1}</span>
       <button
-        disabled={currentPage >= maxPostPage - 1} // 현재페이지가 9 이상이면 next 버튼 비활성화
+        disabled={currentPage >= maxPostPage - 1}
         onClick={() => setCurrentPage((prev) => prev + 1)}
       >
         Next page
