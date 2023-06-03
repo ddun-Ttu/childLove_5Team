@@ -35,7 +35,12 @@ export const ReservationMemo = ({ label }) => {
             <h2>{label}</h2>
           </HospitalName>
           <MemoInput>
-            <InputBox type="text" placeholder="메모를 입력하세요" />
+            <InputBox
+              type="text"
+              rows="10"
+              cols="50"
+              placeholder="메모를 입력하세요"
+            />
           </MemoInput>
         </MemoBlock>
         <Button
@@ -90,7 +95,7 @@ const BtnCloseModal = styled.button`
 `;
 
 const MemoBlock = styled.div`
-  display: table-cell;
+  display: block;
   vertical-align: middle;
 
   width: 100%;
@@ -105,6 +110,9 @@ const HospitalName = styled.h2`
 
   width: 100%;
   height: 100%;
+
+  text-align: left;
+  margin-left: 3%;
 `;
 
 const MemoInput = styled.div`
@@ -117,20 +125,22 @@ const MemoInput = styled.div`
   }
 `;
 
-const InputBox = styled.input`
+const InputBox = styled.textarea`
   display: flex;
   justify-content: center;
   align-items: center;
 
   width: 100%;
   height: 100%
-  border: 1px solid #b2b2b2;
+  
+  border: 1px #b2b2b2;
   border-radius: 20px;
-  margin: 2% 2% 5% 2%;
-  padding: 20%;
+  margin: 2% 3% 5% 3%;
+  padding: 1% 1% 1% 1%;
 
   font-size: 14px;
   
+  resize: none;
   &::placeholder{
     color: #d9d9d9;
     text-indent: left;
