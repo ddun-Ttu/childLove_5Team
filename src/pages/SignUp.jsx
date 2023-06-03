@@ -62,6 +62,124 @@ export const SignUp = () => {
 };
 export default SignUp;
 
+// 일반 회원 창
+const UserView = () => {
+  return (
+    <>
+      <SignUpForm>
+        <SignUpInputDiv>
+          <InputTitle>이름</InputTitle>
+          <SignUpInput placeholder="test@naver.com" type="text"></SignUpInput>
+        </SignUpInputDiv>
+
+        <SignUpInputDiv>
+          <InputTitle>이메일</InputTitle>
+          <SignUpInput
+            placeholder="test123@test.com"
+            type="email"
+          ></SignUpInput>
+        </SignUpInputDiv>
+
+        <SignUpInputDiv>
+          <InputTitle>핸드폰번호</InputTitle>
+          <SignUpInput placeholder="010-0000-0000" type="text"></SignUpInput>
+        </SignUpInputDiv>
+
+        <SignUpInputDiv>
+          <InputTitle>비밀번호</InputTitle>
+          <SignUpInput
+            placeholder="8자리 이상 입력해주세요"
+            type="password"
+          ></SignUpInput>
+        </SignUpInputDiv>
+
+        <SignUpInputDiv>
+          <InputTitle>비밀번호 확인</InputTitle>
+          <SignUpInput
+            placeholder="8자리 이상 입력해주세요"
+            type="password"
+          ></SignUpInput>
+        </SignUpInputDiv>
+
+        <SignUpBtn>
+          <Button
+            btnFontSize={fontSize.but}
+            label={"회원가입"}
+            btnColor={"white"}
+            bgcolor={colors.primary}
+            borderOutLine={colors.BtnborderOut}
+            width={"90%"}
+            height={"70px"}
+          />
+        </SignUpBtn>
+      </SignUpForm>
+    </>
+  );
+};
+
+const HospitalView = () => {
+  return (
+    <>
+      <SignUpForm>
+        <SignUpInputDiv>
+          <InputTitle>담당자 성함</InputTitle>
+          <SignUpInput placeholder="테스트" type="text"></SignUpInput>
+        </SignUpInputDiv>
+
+        <SignUpInputDiv>
+          <InputTitle>병원명</InputTitle>
+          <SignUpInput
+            placeholder="병원명을 검색해주세요"
+            type="text"
+          ></SignUpInput>
+          <P>
+            *찾으시는 병원이 없으실 경우 하단에 신규병원 등록신청하기를
+            눌러주세요.
+          </P>
+        </SignUpInputDiv>
+
+        <SignUpInputDiv>
+          <InputTitle>담당자 핸드폰번호</InputTitle>
+          <SignUpInput placeholder="010-0000-0000" type="text"></SignUpInput>
+        </SignUpInputDiv>
+
+        <SignUpInputDiv>
+          <InputTitle>담당자 이메일</InputTitle>
+          <SignUpInput placeholder="test@naver.com" type="text"></SignUpInput>
+        </SignUpInputDiv>
+
+        <SignUpInputDiv>
+          <InputTitle>비밀번호</InputTitle>
+          <SignUpInput
+            placeholder="8자리 이상 입력해주세요"
+            type="password"
+          ></SignUpInput>
+        </SignUpInputDiv>
+
+        <SignUpInputDiv>
+          <InputTitle>비밀번호 확인</InputTitle>
+          <SignUpInput
+            placeholder="8자리 이상 입력해주세요"
+            type="password"
+          ></SignUpInput>
+        </SignUpInputDiv>
+
+        <SignUpBtn>
+          <Button
+            btnFontSize={fontSize.but}
+            label={"회원가입"}
+            btnColor={"white"}
+            bgcolor={colors.primary}
+            borderOutLine={colors.BtnborderOut}
+            width={"90%"}
+            height={"70px"}
+          />
+        </SignUpBtn>
+      </SignUpForm>
+    </>
+  );
+};
+
 const ButtonHospital = styled.button`
   /* 일반 버튼 스타일 */
   font-size: ${fontSize.but};
@@ -168,121 +286,3 @@ const P = styled.p`
   color: #c20000;
   margin-bottom: 3%;
 `;
-
-// 일반 회원 창
-const UserView = () => {
-  return (
-    <>
-      <SignUpForm>
-        <SignUpInputDiv>
-          <InputTitle>이름</InputTitle>
-          <SignUpInput placeholder="test@naver.com" type="text"></SignUpInput>
-        </SignUpInputDiv>
-
-        <SignUpInputDiv>
-          <InputTitle>이메일</InputTitle>
-          <SignUpInput
-            placeholder="test123@test.com"
-            type="email"
-          ></SignUpInput>
-        </SignUpInputDiv>
-
-        <SignUpInputDiv>
-          <InputTitle>핸드폰번호</InputTitle>
-          <SignUpInput placeholder="010-0000-0000" type="text"></SignUpInput>
-        </SignUpInputDiv>
-
-        <SignUpInputDiv>
-          <InputTitle>비밀번호</InputTitle>
-          <SignUpInput
-            placeholder="8자리 이상 입력해주세요"
-            type="password"
-          ></SignUpInput>
-        </SignUpInputDiv>
-
-        <SignUpInputDiv>
-          <InputTitle>비밀번호 확인</InputTitle>
-          <SignUpInput
-            placeholder="8자리 이상 입력해주세요"
-            type="password"
-          ></SignUpInput>
-        </SignUpInputDiv>
-
-        <SignUpBtn>
-          <Button
-            btnFontSize={fontSize.but}
-            label={"회원가입"}
-            btnColor={"white"}
-            bgcolor={colors.primary}
-            borderOutLine={colors.BtnborderOut}
-            width={"90%"}
-            height={"70px"}
-          />
-        </SignUpBtn>
-      </SignUpForm>
-    </>
-  );
-};
-
-const HospitalView = () => {
-  return (
-    <>
-      <SignUpForm>
-        <SignUpInputDiv>
-          <InputTitle>담당자 성함</InputTitle>
-          <SignUpInput placeholder="" type="text"></SignUpInput>
-        </SignUpInputDiv>
-
-        <SignUpInputDiv>
-          <InputTitle>병원명</InputTitle>
-          <SignUpInput
-            placeholder="병원명을 검색해주세요"
-            type="text"
-          ></SignUpInput>
-          <P>
-            *찾으시는 병원이 없으실 경우 하단에 신규병원 등록신청하기를
-            눌러주세요.
-          </P>
-        </SignUpInputDiv>
-
-        <SignUpInputDiv>
-          <InputTitle>담당자 핸드폰번호</InputTitle>
-          <SignUpInput placeholder="010-0000-0000" type="text"></SignUpInput>
-        </SignUpInputDiv>
-
-        <SignUpInputDiv>
-          <InputTitle>담당자 이메일</InputTitle>
-          <SignUpInput placeholder="test@naver.com" type="text"></SignUpInput>
-        </SignUpInputDiv>
-
-        <SignUpInputDiv>
-          <InputTitle>비밀번호</InputTitle>
-          <SignUpInput
-            placeholder="8자리 이상 입력해주세요"
-            type="password"
-          ></SignUpInput>
-        </SignUpInputDiv>
-
-        <SignUpInputDiv>
-          <InputTitle>비밀번호 확인</InputTitle>
-          <SignUpInput
-            placeholder="8자리 이상 입력해주세요"
-            type="password"
-          ></SignUpInput>
-        </SignUpInputDiv>
-
-        <SignUpBtn>
-          <Button
-            btnFontSize={fontSize.but}
-            label={"회원가입"}
-            btnColor={"white"}
-            bgcolor={colors.primary}
-            borderOutLine={colors.BtnborderOut}
-            width={"90%"}
-            height={"70px"}
-          />
-        </SignUpBtn>
-      </SignUpForm>
-    </>
-  );
-};
