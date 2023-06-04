@@ -19,11 +19,6 @@ import { Footer } from "../../components/Footer";
 import colors from "../../constants/colors";
 import fontSize from "../../constants/fontSize";
 
-// react-slick 라이브러리
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
 export const Login = () => {
   return (
     <>
