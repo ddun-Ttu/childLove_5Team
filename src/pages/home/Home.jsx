@@ -4,10 +4,10 @@ import styled from "styled-components";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 // 이미지 링크
-import mainLogo from "../assets/mainLogo.svg";
-import MainBanner from "../assets/mainBanner.png";
-import iconPeople from "../assets/iconPeople.svg";
-import arrowRight from "../assets/arrowRight.svg";
+import mainLogo from "../../assets/mainLogo.svg";
+import MainBanner from "../../assets/mainBanner.png";
+import iconPeople from "../../assets/iconPeople.svg";
+import arrowRight from "../../assets/arrowRight.svg";
 
 // 공통 컴포넌트 연결 링크
 import { Button } from "../components/Button";
@@ -25,6 +25,7 @@ import fontSize from "../constants/fontSize";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+
 // 더미 데이터
 import { dataHome } from "./data";
 
