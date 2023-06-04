@@ -25,9 +25,12 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <>
-      <Router>
-        <AdminHome />
-      </Router>
+      <Container>
+        <Router>
+          <Footer />
+          <Navigator />
+        </Router>
+      </Container>
     </>
   );
 }
