@@ -16,6 +16,7 @@ export const PersonalClient = () => {
 
   const [checkValue, setCheckValue] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [checkList, setCheckList] = useState([]);
   const onChange = (e) => {
     setCheckValue(e.target.value);
     setSubmitted(false);
@@ -26,7 +27,14 @@ export const PersonalClient = () => {
     e.preventDefault();
     setSubmitted(true);
   };
-
+  /* 아직삭제가 안됩니다*/
+  const handleSingleCheck = (checked, id) => {
+    if (checked) {
+      setCheckList((prev) => [...prev, id]);
+    } else {
+      setCheckList((prev) => prev.filter((el) => el !== id));
+    }
+  };
   useEffect(() => {
     if (currentPage <= maxPostPage - 2) {
       const nextPage = currentPage + 1;
@@ -38,7 +46,7 @@ export const PersonalClient = () => {
     return <h1>로딩중입니다..</h1>;
   }
 
-  const filteredList = list.filter(
+  const filteredList = list?.filter(
     (item) => !submitted || item.email === checkValue
   );
 
@@ -71,7 +79,12 @@ export const PersonalClient = () => {
           {paginatedList.map((item) => (
             <tr key={item._id.$oid}>
               <TableData>
-                <Checkbox type="checkbox" />
+                <Checkbox
+                  onChange={(e) =>
+                    handleSingleCheck(e.target.checked, item._id.$oid)
+                  }
+                  checked={checkList.includes(item._id.$oid)}
+                />
               </TableData>
               <TableData>{item.createdAt.$date.slice(0, 10)}</TableData>
               <TableData>{item.name}</TableData>
@@ -138,8 +151,9 @@ const TableData = styled.td`
   padding: 10px;
 `;
 
-const Checkbox = styled.input`
+const Checkbox = styled.input.attrs({ type: "checkbox" })`
   width: 100%;
+  cursor: pointer;
 `;
 
 const SearchBox = styled.div`
