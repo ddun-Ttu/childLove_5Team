@@ -10,16 +10,14 @@ import iconPeople from "../../assets/iconPeople.svg";
 import arrowRight from "../../assets/arrowRight.svg";
 
 // 공통 컴포넌트 연결 링크
-import { Button } from "../components/Button";
-import { NavigationBar } from "../components/NavigationBar";
-import { Container } from "../components/Container";
-import { Footer } from "../components/Footer";
-import { CardBox } from "../components/CardBox";
-import { SearchBar } from "../components/SearchBar";
+import { NavigationBar } from "../../components/NavigationBar";
+import { Container } from "../../components/Container";
+import { Footer } from "../../components/Footer";
+import { SearchBar } from "../../components/SearchBar";
 
 // 상수로 뽑아둔 color, fontSize 연결 링크
-import colors from "../constants/colors";
-import fontSize from "../constants/fontSize";
+import colors from "../../constants/colors";
+import fontSize from "../../constants/fontSize";
 
 // react-slick 라이브러리
 import Slider from "react-slick";
@@ -33,66 +31,64 @@ export const Home = ({ LinkTo }) => {
   return (
     <>
       <Container>
-        <Router>
-          <MainLogoImg src={mainLogo} alt="mainLogo"></MainLogoImg>
+        <MainLogoImg src={mainLogo} alt="mainLogo"></MainLogoImg>
 
-          <TopMenuBar>
-            <MenuLogo>
-              <LogoP>아이사랑</LogoP>
-            </MenuLogo>
-            <FlexGrow></FlexGrow>
+        <TopMenuBar>
+          <MenuLogo>
+            <LogoP>아이사랑</LogoP>
+          </MenuLogo>
+          <FlexGrow></FlexGrow>
 
-            <MenuSeb>
-              <Link to={LinkTo}>
-                <SebP>로그인</SebP>
-              </Link>
-            </MenuSeb>
-
-            <MenuSeb>
-              <Link to={LinkTo}>
-                <SebP>회원가입</SebP>
-              </Link>
-            </MenuSeb>
-          </TopMenuBar>
-
-          <SearchBar />
-
-          <Banner>
-            <Img src={MainBanner} alt="star"></Img>
-          </Banner>
-
-          <BannerSeb>
+          <MenuSeb>
             <Link to={LinkTo}>
-              <BanContainer>
-                <BannerSebDiv1>
-                  <BannerSebIcon
-                    src={iconPeople}
-                    alt="iconPeople"
-                  ></BannerSebIcon>
-                </BannerSebDiv1>
-
-                <BannerSebDiv2>
-                  <BannerSebP>병원 관리자 등록</BannerSebP>
-                  <BannerSebH1>가족이 되어줄 병원을 찾습니다</BannerSebH1>
-                </BannerSebDiv2>
-
-                <BannerSebDiv3>
-                  <BannerSebIcon
-                    src={arrowRight}
-                    alt="arrowRight"
-                  ></BannerSebIcon>
-                </BannerSebDiv3>
-              </BanContainer>
+              <SebP>로그인</SebP>
             </Link>
-          </BannerSeb>
+          </MenuSeb>
 
-          <SiliderMargin>
-            <SimpleSlider />
-          </SiliderMargin>
+          <MenuSeb>
+            <Link to={LinkTo}>
+              <SebP>회원가입</SebP>
+            </Link>
+          </MenuSeb>
+        </TopMenuBar>
 
-          <Footer />
-          <NavigationBar />
-        </Router>
+        <SearchBar />
+
+        <Banner>
+          <Img src={MainBanner} alt="star"></Img>
+        </Banner>
+
+        <BannerSeb>
+          <Link to={LinkTo}>
+            <BanContainer>
+              <BannerSebDiv1>
+                <BannerSebIcon
+                  src={iconPeople}
+                  alt="iconPeople"
+                ></BannerSebIcon>
+              </BannerSebDiv1>
+
+              <BannerSebDiv2>
+                <BannerSebP>병원 관리자 등록</BannerSebP>
+                <BannerSebH1>가족이 되어줄 병원을 찾습니다</BannerSebH1>
+              </BannerSebDiv2>
+
+              <BannerSebDiv3>
+                <BannerSebIcon
+                  src={arrowRight}
+                  alt="arrowRight"
+                ></BannerSebIcon>
+              </BannerSebDiv3>
+            </BanContainer>
+          </Link>
+        </BannerSeb>
+
+        <SiliderMargin>
+          <SimpleSlider />
+        </SiliderMargin>
+
+        <Footer />
+        <NavigationBar />
       </Container>
     </>
   );

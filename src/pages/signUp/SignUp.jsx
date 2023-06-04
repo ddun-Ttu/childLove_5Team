@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 // 이미지 링크
-import mainLogo from "../assets/mainLogo.svg";
+import mainLogo from "../../assets/mainLogo.svg";
 
 // 공통 컴포넌트 연결 링크
 import { Button } from "../../components/Button";
