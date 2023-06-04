@@ -43,7 +43,6 @@ function App() {
     <>
       <Container>
         <Router>
-          <Home />
           <Footer />
           <Navigator />
         </Router>
