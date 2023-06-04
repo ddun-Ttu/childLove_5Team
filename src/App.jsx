@@ -1,12 +1,12 @@
 /* eslint-disable */
-
+import { RegisterForm } from "./pages/registerForm/RegisterForm";
 import React, { useEffect, useState } from "react";
 import XMLParser from "react-xml-parser";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // 공통 컴포넌트 연결해서 테스트함
-import { Button } from "./components/Button";
+import { Button } from "./components/button";
 import { NavigationBar } from "./components/NavigationBar";
 import { Container } from "./components/Container";
 import { Footer } from "./components/Footer";
@@ -18,6 +18,7 @@ import colors from "./constants/colors";
 import fontSize from "./constants/fontSize";
 
 import "./App.css";
+
 import SearchPage from "./pages/search/SearchPage";
 
 const queryClient = new QueryClient();
@@ -26,9 +27,10 @@ function App() {
   return (
     <>
       <Container>
-        <QueryClientProvider client={queryClient}>
-          <SearchPage />
-        </QueryClientProvider>
+        <Router>
+          <Footer />
+          <Navigator />
+        </Router>
       </Container>
     </>
   );
