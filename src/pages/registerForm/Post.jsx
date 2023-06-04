@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import DaumPostCode from "react-daum-postcode";
 import styled from "styled-components";
-import { ButtonStyle } from "../components/button";
+import colors from "../../constants/colors";
 import { InputBox, InputContent, InputName } from "./RegisterForm";
+import { Button } from "../../components/button";
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -59,7 +60,16 @@ export const Post = () => {
       <InputBox>
         <PostBox>
           <InputName>주소</InputName>
-          <ButtonStyle onClick={handleOpenModal}>주소 찾기</ButtonStyle>
+          <Button
+            width={"100px"}
+            height={"50px"}
+            bgcolor={colors.primary}
+            onClick={handleOpenModal}
+            btnColor={"#FFFFFF"}
+            label={"주소찾기"}
+            fontSize={"15px"}
+          />
+
           {isOpen && (
             <ModalContainer>
               <Modal>

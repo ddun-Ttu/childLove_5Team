@@ -11,7 +11,7 @@ import iconPeople from "../../assets/iconPeople.svg";
 import arrowRight from "../../assets/arrowRight.svg";
 
 // 공통 컴포넌트 연결 링크
-import { Button } from "../../components/Button";
+import { Button } from "../../components/button";
 import { Container } from "../../components/Container";
 import { Footer } from "../../components/Footer";
 
