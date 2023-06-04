@@ -16,7 +16,7 @@ const PersonalClient = React.lazy(() =>
     default: module.PersonalClient,
   }))
 );
-const Array = [
+const menuTab = [
   "개인 클라이언트 관리",
   "병원 클라이언트 관리",
   "병원 등록 관리",
@@ -50,7 +50,7 @@ export const AdminHome = () => {
     <>
       <AdminBox>
         <AdminMenuBox>
-          {Array.map((menuValue) => {
+          {menuTab.map((menuValue) => {
             return (
               <AdminMenu
                 key={menuValue}
@@ -77,17 +77,17 @@ const AdminBox = styled.div`
 `;
 
 const AdminMenuBox = styled.div`
-  padding-top: 270px;
-  width: 530px;
-  height: 1080px;
+  padding-top: 14%;
+  width: 30%;
+  height: 100%;
   background-color: #33bd7d;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 const AdminMenu = styled.div`
-  width: 530px;
-  height: 145px;
+  width: 100%;
+  height: 20%;
   font-weight: bold;
   font-size: 32px;
   display: flex;
@@ -97,10 +97,11 @@ const AdminMenu = styled.div`
   background-color: ${(props) => (props.selected ? "#FFFFFF" : "transparent")};
 `;
 const AdminContentBox = styled.div`
-  width: 100%;
-  height: 1080px;
+  width: 70%;
+  height: 100%;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
 `;
