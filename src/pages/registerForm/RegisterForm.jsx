@@ -1,43 +1,51 @@
 import React from "react";
 import styled from "styled-components";
 import { Post } from "./Post";
+import mainLogo from "../../assets/mainLogo.svg";
+import { Container } from "../../components";
 
 export const RegisterForm = () => {
   return (
     <>
-      <FormBox>
-        <InputBox>
-          <InputName>병원명</InputName>
-          <InputContent type="text" />
-        </InputBox>
-        <InputBox>
-          <InputName>병원 대표번호</InputName>
-          <InputContent />
-        </InputBox>
-        <InputBox>
-          <InputName>영업시간</InputName>
-          <InputContent />
-        </InputBox>
-        <InputBox>
-          <InputName>점심시간</InputName>
-          <InputContent />
-        </InputBox>
-        <Post />
-        <InputBox>
-          <InputName>병원 사진</InputName>
-          <ImageBox>
-            <InputImage type="file" />
-          </ImageBox>
-        </InputBox>
-      </FormBox>
+      <Container>
+        <MainLogoDiv>
+          <MainLogoImg src={mainLogo}></MainLogoImg>
+          <H1>병원 신규 등록</H1>
+        </MainLogoDiv>
+        <FormBox>
+          <InputBox>
+            <InputName>병원명</InputName>
+            <InputContent type="text" />
+          </InputBox>
+          <InputBox>
+            <InputName>병원 대표번호</InputName>
+            <InputContent />
+          </InputBox>
+          <InputBox>
+            <InputName>영업시간</InputName>
+            <InputContent />
+          </InputBox>
+          <InputBox>
+            <InputName>점심시간</InputName>
+            <InputContent />
+          </InputBox>
+          <Post />
+          <InputBox>
+            <InputName>병원 사진</InputName>
+            <ImageBox>
+              <InputImage type="file" />
+            </ImageBox>
+          </InputBox>
+        </FormBox>
+      </Container>
     </>
   );
 };
 
 const FormBox = styled.div`
   box-sizing: border-box;
-  width: 625px;
-  height: 998px;
+  width: 100%;
+  height: 100%;
   border: 1px solid #a8a8a8;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   display: flex;
@@ -47,9 +55,10 @@ const FormBox = styled.div`
 `;
 
 export const InputBox = styled.div`
+  margin: 2% 0;
   box-sizing: border-box;
-  width: 455px;
-  height: 90px;
+  width: 50%;
+  height: 30%;
 `;
 
 export const InputName = styled.span`
@@ -98,4 +107,20 @@ const InputImage = styled.input`
   font-weight: 400;
   font-size: 20px;
   line-height: 15px;
+`;
+
+const MainLogoImg = styled.img`
+  margin-top: 4%;
+`;
+
+const MainLogoDiv = styled.div`
+  margin-top: 4%;
+`;
+
+const H1 = styled.p`
+  font-size: 38px;
+  margin: 0;
+  padding: 2%;
+  color: #00ad5c;
+  font-weight: 700;
 `;

@@ -62,7 +62,7 @@ export const Post = () => {
           <InputName>주소</InputName>
           <Button
             width={"100px"}
-            height={"50px"}
+            height={"30px"}
             bgcolor={colors.primary}
             onClick={handleOpenModal}
             btnColor={"#FFFFFF"}
