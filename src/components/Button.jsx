@@ -2,6 +2,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import colors from "../constants/colors";
 
 export const Button = ({
   btnColor,
@@ -13,6 +14,7 @@ export const Button = ({
   label,
   onClick,
   linkTo,
+  disabled,
 }) => {
   return (
     <>
@@ -25,6 +27,7 @@ export const Button = ({
           borderOutLine={borderOutLine}
           width={width}
           height={height}
+          disabled={disabled}
         >
           {label}
         </ButtonStyle>
@@ -45,6 +48,13 @@ const ButtonStyle = styled.button`
   cursor: pointer;
 
   padding: 1% 3.5%;
+
+  &:disabled {
+    color: white;
+    background-color: ${colors.InputBorderOut};
+    border: 1px solid ${colors.InputBorderOut};
+    cursor: not-allowed;
+  }
 `;
 
 /* [font-size]

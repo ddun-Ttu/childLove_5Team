@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
@@ -67,6 +67,40 @@ export default SignUp;
 
 // 일반 회원 창
 const UserView = () => {
+  const [email, setEmail] = useState("");
+  const [pw, setPw] = useState("");
+  const [emailValid, setEmailValid] = useState(false);
+  const [pwValid, setPwValid] = useState(false);
+
+  const [notAllow, setNotAllow] = useState(true);
+
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (regex.test(email)) {
+      setEmailValid(true);
+    } else {
+      setEmailValid(false);
+    }
+  };
+
+  const handlePassword = (e) => {
+    setPw(e.target.value);
+    if (pw.length >= 8) {
+      setPwValid(true);
+    } else {
+      setPwValid(false);
+    }
+  };
+
+  useEffect(() => {
+    if (emailValid && pwValid) {
+      setNotAllow(false);
+      return;
+    }
+    setNotAllow(true);
+  }, [emailValid, pwValid]);
+
   return (
     <>
       <SignUpForm>
@@ -80,7 +114,12 @@ const UserView = () => {
           <SignUpInput
             placeholder="test123@test.com"
             type="email"
+            value={email}
+            onChange={handleEmail}
           ></SignUpInput>
+          {!emailValid && email.length > 0 && (
+            <ErrorMaessage>올바른 이메일을 입력해주세요.</ErrorMaessage>
+          )}
         </SignUpInputDiv>
 
         <SignUpInputDiv>
@@ -93,7 +132,12 @@ const UserView = () => {
           <SignUpInput
             placeholder="8자리 이상 입력해주세요"
             type="password"
+            value={pw}
+            onChange={handlePassword}
           ></SignUpInput>
+          {!pwValid && pw.length > 0 && (
+            <ErrorMaessage>8자리 이상 입력해주세요.</ErrorMaessage>
+          )}
         </SignUpInputDiv>
 
         <SignUpInputDiv>
@@ -102,6 +146,7 @@ const UserView = () => {
             placeholder="8자리 이상 입력해주세요"
             type="password"
           ></SignUpInput>
+          <ErrorMaessage>비밀번호가 다릅니다</ErrorMaessage>
         </SignUpInputDiv>
 
         <SignUpBtn>
@@ -113,6 +158,7 @@ const UserView = () => {
             borderOutLine={colors.BtnborderOut}
             width={"90%"}
             height={"70px"}
+            disabled={notAllow}
           />
         </SignUpBtn>
       </SignUpForm>
@@ -149,6 +195,7 @@ const HospitalView = () => {
         <SignUpInputDiv>
           <InputTitle>담당자 이메일</InputTitle>
           <SignUpInput placeholder="test@naver.com" type="text"></SignUpInput>
+          <ErrorMaessage>올바른 이메일을 입력해주세요</ErrorMaessage>
         </SignUpInputDiv>
 
         <SignUpInputDiv>
@@ -157,6 +204,7 @@ const HospitalView = () => {
             placeholder="8자리 이상 입력해주세요"
             type="password"
           ></SignUpInput>
+          <ErrorMaessage>8자리 이상 입력해주세요</ErrorMaessage>
         </SignUpInputDiv>
 
         <SignUpInputDiv>
@@ -165,6 +213,7 @@ const HospitalView = () => {
             placeholder="8자리 이상 입력해주세요"
             type="password"
           ></SignUpInput>
+          <ErrorMaessage>비밀번호가 다릅니다</ErrorMaessage>
         </SignUpInputDiv>
 
         <SignUpBtn>
@@ -288,4 +337,8 @@ const P = styled.p`
   font-size: 14px;
   color: #c20000;
   margin-bottom: 3%;
+`;
+
+const ErrorMaessage = styled.p`
+  color: #c20000;
 `;
