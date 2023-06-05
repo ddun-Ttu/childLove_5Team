@@ -1,6 +1,6 @@
 import React from "react";
 import { ReservationMemo } from "./memoModal";
-import { MyCalendar } from "./myCalendar";
+import { MyCalendar } from "./MyCalendar";
 
 const ReservationChk = () => {
   return (
