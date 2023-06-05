@@ -38,8 +38,8 @@ function App() {
     <>
       <Container>
         <Router>
-          {/* <SignUp /> */}
-          <Login />
+          <SignUp />
+          {/* <Login /> */}
           <Footer />
           <NavigationBar />
         </Router>
