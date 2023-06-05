@@ -86,9 +86,6 @@ export const Home = ({ linkTo }) => {
         <SiliderMargin>
           <SimpleSlider />
         </SiliderMargin>
-
-        <Footer />
-        <NavigationBar />
       </Container>
     </>
   );
