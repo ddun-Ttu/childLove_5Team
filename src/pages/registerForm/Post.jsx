@@ -84,10 +84,7 @@ export const Post = () => {
             </ModalContainer>
           )}
         </PostBox>
-        {/* 수정: 주소 선택 후에 fullAddress 값을 인풋 태그에 표현하는 부분 */}
-        {fullAddress && (
-          <InputContent type="text" value={fullAddress} readOnly />
-        )}
+        <InputContent type="text" value={fullAddress} readOnly />
       </InputBox>
     </>
   );
