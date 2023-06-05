@@ -11,9 +11,7 @@ import iconPeople from "../../assets/iconPeople.svg";
 import arrowRight from "../../assets/arrowRight.svg";
 
 // 공통 컴포넌트 연결 링크
-import { Button } from "../../components/button";
-import { Container } from "../../components/Container";
-import { Footer } from "../../components/Footer";
+import { Button, Container, Footer } from "../../components/index";
 
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import colors from "../../constants/colors";
