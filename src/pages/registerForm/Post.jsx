@@ -67,7 +67,7 @@ export const Post = () => {
             onClick={handleOpenModal}
             btnColor={"#FFFFFF"}
             label={"주소찾기"}
-            fontSize={"15px"}
+            fontSize={"18px"}
           />
 
           {isOpen && (
