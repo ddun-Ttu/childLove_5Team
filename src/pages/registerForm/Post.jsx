@@ -51,7 +51,10 @@ export const Post = () => {
     }
 
     setFullAddress(fullAddress);
-
+    console.log(data);
+    console.log(data.sido);
+    console.log(data.sigungu);
+    console.log(`${data.sido} ${data.sigungu}`);
     handleCloseModal();
   };
 
