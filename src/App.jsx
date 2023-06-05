@@ -15,6 +15,7 @@ import {
   Footer,
   SearchBar,
 } from "./components/index";
+
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import colors from "./constants/colors";
 import fontSize from "./constants/fontSize";

@@ -12,11 +12,11 @@ export const Button = ({
   height,
   label,
   onClick,
-  LinkTo,
+  linkTo,
 }) => {
   return (
     <>
-      <Link to={LinkTo}>
+      <Link to={linkTo}>
         <ButtonStyle
           onClick={onClick}
           fontSize={btnFontSize}
