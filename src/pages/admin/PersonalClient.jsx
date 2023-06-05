@@ -20,25 +20,26 @@ export const PersonalClient = () => {
   const onChange = (e) => {
     setCheckValue(e.target.value);
     setSubmitted(false);
-    console.log(checkValue);
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
   };
-  /* 아직삭제가 안됩니다*/
+
   const handleSingleCheck = (checked, id) => {
     if (checked) {
       setCheckList((prev) => [...prev, id]);
     } else {
       setCheckList((prev) => prev.filter((el) => el !== id));
     }
+    console.log(id);
   };
+
   useEffect(() => {
-    if (currentPage <= maxPostPage - 2) {
+    if (currentPage <= maxPostPage - 1) {
       const nextPage = currentPage + 1;
-      queryClient.prefetchQuery(["posts", nextPage], () => fetchList(nextPage));
+      queryClient.prefetchQuery(["posts", nextPage], () => fetchList(token));
     }
   }, [currentPage, queryClient]);
 
@@ -91,7 +92,12 @@ export const PersonalClient = () => {
               <TableData>{item.email}</TableData>
               <TableData>{item.phoneNumber}</TableData>
               <TableData>
-                <Button width={"100px"} height={"50px"} label={"삭제"} />
+                <Button
+                  width={"100px"}
+                  height={"50px"}
+                  label={"삭제"}
+                  // onClick={handleDelete}
+                />
               </TableData>
             </tr>
           ))}
@@ -171,19 +177,32 @@ const InputContent = styled.input`
   height: 100%;
   outline: none;
   border: none;
-  border-radius: 5px;
-
   font-family: "Inter";
   font-style: normal;
   font-weight: 400;
-  font-size: 20px;
-  line-height: 15px;
+  font-size: 18px;
+  line-height: 24px;
 `;
 
 const ButtonBox = styled.div`
-  width: 40%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-top: 2%;
+
+  button {
+    background-color: #e5e5e5;
+    border: none;
+    padding: 12px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  span {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+  }
 `;
