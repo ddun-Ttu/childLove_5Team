@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import axios from "axios";
 
 // 이미지 링크
 import mainLogo from "../../assets/mainLogo.svg";
@@ -143,6 +144,29 @@ const UserView = () => {
     setNotAllow(true);
   }, [emailValid, pwValid, pwCheckValid, nameValid, phoneValid]);
 
+  // 폼 전송 구현
+  const handleRegistration = () => {
+    // 양식 데이터로 개체 만들기
+    const formData = {
+      name: name,
+      email: email,
+      password: pw,
+      // 필요에 따라 다른 양식 필드 포함
+    };
+
+    // axios를 사용하여 POST 요청 만들기
+    axios
+      .post("http://34.64.69.226:3000/users/clientsignup", formData)
+      .then((response) => {
+        // 성공적인 응답 처리
+        console.log("등록 성공", response.data);
+      })
+      .catch((error) => {
+        // 오류 처리
+        console.error("등록 에러", error);
+      });
+  };
+
   return (
     <>
       <SignUpForm>
@@ -218,6 +242,7 @@ const UserView = () => {
             width={"90%"}
             height={"70px"}
             disabled={notAllow}
+            onClick={handleRegistration}
           />
         </SignUpBtn>
       </SignUpForm>
