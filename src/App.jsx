@@ -32,10 +32,11 @@ function App() {
     <>
       <Container>
         <Router>
-          <Footer />
-          <NavigationBar />
+          {/* <Footer /> */}
+          {/* <NavigationBar /> */}
           {/* <MapHospital /> */}
           <HospitalCard />
+          <Route path="/search" element={<SearchPage />} />
         </Router>
       </Container>
     </>

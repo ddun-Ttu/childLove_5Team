@@ -12,6 +12,8 @@ import {
 // 공통 컴포넌트
 import { CardBox } from "../../components/index";
 
+const WEEK = ["월", "화", "수", "목", "금", "토", "일", "공휴일"];
+
 export const HospitalCard = ({
   hpid,
   hospitalName = "엄민숙소아청소년과의원",
@@ -22,8 +24,7 @@ export const HospitalCard = ({
   favorite,
 }) => {
   //요일 정보 변환
-  const week = ["월", "화", "수", "목", "금", "토", "일", "공휴일"];
-  const todayText = week[today - 1];
+  const todayText = WEEK[today - 1];
 
   // 시간 형식을 변환하는 함수
   const formatTime = (time) => {
