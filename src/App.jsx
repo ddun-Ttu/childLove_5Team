@@ -38,6 +38,7 @@ function App() {
     <>
       <Container>
         <Router>
+          <Home />
           <Footer />
           <NavigationBar />
         </Router>

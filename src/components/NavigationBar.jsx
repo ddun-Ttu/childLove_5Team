@@ -1,5 +1,15 @@
 /* eslint-disable */
 
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Routes,
+  Route,
+} from "react-router-dom";
+
 // 이미지 링크
 import star from "../assets/star.svg";
 import map from "../assets/map.svg";
@@ -11,7 +21,6 @@ import reservation from "../assets/reservation.svg";
 import colors from "../constants/colors";
 import fontSize from "../constants/fontSize";
 
-import React from "react";
 import styled from "styled-components";
 
 export const NavigationBar = () => {
@@ -20,10 +29,10 @@ export const NavigationBar = () => {
       <Nav>
         <NavUl>
           <NavLi>
-            <NavA href="#">
+            <Link path="#">
               <NavImg src={reservation} alt="star"></NavImg>
               <NavP>예약현황</NavP>
-            </NavA>
+            </Link>
           </NavLi>
 
           <NavLi>
