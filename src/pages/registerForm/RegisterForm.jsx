@@ -4,6 +4,7 @@ import { Post } from "./Post";
 import { Button } from "../../components";
 import colors from "../../constants/colors";
 import mainLogo from "../../assets/mainLogo.svg";
+import { SelectBox } from "./SelectBox";
 
 export const RegisterForm = () => {
   return (
@@ -22,13 +23,10 @@ export const RegisterForm = () => {
           <InputContent />
         </InputBox>
         <InputBox>
-          <InputName>영업시간</InputName>
-          <InputContent />
+          <InputName>영업시간 및 점심시간</InputName>
+          <SelectBox />
         </InputBox>
-        <InputBox>
-          <InputName>점심시간</InputName>
-          <InputContent />
-        </InputBox>
+
         <Post />
         <InputBox>
           <InputName>병원 사진</InputName>
@@ -70,20 +68,20 @@ const H1 = styled.p`
 const FormBox = styled.div`
   box-sizing: border-box;
   width: 100%;
-  height: 998px;
   border: 1px solid #a8a8a8;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   align-items: center;
+  padding: 2%;
 `;
 
 export const InputBox = styled.div`
   box-sizing: border-box;
   width: 60%;
-  height: 30%;
   margin: 2% 0;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const InputName = styled.span`
