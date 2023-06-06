@@ -36,22 +36,22 @@ const closeTimeTable = [
 ];
 
 export const SelectBox = () => {
-  const [weekOption, setWeekOption] = useState([]);
-  const [openTimeOption, setOpenTimeOption] = useState([]);
-  const [closeTimeOption, setCloseTimeOption] = useState([]);
+  const [weekOption, setWeekOption] = useState([]); // 요일 담는 배열
+  const [openTimeOption, setOpenTimeOption] = useState([]); // 오픈시간 담는 배열
+  const [closeTimeOption, setCloseTimeOption] = useState([]); // 마감시간 담는 배열
 
   const handleWeekOptionChange = (selectedOption, index) => {
-    const updatedWeekOptions = [...weekOption];
-    updatedWeekOptions[index] = selectedOption;
-    setWeekOption(updatedWeekOptions);
+    const updatedWeekOptions = [...weekOption]; // weekOption 배열을 담는 변수
+    updatedWeekOptions[index] = selectedOption; // updateWeekOption 배열에 새로 선택된 요일을 index번 째 배열에 담는다
+    setWeekOption(updatedWeekOptions); //  updateWeekOption의 값으로 weekOption 배열 최신화
   };
-
+  //위와 동일
   const handleOpenTimeOptionChange = (selectedOption, index) => {
     const updatedOpenTimeOptions = [...openTimeOption];
     updatedOpenTimeOptions[index] = selectedOption;
     setOpenTimeOption(updatedOpenTimeOptions);
   };
-
+  // 위와 동일
   const handleCloseTimeOptionChange = (selectedOption, index) => {
     const updatedCloseTimeOptions = [...closeTimeOption];
     updatedCloseTimeOptions[index] = selectedOption;
@@ -62,9 +62,10 @@ export const SelectBox = () => {
     const timetables = [];
 
     for (let i = 0; i < weekTable.length; i++) {
+      // 요일의 갯수 만큼 셀렉트 옵션 추가 ex) 월,화,수,목,금,토,일,주말,점심시간 셀렉트 옵션 생성
       timetables.push(
         <TimeTable key={i}>
-          <StyledSelect
+          <StyledSelect // 요일 셀렉트
             placeholder="요일"
             value={weekOption[i]}
             onChange={(selectedOption) =>
@@ -73,7 +74,7 @@ export const SelectBox = () => {
             options={weekTable}
           />
           <StyledSelect
-            placeholder="오픈시간"
+            placeholder="오픈시간" // 오픈시간 셀렉트
             value={openTimeOption[i]}
             onChange={(selectedOption) =>
               handleOpenTimeOptionChange(selectedOption, i)
@@ -82,7 +83,7 @@ export const SelectBox = () => {
           />
           <Span>부터</Span>
           <StyledSelect
-            placeholder="마감시간"
+            placeholder="마감시간" // 마감시간 셀렉트
             value={closeTimeOption[i]}
             onChange={(selectedOption) =>
               handleCloseTimeOptionChange(selectedOption, i)
