@@ -1,7 +1,7 @@
 import React from "react";
-import styled from "styled-components";
-// import { useRecoilValue } from "recoil";
-// import { favoriteState } from "../../recoil/RecoilAtoms";
+import * as Style from "./styles/HospitalCardStyle";
+
+//아이콘
 import {
   IconClockHospital,
   IconLocationHospital,
@@ -9,84 +9,62 @@ import {
   IconStarFilled,
 } from "../../assets/index";
 
-const HospitalCard = ({
+// 공통 컴포넌트
+import { CardBox } from "../../components/index";
+
+export const HospitalCard = ({
   hpid,
-  hospitalName,
-  hospitalAddress,
-  today,
-  dutyTimeStart,
-  dutyTimeClose,
+  hospitalName = "엄민숙소아청소년과의원",
+  hospitalAddress = "서울시 광진구",
+  today = 1,
+  dutyTimeStart = "0900",
+  dutyTimeClose = "1830",
   favorite,
 }) => {
+  //요일 정보 변환
   const week = ["월", "화", "수", "목", "금", "토", "일", "공휴일"];
   const todayText = week[today - 1];
-  // const favorite = useRecoilValue(favoriteState);
-  console.log("hpid:", hpid);
+
+  // 시간 형식을 변환하는 함수
+  const formatTime = (time) => {
+    const hours = time.slice(0, 2);
+    const minutes = time.slice(2);
+    return `${hours}:${minutes}`;
+  };
+
+  // InfoCard에 넣어줄 요소
+  const INFO_PROPS = [
+    {
+      alt: "icon-clock",
+      icon: IconClockHospital,
+      content: `${todayText}요일 ${formatTime(dutyTimeStart)} ~ ${formatTime(
+        dutyTimeClose
+      )}`,
+    },
+    {
+      alt: "icon-location",
+      icon: IconLocationHospital,
+      content: hospitalAddress,
+    },
+  ];
 
   return (
     <>
       <CardBox>
-        <HospitalName>{hospitalName}</HospitalName>
-        <div>
-          <img alt={"icon-clock"} src={IconClockHospital} />
-          <span>
-            {todayText + "요일 " + dutyTimeStart + " ~ " + dutyTimeClose}
-          </span>
-        </div>
-        <div>
-          <img alt={"icon-location"} src={IconLocationHospital} />
-          <span>{hospitalAddress}</span>
-        </div>
-        <Favorite>
+        <Style.HospitalName>{hospitalName}</Style.HospitalName>
+        {INFO_PROPS.map((prop) => (
+          <React.Fragment key={prop.alt}>
+            <img alt={prop.alt} src={prop.icon} />
+            <span>{prop.content}</span>
+          </React.Fragment>
+        ))}
+        <Style.Favorite>
           <img
             alt={"icon-favorite"}
             src={favorite ? IconStarFilled : IconStarEmpty}
           ></img>
-        </Favorite>
+        </Style.Favorite>
       </CardBox>
     </>
   );
 };
-
-export default HospitalCard;
-
-const CardBox = styled.button`
-  position: relative;
-  width: 100%;
-  background: none;
-  border: solid 1px #b2b2b2;
-  border-radius: 20px;
-  box-sizing: border-box;
-  padding: 2%;
-  margin: 1% 0;
-
-  & > div {
-    display: flex;
-    font-size: 16px;
-    justify-content: left;
-    align-items: center;
-    margin: 1%;
-  }
-  & > div:first-child {
-    font-size: 30px;
-    color: #121212;
-    font-weight: 700;
-    margin: 2%;
-    margin-top: 1%;
-  }
-  & img {
-    margin-right: 1%;
-  }
-`;
-
-const HospitalName = styled.div``;
-// const HospitalAddress = styled.div``;
-// const DutyTime = styled.div``;
-
-const Favorite = styled.button`
-  background: none;
-  border: none;
-  position: absolute;
-  top: 10%;
-  right: 3%;
-`;

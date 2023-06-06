@@ -23,6 +23,7 @@ import fontSize from "./constants/fontSize";
 import SearchPage from "./pages/search/SearchPage";
 import { AdminHome } from "./pages/admin/AdminHome";
 import MapHospital from "./pages/map-fix/MapHospital";
+import { HospitalCard } from "./pages/search-fix/HospitalCard";
 
 const queryClient = new QueryClient();
 
@@ -33,7 +34,8 @@ function App() {
         <Router>
           <Footer />
           <NavigationBar />
-          <MapHospital />
+          {/* <MapHospital /> */}
+          <HospitalCard />
         </Router>
       </Container>
     </>
