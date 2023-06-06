@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import moment from "moment";
+
 import Calendar from "react-calendar";
 import CardBox from "../../components/CardBox";
 import IconLeft from "../../assets/iconLeftGreen.svg";
 import IconRight from "../../assets/iconRightGreen.svg";
-import "react-calendar/dist/Calendar.css";
+// import "react-calendar/dist/Calendar.css";
 import styled from "styled-components";
 
 export const MyCalendar = () => {
@@ -28,7 +29,7 @@ export const MyCalendar = () => {
       </CardBox>
       <CardBox linkTo={"#"}>
         <ShowCalendar>
-          <Calendar
+          <ReCalendar
             locale="ko"
             onChange={onChange}
             value={value}
@@ -37,9 +38,6 @@ export const MyCalendar = () => {
             next2Label={null}
             prev2Label={null}
             showNeighboringMonth={false} // 앞뒤달에 이어지는 날짜
-            /* { onActiveStartDateChange={({ activeStartDate }) =>
-              getActiveMonth(activeStartDate)
-            } } */
           />
         </ShowCalendar>
       </CardBox>
@@ -55,6 +53,7 @@ export const MyCalendar = () => {
   );
 };
 
+// 날짜 표시
 const ShowDate = styled.div`
   width: 100%;
   display: flex;
@@ -69,11 +68,51 @@ const ShowDate = styled.div`
   }
 `;
 
+// 달력 부분
 const ShowCalendar = styled.div`
-  width: 100%;
-  display: flex;
+  // width: 100%;
+  // display: flex;
   text-align: center;
   justify-content: center;
+`;
+
+const ReCalendar = styled(Calendar)`
+  .react-calendar {
+    width: 100%;
+    max-width: 832px;
+    background: red;
+    border: 1px solid #a0a096;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.125em;
+  }
+
+  /* 상단 네비게이션 바 */
+  .react-calendar__navigation {
+    display: flex;
+    width: 100%;
+    height: 80px;
+
+    .react-calendar__navigation__label {
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .react-calendar__navigation__arrow {
+      flex-grow: 0.333;
+    }
+  }
+
+  .react-calendar--doubleView {
+    width: 100%;
+  }
+
+  /* 해당 월의 날짜가 아니면 투명도 0.7 */
+  .react-calendar__month-view__days__day--neighboringMonth {
+    opacity: 0.7;
+  }
+  .react-calendar__month-view__days__day--weekend {
+    color: #dfdfdf;
+  }
 `;
 
 const DiaryHeader = styled.div`
