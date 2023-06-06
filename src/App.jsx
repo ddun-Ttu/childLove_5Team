@@ -22,6 +22,7 @@ import fontSize from "./constants/fontSize";
 // import "./App.css";
 import SearchPage from "./pages/search/SearchPage";
 import { AdminHome } from "./pages/admin/AdminHome";
+import MapHospital from "./pages/map-fix/MapHospital";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ function App() {
         <Router>
           <Footer />
           <NavigationBar />
+          <MapHospital />
         </Router>
       </Container>
     </>
@@ -39,3 +41,4 @@ function App() {
 }
 
 export default App;
+
