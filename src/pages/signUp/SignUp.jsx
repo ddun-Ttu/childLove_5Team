@@ -69,20 +69,15 @@ export default SignUp;
 const UserView = () => {
   // 이메일
   const [email, setEmail] = useState("");
-  const [emailValid, setEmailValid] = useState(false);
   //비밀번호
   const [pw, setPw] = useState("");
-  const [pwValid, setPwValid] = useState(false);
   // 비밀번호 확인
   const [pwCheck, setPwCheck] = useState("");
-  const [pwCheckValid, setPwCheckValid] = useState(false);
   // 핸드폰번호
   const [phone, setPhone] = useState("");
-  const [phoneValid, setPhoneValid] = useState(false);
 
   // 이름
   const [name, setName] = useState("");
-  const [nameValid, setNameValid] = useState(false);
 
   //버튼 활성화
   const [notAllow, setNotAllow] = useState(true);
@@ -122,12 +117,6 @@ const UserView = () => {
   // 핸드폰 유효성 검사
   const handlePhone = (e) => {
     setPhone(e.target.value);
-    const regex = /^01[0-9]{1}-[0-9]{4}-[0-9]{4}$/;
-    if (regex.test(e.target.value)) {
-      setPhoneValid(true);
-    } else {
-      setPhoneValid(false);
-    }
   };
 
   // 이름 빈값인지 확인
@@ -139,6 +128,9 @@ const UserView = () => {
       setNameValid(false);
     }
   };
+  const regex = /^01[0-9]{1}-[0-9]{4}-[0-9]{4}$/;
+
+  const phoneValid = regex.test(phone) ? true : false;
 
   // 버튼 활성화
   useEffect(() => {
