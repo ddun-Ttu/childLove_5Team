@@ -4,6 +4,7 @@ import styled from "styled-components";
 import colors from "../../constants/colors";
 import { InputBox, InputContent, InputName } from "./RegisterForm";
 import { Button } from "../../components/Button";
+import { Button } from "../../components/Button";
 
 export const Post = () => {
   const [isOpen, setIsOpen] = useState(false);

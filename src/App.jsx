@@ -47,7 +47,7 @@ function App() {
       <Container>
         <Router>
           <Footer />
-          <Navigator />
+          <NavigationBar />
         </Router>
       </Container>
     </>
