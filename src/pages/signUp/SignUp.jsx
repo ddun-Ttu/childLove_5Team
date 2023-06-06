@@ -142,12 +142,12 @@ const UserView = () => {
 
   // 버튼 활성화
   useEffect(() => {
-    if (emailValid && pwValid && pwCheckValid && nameValid) {
+    if (emailValid && pwValid && pwCheckValid && nameValid && phoneValid) {
       setNotAllow(false);
       return;
     }
     setNotAllow(true);
-  }, [emailValid, pwValid, pwCheckValid, nameValid]);
+  }, [emailValid, pwValid, pwCheckValid, nameValid, phoneValid]);
 
   return (
     <>
@@ -243,7 +243,11 @@ const HospitalView = () => {
   const [pwCheckValid, setPwCheckValid] = useState(false);
   // 핸드폰번호
   const [phone, setPhone] = useState("");
-  const [phoneValid, setPhoneValid] = useState("");
+  const [phoneValid, setPhoneValid] = useState(false);
+
+  // 이름
+  const [name, setName] = useState("");
+  const [nameValid, setNameValid] = useState(false);
 
   //버튼 활성화
   const [notAllow, setNotAllow] = useState(true);
@@ -261,40 +265,66 @@ const HospitalView = () => {
   // 비밀번호 유효성 검사
   const handlePassword = (e) => {
     setPw(e.target.value);
-    if (pw.length + 1 >= 8) {
+    if (e.target.value.length >= 8) {
       setPwValid(true);
     } else {
       setPwValid(false);
     }
-    console.log(pw.length);
+    console.log(e.target.value);
   };
 
   // 비밀번호 확인 검사
   const handlePasswordCheck = (e) => {
     setPwCheck(e.target.value);
-    if (pw == pwCheck) {
+    if (pw === e.target.value) {
       setPwCheckValid(true);
     } else {
       setPwCheckValid(false);
     }
-    console.log(setPwCheck);
+    console.log(e.target.value);
+  };
+
+  // 핸드폰 유효성 검사
+  const handlePhone = (e) => {
+    setPhone(e.target.value);
+    const regex = /^01[0-9]{1}-[0-9]{4}-[0-9]{4}$/;
+    if (regex.test(e.target.value)) {
+      setPhoneValid(true);
+    } else {
+      setPhoneValid(false);
+    }
+  };
+
+  // 이름 빈값인지 확인
+  const handleName = (e) => {
+    setName(e.target.value);
+    if (e.target.value !== "") {
+      setNameValid(true);
+    } else {
+      setNameValid(false);
+    }
   };
 
   // 버튼 활성화
   useEffect(() => {
-    if (emailValid && pwValid && pwCheckValid) {
+    if (emailValid && pwValid && pwCheckValid && nameValid && phoneValid) {
       setNotAllow(false);
       return;
     }
     setNotAllow(true);
-  }, [emailValid, pwValid, pwCheckValid]);
+  }, [emailValid, pwValid, pwCheckValid, nameValid, phoneValid]);
 
   return (
     <>
       <SignUpForm>
         <SignUpInputDiv>
           <InputTitle>담당자 성함</InputTitle>
-          <SignUpInput placeholder="테스트" type="text"></SignUpInput>
+          <SignUpInput
+            placeholder="테스트"
+            type="text"
+            value={name}
+            onChange={handleName}
+          ></SignUpInput>
         </SignUpInputDiv>
 
         <SignUpInputDiv>
@@ -315,10 +345,11 @@ const HospitalView = () => {
             placeholder="010-0000-0000"
             type="text"
             value={phone}
-            onChange={(e) => {
-              setPhone(e.target.value);
-            }}
+            onChange={handlePhone}
           ></SignUpInput>
+          {!phoneValid && phone.length > 0 && (
+            <ErrorMaessage>-을 붙여서 입력해주세요</ErrorMaessage>
+          )}
         </SignUpInputDiv>
 
         <SignUpInputDiv>
