@@ -14,6 +14,7 @@ import clockGreen from "../../assets/clockGreen.svg";
 import tagGreen from "../../assets/tagGreen.svg";
 import smileGreen from "../../assets/smileGreen.svg";
 import IconLeft from "../../assets/iconLeft.svg";
+import NoImage from "../../assets/NoImage.jpg";
 
 // 공통 컴포넌트
 import {
@@ -47,11 +48,12 @@ const NewHeader = ({ label, onClick }) => {
   );
 };
 
-// 더미 데이터
-const Detail = (HPdata) => {
-  const HPdataQuery = useQuery("hotpitals", () =>
-    fetch("http://localhost:9999/data").then((res) => res.json())
-  );
+
+
+const Detail = () => {
+
+// 병원정보
+
 
   return (
     <>
@@ -60,14 +62,14 @@ const Detail = (HPdata) => {
           <NewHeader label={"병원이름더미데이터"}/>
         </HeaderContainer>
         <SlideContainer>
-          <SlideImg><img src="https://source.unsplash.com/random/?doctor" alt="" /></SlideImg>
+          <SlideImg><img src={NoImage} alt="" /></SlideImg>
           <ArrowRigth><img src={arrowButtonRight} alt="" /></ArrowRigth>
           <ArrowLeft><img src={arrowButtonLeft} alt="" /></ArrowLeft>
         </SlideContainer>
         <TopContentContainer>
           <div>병원이름더미데이터</div>
           <Button width={"73px"} height={"39px"} bgcolor={colors.primary} label={<div><img src={locationWhite} alt="" /><span>지도</span></div>} 
-          borderOutLine={"#ffffff"} btnColor={"white"} btnFontSize={"16px"} LinkTo={"#"}>
+          borderOutLine={"#ffffff"} btnColor={"white"} btnFontSize={"16px"} LinkTo={"/map"}>
           </Button>
             <UnderLine />
         </TopContentContainer>
@@ -97,7 +99,7 @@ const Detail = (HPdata) => {
             {/* 리뷰컨테이너 */}
           </div>
           <ReserveContainer>
-            <Button width={"237px"} height={"69px"} bgcolor={colors.primary} label={"예약하기"} borderOutLine={"#ffffff"} btnColor={"white"} btnFontSize={"30px"} LinkTo={"#"}/>
+            <Button width={"237px"} height={"69px"} bgcolor={colors.primary} label={"예약하기"} borderOutLine={"#ffffff"} btnColor={"white"} btnFontSize={"30px"} LinkTo={"/reserve"}/>
           </ReserveContainer>
         </BottomContentContainer>
       </Container>
