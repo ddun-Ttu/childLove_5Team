@@ -54,6 +54,7 @@ function App() {
     <>
       <Container>
         <Router>
+          <RegisterForm />
           <Footer />
           <NavigationBar />
         </Router>

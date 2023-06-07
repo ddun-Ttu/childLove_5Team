@@ -3,15 +3,15 @@ import Select from "react-select";
 import styled from "styled-components";
 
 const weekTable = [
-  { value: "월요일", label: "월요일" },
-  { value: "화요일", label: "화요일" },
-  { value: "수요일", label: "수요일" },
-  { value: "목요일", label: "목요일" },
-  { value: "금요일", label: "금요일" },
-  { value: "토요일", label: "토요일" },
-  { value: "일요일", label: "일요일" },
-  { value: "휴일", label: "휴일" },
-  { value: "점심시간", label: "점심시간" },
+  "월요일",
+  "화요일",
+  "수요일",
+  "목요일",
+  "금요일",
+  "토요일",
+  "일요일",
+  "공휴일",
+  "점심시간",
 ];
 
 const openTimeTable = [
@@ -40,11 +40,6 @@ export const SelectBox = () => {
   const [openTimeOption, setOpenTimeOption] = useState([]); // 오픈시간 담는 배열
   const [closeTimeOption, setCloseTimeOption] = useState([]); // 마감시간 담는 배열
 
-  const handleWeekOptionChange = (selectedOption, index) => {
-    const updatedWeekOptions = [...weekOption]; // weekOption 배열을 담는 변수
-    updatedWeekOptions[index] = selectedOption; // updateWeekOption 배열에 새로 선택된 요일을 index번 째 배열에 담는다
-    setWeekOption(updatedWeekOptions); //  updateWeekOption의 값으로 weekOption 배열 최신화
-  };
   //위와 동일
   const handleOpenTimeOptionChange = (selectedOption, index) => {
     const updatedOpenTimeOptions = [...openTimeOption];
@@ -65,14 +60,7 @@ export const SelectBox = () => {
       // 요일의 갯수 만큼 셀렉트 옵션 추가 ex) 월,화,수,목,금,토,일,주말,점심시간 셀렉트 옵션 생성
       timetables.push(
         <TimeTable key={i}>
-          <StyledSelect // 요일 셀렉트
-            placeholder="요일"
-            value={weekOption[i]}
-            onChange={(selectedOption) =>
-              handleWeekOptionChange(selectedOption, i)
-            }
-            options={weekTable}
-          />
+          <div>{weekTable[i]}</div>
           <StyledSelect
             placeholder="오픈시간" // 오픈시간 셀렉트
             value={openTimeOption[i]}
