@@ -30,8 +30,10 @@ import fontSize from "./constants/fontSize";
 import SearchPage from "./pages/search/SearchPage";
 import { AdminHome } from "./pages/admin/AdminHome";
 import Home from "./pages/home/Home";
+import Login from "./pages/login/Login";
+import SignUp from "./pages/signUp/SignUp";
 
-const queryClient = new QueryClient();
+// const queryClient = new QueryClient();
 
 function App() {
   const [arr, setArr] = useState();
@@ -61,6 +63,8 @@ function App() {
           <Route path="admin" element={<AdminHome />} />
           <Route path="/reserve" element={<ReservationChk />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="login" element={<Login />} />
+          <Route path="sign" element={<SignUp />} />
         </Routes>
       </Container>
     </Router>
