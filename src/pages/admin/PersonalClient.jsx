@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useQuery, useQueryClient } from "react-query";
 import { fetchList } from "../../server/Fetcher";
 import { Button } from "../../components/Button";
+import colors from "../../constants/colors";
 
 export const PersonalClient = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -10,9 +11,7 @@ export const PersonalClient = () => {
   const maxPostPage = 10;
   const queryClient = useQueryClient();
 
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZpcnN0QHRlc3QuZ29vZCIsInN1YiI6IjY0NzdlOTk2YTkwZTQwOWYxYTQ4NzIyMSIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE2ODU1ODA0MTQsImV4cCI6MTcxNzEzODAxNH0.cWYJrF8kSJrmC4csSlR2x5B4v_ASZhinvKl5NFoShGc";
-  const { isLoading, data: list } = useQuery("list", () => fetchList(token));
+  const { isLoading, data: list } = useQuery("list", () => fetchList());
 
   const [checkValue, setCheckValue] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -39,7 +38,7 @@ export const PersonalClient = () => {
   useEffect(() => {
     if (currentPage <= maxPostPage - 1) {
       const nextPage = currentPage + 1;
-      queryClient.prefetchQuery(["posts", nextPage], () => fetchList(token));
+      queryClient.prefetchQuery(["posts", nextPage], () => fetchList());
     }
   }, [currentPage, queryClient]);
 
@@ -47,7 +46,7 @@ export const PersonalClient = () => {
     return <h1>로딩중입니다..</h1>;
   }
 
-  const filteredList = list?.filter(
+  const filteredList = list.data?.filter(
     (item) => !submitted || item.email === checkValue
   );
 
@@ -78,28 +77,29 @@ export const PersonalClient = () => {
         </thead>
         <tbody>
           {paginatedList.map((item) => (
-            <tr key={item._id.$oid}>
+            <TableRow key={item.id}>
               <TableData>
                 <Checkbox
-                  onChange={(e) =>
-                    handleSingleCheck(e.target.checked, item._id.$oid)
-                  }
-                  checked={checkList.includes(item._id.$oid)}
+                  onChange={(e) => handleSingleCheck(e.target.checked, item.id)}
+                  checked={checkList.includes(item.id)}
                 />
               </TableData>
-              <TableData>{item.createdAt.$date.slice(0, 10)}</TableData>
+              <TableData>{item.createdAt.slice(0, 10)}</TableData>
               <TableData>{item.name}</TableData>
               <TableData>{item.email}</TableData>
               <TableData>{item.phoneNumber}</TableData>
               <TableData>
                 <Button
-                  width={"100px"}
-                  height={"50px"}
+                  width={"80px"}
+                  height={"30px"}
                   label={"삭제"}
+                  bgcolor={colors.primary}
+                  btnColor={"white"}
+
                   // onClick={handleDelete}
                 />
               </TableData>
-            </tr>
+            </TableRow>
           ))}
         </tbody>
       </Table>
@@ -155,8 +155,13 @@ const TableData = styled.td`
   font-weight: 600;
   font-size: 24px;
   padding: 10px;
+  height: 5%;
+  padding-top: 2%;
 `;
 
+const TableRow = styled.tr`
+  height: 70px;
+`;
 const Checkbox = styled.input.attrs({ type: "checkbox" })`
   width: 100%;
   cursor: pointer;
