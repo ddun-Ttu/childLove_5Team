@@ -14,10 +14,7 @@ export const Button = ({
   label,
   onClick,
   linkTo,
-<<<<<<< HEAD
-  disabled,
-=======
->>>>>>> dev
+  disabled
 }) => {
   return (
     <>
