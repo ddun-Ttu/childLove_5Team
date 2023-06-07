@@ -145,18 +145,15 @@ const UserView = () => {
   }, [emailValid, pwValid, pwCheckValid, nameValid, phoneValid]);
 
   // 폼 전송 구현
-  const handleRegistration = () => {
-    // 양식 데이터로 개체 만들기
-    const formData = {
-      name: name,
-      email: email,
-      password: pw,
-      // 필요에 따라 다른 양식 필드 포함
-    };
-
+  const register = () => {
     // axios를 사용하여 POST 요청 만들기
     axios
-      .post("http://34.64.69.226:3000/users/clientsignup", formData)
+      .post("/users/clientsignup", {
+        name: name,
+        email: email,
+        password: pw,
+        phoneNumber: phone,
+      })
       .then((response) => {
         // 성공적인 응답 처리
         console.log("등록 성공", response.data);
@@ -242,7 +239,9 @@ const UserView = () => {
             width={"90%"}
             height={"70px"}
             disabled={notAllow}
-            onClick={handleRegistration}
+            onClick={() => {
+              register();
+            }}
           />
         </SignUpBtn>
       </SignUpForm>
@@ -326,6 +325,27 @@ const HospitalView = () => {
     }
     setNotAllow(true);
   }, [emailValid, pwValid, pwCheckValid, nameValid, phoneValid]);
+
+  // 폼 전송 구현
+  const register = () => {
+    // axios를 사용하여 POST 요청 만들기
+    axios
+      .post("/users/managersignup", {
+        hospitalId: name,
+        name: name,
+        email: email,
+        password: pw,
+        phoneNumber: phone,
+      })
+      .then((response) => {
+        // 성공적인 응답 처리
+        console.log("등록 성공", response.data);
+      })
+      .catch((error) => {
+        // 오류 처리
+        console.error("등록 에러", error);
+      });
+  };
 
   return (
     <>
@@ -414,6 +434,9 @@ const HospitalView = () => {
             width={"90%"}
             height={"70px"}
             disabled={notAllow}
+            onClick={() => {
+              register();
+            }}
           />
         </SignUpBtn>
       </SignUpForm>
