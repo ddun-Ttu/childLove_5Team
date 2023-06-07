@@ -19,14 +19,14 @@ export const SearchBarFix = () => {
   const onChange = (e) => {
     setSearch(e.target.value);
   };
-  //동네 선택(모달 내부)
+  //위치선택 값(모달 내부), 초기값은 [서울/전체]
   const [locationFirst, setLocationFirst] = useState(
     locationData[0]["시/도"][1]
   );
   const [locationSecond, setLocationSecond] = useState(
     locationData[0]["시/군/구"][0]
   );
-  //페이지에서 보여지는 위치선택 결과
+  //위치선택 값(모달->페이지로 전달된 값)
   const [selectedLocationFirst, setSelectedLocationFirst] =
     useState(locationFirst);
   const [selectedLocationSecond, setSelectedLocationSecond] =
@@ -40,18 +40,17 @@ export const SearchBarFix = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  //위치정보 저장
+  //모달 확인 버튼 -> 위치정보 저장됨
   const onSaved = () => {
     setSelectedLocationFirst(locationFirst);
     setSelectedLocationSecond(locationSecond);
     closeModal(); // 위치 저장 후 모달창을 닫음
   };
-  // 시/도 드롭다운 컴포넌트
+  // 모달내부 : 시/도 드롭다운 함수&컴포넌트
   const handleLocationFirstChange = (event) => {
     setLocationFirst(event.target.value);
     setLocationSecond("전체"); // 시/도 클릭시 시/군/구 옵션을 전체로 초기화
   };
-  //드랍다운 element
   const locationFirstOptions = locationData.map((location) => (
     <Style.DropdownMenuItem
       key={location["시/도"][0]}
@@ -62,12 +61,11 @@ export const SearchBarFix = () => {
       {location["시/도"][1]}
     </Style.DropdownMenuItem>
   ));
-  // 시/군/구 드롭다운 컴포넌트
+  // 모달내부: 시/군/구 드롭다운 함수&컴포넌트
   const handleLocationSecondChange = (event) => {
     const selectedCity = event.target.value;
     setLocationSecond(selectedCity);
   };
-
   const locationSecondOptions = locationData.map((location) => {
     if (location["시/도"][1] === locationFirst) {
       return location["시/군/구"].map((city) => (

@@ -6,6 +6,12 @@ export const Wrapper = styled.div`
   padding-top: 2%;
   margin: 2%;
 
+  & > div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
   & button {
     background: none;
     border: none;
@@ -21,15 +27,15 @@ export const InputBox = styled.div`
   border-radius: 28px;
   text-align: center;
 
-  & > input {
+  & input {
     font-size: 24px;
     border: none;
     width: 100%;
   }
-  & > input::placeholder {
+  & input::placeholder {
     color: #d9d9d9;
   }
-  & > input:focus {
+  & input:focus {
     outline: none;
   }
 `;
