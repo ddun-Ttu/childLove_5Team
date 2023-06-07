@@ -330,7 +330,7 @@ const HospitalView = () => {
   const register = () => {
     // axios를 사용하여 POST 요청 만들기
     axios
-      .post("/users/managersignup", {
+      .post("http://34.64.69.226:3000/users/managersignup", {
         hospitalId: name,
         name: name,
         email: email,
