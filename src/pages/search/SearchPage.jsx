@@ -13,7 +13,18 @@ import axios from "axios";
 //병원리스트 - 병원카드 컴포넌트
 import { HospitalCard } from "../search-fix/HospitalCard";
 
+//URL
+const BE_URL = `http://34.64.69.226:3000/`;
 const SearchPage = () => {
+  //위치정보 depth1, depth2
+  const [depth1, setDepth1] = useState("");
+  const [depth2, setDepth2] = useState("");
+
+  const handleDepthChange = (first, second) => {
+    setDepth1(first);
+    setDepth2(second);
+    console.log("depth1:", depth1, ", depth2:", depth2);
+  };
   //-----검색키워드 받아오기
   const [searchKeyword, setSearchKeyword] = useState("");
   const [filteredHospitals, setFilteredHospitals] = useState([]);
@@ -35,10 +46,11 @@ const SearchPage = () => {
 
   const hospitalsQuery = useQuery("hospitals", () =>
     axios
-      .get("http://localhost:9999/hospital")
+      .get(`${BE_URL}hospital?depth1=서울특별시&size=10&page=0`)
       .then((response) => response.data)
   );
 
+  // console.log(hospitalsQuery);
   const favoritesQuery = useQuery("favorites", () =>
     axios
       .get("http://localhost:9999/favorite")
@@ -47,9 +59,9 @@ const SearchPage = () => {
 
   useEffect(() => {
     if (
-      hospitalsQuery.data &&
-      usersQuery.data &&
-      favoritesQuery.data &&
+      hospitalsQuery.isSuccess &&
+      usersQuery.isSuccess &&
+      favoritesQuery.isSuccess &&
       searchKeyword
     ) {
       const hospitals = hospitalsQuery.data;
@@ -102,26 +114,31 @@ const SearchPage = () => {
   };
   return (
     <>
-      <SearchBarFix onSearch={handleSearch} />
+      <SearchBarFix
+        onSearch={handleSearch}
+        depth1={depth1}
+        depth2={depth2}
+        onLocationChange={handleDepthChange}
+      />
       {/* <SearchHeader total={hospitals.length} /> */}
       <div>
         {filteredHospitals.map((hospital) => {
           const dutyTimeStart = hospital[`dutyTime${today}s`]; // 오늘 요일에 해당하는 dutyTime 시작 시간
           const dutyTimeClose = hospital[`dutyTime${today}c`]; // 오늘 요일에 해당하는 dutyTime 종료 시간
 
-          // 즐겨찾기 해당여부 체크
-          const favorite = favorites.some(
-            (favoriteItem) =>
-              favoriteItem.user_id === user_id &&
-              favoriteItem.hpid === hospital.id
-          );
-
+          // 즐겨찾기 해당여부 체크 -> 즐겨찾기 api 연결 전까지 임의로 true로 하기
+          // const favorite = favorites.some(
+          //   (favoriteItem) =>
+          //     favoriteItem.user_id === user_id &&
+          //     favoriteItem.hpid === hospital.id
+          // );
+          const favorite = true;
           return (
             <HospitalCard
               key={hospital.id}
               hpid={hospital.id}
               hospitalName={hospital.dutyName}
-              hospitalAddress={hospital.dutyAddr}
+              hospitalAddress={`${hospital.dutyAddr1Depth} ${hospital.dutyAddr2Depth} ${hospital.dutyAddr3Depth}`}
               today={today}
               dutyTimeStart={dutyTimeStart}
               dutyTimeClose={dutyTimeClose}
