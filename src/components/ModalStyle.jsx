@@ -4,8 +4,8 @@ import styled from "styled-components";
 import colors from "../constants/colors";
 
 // 공통 컴포넌트 스타일 불러오기
-import { ModalView as CardBoxStyle } from "./CardBox";
-import { ModalBtn as ButtonStyle } from "./Button";
+import { CardBoxStyle } from "./CardBox";
+import { ButtonStyle } from "./Button";
 
 export const ModalContainer = styled.div`
   // Modal을 구현하는데 전체적으로 필요한 CSS를 구현
@@ -30,16 +30,6 @@ export const ModalBackdrop = styled.div`
   bottom: 0;
 `;
 
-export const ModalShowBtn = styled.button`
-  background-color: ${colors.primary};
-  text-decoration: none;
-  border: none;
-  padding: 20px;
-  color: white;
-  border-radius: 30px;
-  cursor: grab;
-`;
-
 export const ModalTitle = styled.div`
   width: fit-content;
   padding: 2%;
@@ -52,6 +42,6 @@ export const ModalTitle = styled.div`
   }
 `;
 
-export const ModalBtn = ButtonStyle;
+export const ModalBtn = styled(ButtonStyle)``;
 
-export const ModalView = CardBoxStyle;
+export const ModalView = styled(CardBoxStyle)``;

@@ -18,6 +18,7 @@ export const SearchBar = () => {
     setSelectedLocationFirst(locationFirst);
     setSelectedLocationSecond(locationSecond);
   };
+  //모달 내부에서의 위치선택
   const [locationFirst, setLocationFirst] = useState(
     locationData[0]["시/도"][1]
   );
@@ -28,7 +29,6 @@ export const SearchBar = () => {
     useState(locationFirst);
   const [selectedLocationSecond, setSelectedLocationSecond] =
     useState(locationSecond);
-  //   console.log(location_data);
   // 시/도 드롭다운 컴포넌트
   const handleLocationFirstChange = (event) => {
     setLocationFirst(event.target.value);
@@ -67,7 +67,7 @@ export const SearchBar = () => {
       return null;
     }
   });
-
+  //검색키워드
   const [search, setSearch] = useState("");
   const onChange = (e) => {
     setSearch(e.target.value);
@@ -77,7 +77,7 @@ export const SearchBar = () => {
       <div>
         <Location>
           <BtnShowLocation onClick={openModal}>
-            <img alt="icon-down" src={IconDown}></img>
+            <img alt="icon-down" src={IconDown} />
           </BtnShowLocation>
           <span>{selectedLocationFirst + " " + selectedLocationSecond}</span>
           <Modal isOpen={modalIsOpen} onClose={closeModal}>
@@ -116,7 +116,7 @@ export const SearchBar = () => {
           </Modal>
         </Location>
         <Alarm>
-          <img alt="icon-alarm" src={IconAlarm}></img>
+          <img alt="icon-alarm" src={IconAlarm} />
         </Alarm>
       </div>
       <InputBox>
@@ -127,7 +127,7 @@ export const SearchBar = () => {
           placeholder="병원 이름을 검색해보세요"
         />
         <BtnSearch>
-          <img alt="search-button" src={IconSearch}></img>
+          <img alt="search-button" src={IconSearch} />
         </BtnSearch>
       </InputBox>
     </Wrapper>

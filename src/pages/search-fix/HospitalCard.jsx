@@ -12,6 +12,7 @@ import {
 // 공통 컴포넌트
 import { CardBox } from "../../components/index";
 
+//요일 정보 지정을 위한 상수
 const WEEK = ["월", "화", "수", "목", "금", "토", "일", "공휴일"];
 
 export const HospitalCard = ({

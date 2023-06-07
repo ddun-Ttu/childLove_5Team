@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-export const CardBox = ({ children, linkTo }) => {
+export const CardBox = ({ children, linkTo, display, justifyContent, alignItems }) => {
   return (
     <CardBoxStyle>
       <Link to={linkTo}>{children}</Link>
@@ -13,7 +13,7 @@ export const CardBox = ({ children, linkTo }) => {
 
 export default CardBox;
 
-const CardBoxStyle = styled.div`
+export const CardBoxStyle = styled.div`
   position: relative;
   width: 100%;
   background-color: #ffffff;
@@ -22,4 +22,7 @@ const CardBoxStyle = styled.div`
   box-sizing: border-box;
   padding: 2%;
   margin: 1% 0;
+  display: ${(props) => props.display};
+  justify-content: ${(props)=> props.justifyContent};
+  align-items: ${(props) => props.alignItems};
 `;

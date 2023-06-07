@@ -1,9 +1,15 @@
+import * as Style from "../search-fix/styles/SearchPageStyle";
+//아이콘
+import { IconSearch, IconUp, IconDown, IconAlarm } from "../../assets/index";
+
+// 공통 컴포넌트
+import { NavigationBar, SearchBarFix } from "../../components/index";
+
 import React from "react";
-// import styled from "styled-components";
 import { useQuery } from "react-query";
-// import { SearchHeader } from "../../components";
-import HospitalCard from "./HospitalCard";
-import { NavigationBar } from "../../components/NavigationBar";
+
+//병원리스트 - 병원카드 컴포넌트
+import { HospitalCard } from "../search-fix/HospitalCard";
 
 const SearchPage = () => {
   const usersQuery = useQuery("users", () =>
@@ -43,6 +49,7 @@ const SearchPage = () => {
 
   return (
     <>
+      <SearchBarFix />
       {/* <SearchHeader total={hospitals.length} /> */}
       <div>
         {hospitals.map((hospital) => {

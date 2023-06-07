@@ -1,7 +1,8 @@
 import { useState } from "react";
 import * as Style from "./styles/SearchPageStyle";
+import { useQueries } from "react-query";
 
-const SearchPage = () => {
+export const SearchPage = () => {
   const searchData = useQueries({
     queries: [
       {
@@ -27,5 +28,6 @@ const SearchPage = () => {
       },
     ],
   });
+  console.log(searchData);
   return <></>;
 };

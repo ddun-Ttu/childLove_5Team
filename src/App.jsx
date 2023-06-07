@@ -3,7 +3,7 @@ import { RegisterForm } from "./pages/registerForm/RegisterForm";
 import React, { useEffect, useState } from "react";
 import XMLParser from "react-xml-parser";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 // 공통 컴포넌트 연결해서 테스트함
 import {
@@ -14,6 +14,7 @@ import {
   Container,
   Footer,
   SearchBar,
+  Modal,
 } from "./components/index";
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import colors from "./constants/colors";
@@ -32,11 +33,9 @@ function App() {
     <>
       <Container>
         <Router>
-          {/* <Footer /> */}
-          {/* <NavigationBar /> */}
-          {/* <MapHospital /> */}
-          <HospitalCard />
-          <Route path="/search" element={<SearchPage />} />
+          <Routes>
+            <Route path="/search" element={<SearchPage />} />
+          </Routes>
         </Router>
       </Container>
     </>

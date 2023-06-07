@@ -14,3 +14,9 @@ export { default as IconClockHospital } from "./iconClock.svg";
 export { default as IconLocationHospital } from "./iconLocationGray.svg";
 export { default as IconStarEmpty } from "./iconStarEmpty.svg";
 export { default as IconStarFilled } from "./iconStarFilled.svg";
+
+//SearchBar
+//행정구역 데이터
+export { default as addressList } from "./addressList.json";
+export { default as IconSearch } from "./iconSearch.svg";
+export { default as IconAlarm } from "./iconAlarm.svg";
