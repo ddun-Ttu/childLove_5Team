@@ -1,6 +1,6 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, useLocation } from "react-router-dom";
 import { useQuery } from "react-query";
 
 // 아이콘
@@ -48,63 +48,108 @@ const NewHeader = ({ label, onClick }) => {
   );
 };
 
-
+// 백엔드 주소
+const BEdata = "http://34.64.69.226:3000"
 
 const Detail = () => {
 
-// 병원정보
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const hospitalID = searchParams.get("id")
 
+  const [hospitalData, setHospitalData] = useState({});
+  const [hospitalImg, setHospitalImg] = useState("");
 
-  return (
-    <>
-      <Container>
-        <HeaderContainer>
-          <NewHeader label={"병원이름더미데이터"}/>
-        </HeaderContainer>
-        <SlideContainer>
-          <SlideImg><img src={NoImage} alt="" /></SlideImg>
-          <ArrowRigth><img src={arrowButtonRight} alt="" /></ArrowRigth>
-          <ArrowLeft><img src={arrowButtonLeft} alt="" /></ArrowLeft>
-        </SlideContainer>
-        <TopContentContainer>
-          <div>병원이름더미데이터</div>
-          <Button width={"73px"} height={"39px"} bgcolor={colors.primary} label={<div><img src={locationWhite} alt="" /><span>지도</span></div>} 
-          borderOutLine={"#ffffff"} btnColor={"white"} btnFontSize={"16px"} LinkTo={"/map"}>
-          </Button>
-            <UnderLine />
-        </TopContentContainer>
-        <BottomContentContainer>
-          <HpInfo>
-            <img src={locationGreen} alt="" />
-            <span>서울 특별시 임시 하드코딩 주소</span>
-          </HpInfo>
-          <HpInfo>
-            <img src={phoneGreen} alt="" />
-            <span>031-더미-0000</span>
-          </HpInfo>
-          <HpInfo>
-            <img src={clockGreen} alt="" />
-            <HpInfoCard>평일 09:00 ~ 18:00</HpInfoCard>
-          </HpInfo>
-          <HpInfo>
-            <img src={tagGreen} alt="" />
-            <HpInfoCard>영유아검진</HpInfoCard>
-            <HpInfoCard>영유아검진</HpInfoCard>
-          </HpInfo>
-          <HpInfo>
-            <img src={smileGreen} alt="" />
-            <h1>이런 점이 좋았어요</h1>
-          </HpInfo>
-          <div>
-            {/* 리뷰컨테이너 */}
-          </div>
-          <ReserveContainer>
-            <Button width={"237px"} height={"69px"} bgcolor={colors.primary} label={"예약하기"} borderOutLine={"#ffffff"} btnColor={"white"} btnFontSize={"30px"} LinkTo={"/reserve"}/>
-          </ReserveContainer>
-        </BottomContentContainer>
-      </Container>
-    </>
-  );
+  useEffect(() => {
+    fetch(`${BEdata}/hospital/A1106309`, {
+        headers: {
+          Accept: "application / json",
+        },
+        method: "GET",
+      })
+      .then(res => res.json())
+      .then((hospitalID) => {
+        setHospitalData(hospitalID.data);
+      });
+  
+    fetch(`${BEdata}/image/hospital/A1106309`, {
+      headers: {
+        Accept: "application / json",
+      },
+      method: "GET",
+    })
+    .then(res => res.json())
+    .then((hospitalD) => {
+      setHospitalImg(hospitalD.data);
+    });
+    }, []);
+
+    useEffect(() => {
+      console.log(hospitalData);
+    }, [hospitalData]);
+    
+    return (
+      <>
+        <Container>
+          <HeaderContainer>
+            <NewHeader label={hospitalData.dutyName}/>
+          </HeaderContainer>
+          <SlideContainer>
+            <SlideImg> {hospitalImg.imageUrl == undefined ? (
+                <img src={hospitalImg.imageUrl} alt="" />
+              ) : (
+                <img src={NoImage} alt="No Image" />
+              )}
+            </SlideImg>
+            <ArrowRigth><img src={arrowButtonRight} alt="" /></ArrowRigth>
+            <ArrowLeft><img src={arrowButtonLeft} alt="" /></ArrowLeft>
+          </SlideContainer>
+          <TopContentContainer>
+            <div>{hospitalData.dutyName}</div>
+            <Button width={"73px"} height={"39px"} bgcolor={colors.primary} label={<div><img src={locationWhite} alt="" /><span>지도</span></div>} 
+            borderOutLine={"#ffffff"} btnColor={"white"} btnFontSize={"16px"} linkTo={"/map"}>
+            </Button>
+              <UnderLine />
+          </TopContentContainer>
+          <BottomContentContainer>
+            <HpInfo>
+              <img src={locationGreen} alt="" />
+              <span>{hospitalData.dutyAddr}</span>
+            </HpInfo>
+            <HpInfo>
+              <img src={phoneGreen} alt="" />
+              <span>{hospitalData.dutyTel1}</span>
+            </HpInfo>
+            <HpInfo>
+              <img src={clockGreen} alt="" />
+              <HpInfoGrid>
+                {hospitalData.dutyTime1c && hospitalData.dutyTime1s && <HpInfoCard>월 {hospitalData.dutyTime1s}-{hospitalData.dutyTime1c}</HpInfoCard> }
+                {hospitalData.dutyTime2c && hospitalData.dutyTime2s && <HpInfoCard>화 {hospitalData.dutyTime2s}-{hospitalData.dutyTime2c}</HpInfoCard> }
+                {hospitalData.dutyTime3c && hospitalData.dutyTime3s && <HpInfoCard>수 {hospitalData.dutyTime3s}-{hospitalData.dutyTime3c}</HpInfoCard> }
+                {hospitalData.dutyTime4c && hospitalData.dutyTime4s && <HpInfoCard>목 {hospitalData.dutyTime4s}-{hospitalData.dutyTime4c}</HpInfoCard> }
+                {hospitalData.dutyTime5c && hospitalData.dutyTime5s && <HpInfoCard>금 {hospitalData.dutyTime5s}-{hospitalData.dutyTime5c}</HpInfoCard> }
+                {hospitalData.dutyTime6c && hospitalData.dutyTime6s && <HpInfoCard>토 {hospitalData.dutyTime6s}-{hospitalData.dutyTime6c}</HpInfoCard> }
+                {hospitalData.dutyTime7c && hospitalData.dutyTime7s && <HpInfoCard>일 {hospitalData.dutyTime7s}-{hospitalData.dutyTime7c}</HpInfoCard> }
+              </HpInfoGrid>
+            </HpInfo>
+            <HpInfo>
+              <img src={tagGreen} alt="" />
+              <HpInfoCard>{hospitalData.dutyEtc}</HpInfoCard>
+            </HpInfo>
+            <HpInfo>
+              <img src={smileGreen} alt="" />
+              <h1>이런 점이 좋았어요</h1>
+            </HpInfo>
+            <div>
+              {/* 리뷰컨테이너 */}
+            </div>
+            <ReserveContainer>
+              <Button width={"237px"} height={"69px"} bgcolor={colors.primary} label={"예약하기"} borderOutLine={"#ffffff"} btnColor={"white"} btnFontSize={"30px"} linkTo={"/reserve"}/>
+            </ReserveContainer>
+          </BottomContentContainer>
+        </Container>
+      </>
+    );
 };
 
 
@@ -209,6 +254,7 @@ const BottomContentContainer = styled.div`
   flex-direction: column;
   text-align: left;
   padding-left: 71px;
+  padding-right: 71px;
 `;
 
 const HpInfo = styled.div`
@@ -234,9 +280,14 @@ const HpInfoCard = styled.span`
   border-radius: 17.5px;
 `;
 
+const HpInfoGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 10px;
+`;
+
 const ReserveContainer = styled.div`
   margin: 41px 0 41px 0;
-  padding-right: 71px;
   display: flex;
   width: 100%;
   justify-content: center;
