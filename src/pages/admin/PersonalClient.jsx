@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from "react-query";
 import { fetchList } from "../../server/Fetcher";
 import { Button } from "../../components/Button";
 import colors from "../../constants/colors";
+import { check } from "prettier";
 
 export const PersonalClient = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -32,7 +33,22 @@ export const PersonalClient = () => {
     } else {
       setCheckList((prev) => prev.filter((el) => el !== id));
     }
-    console.log(id);
+  };
+  const handleDelete = () => {
+    const deleteId = paginatedList.filter((item) =>
+      checkList.includes(item.id)
+    );
+    console.log("삭제할 id:", deleteId[0].id);
+    fetch(`/admin/delete/${deleteId[0].id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMS4xIiwic3ViIjoxLCJpYXQiOjE2ODYxMDg4MzksImV4cCI6MTcxNzY2NjQzOX0.KoXifXgRmenLuMXmJ_RP1ZJnjinLlyhjD-HN1GAXc5A",
+      },
+    });
+    queryClient.invalidateQueries("list");
+
+    setCheckList([]);
   };
 
   useEffect(() => {
@@ -81,7 +97,6 @@ export const PersonalClient = () => {
               <TableData>
                 <Checkbox
                   onChange={(e) => handleSingleCheck(e.target.checked, item.id)}
-                  checked={checkList.includes(item.id)}
                 />
               </TableData>
               <TableData>{item.createdAt.slice(0, 10)}</TableData>
@@ -95,8 +110,7 @@ export const PersonalClient = () => {
                   label={"삭제"}
                   bgcolor={colors.primary}
                   btnColor={"white"}
-
-                  // onClick={handleDelete}
+                  onClick={handleDelete}
                 />
               </TableData>
             </TableRow>
