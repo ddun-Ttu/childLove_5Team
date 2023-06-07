@@ -5,13 +5,28 @@ import { IconSearch, IconUp, IconDown, IconAlarm } from "../../assets/index";
 // 공통 컴포넌트
 import { NavigationBar, SearchBarFix } from "../../components/index";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 
 //병원리스트 - 병원카드 컴포넌트
 import { HospitalCard } from "../search-fix/HospitalCard";
 
 const SearchPage = () => {
+  //-----검색키워드 받아오기
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [filteredHospitals, setFilteredHospitals] = useState([]);
+
+  const handleSearch = (keyword) => {
+    setSearchKeyword(keyword);
+  };
+
+  const filterHospitals = (keyword) => {
+    // 검색 키워드를 포함하는 병원만 필터링
+    const filtered = hospitals.filter((hospital) =>
+      hospital.dutyName.includes(keyword)
+    );
+    setFilteredHospitals(filtered);
+  };
   const usersQuery = useQuery("users", () =>
     fetch("http://localhost:9999/user").then((response) => response.json())
   );
@@ -21,6 +36,30 @@ const SearchPage = () => {
   const favoritesQuery = useQuery("favorites", () =>
     fetch("http://localhost:9999/favorite").then((response) => response.json())
   );
+  useEffect(() => {
+    if (
+      hospitalsQuery.data &&
+      usersQuery.data &&
+      favoritesQuery.data &&
+      searchKeyword
+    ) {
+      const hospitals = hospitalsQuery.data;
+      const users = usersQuery.data;
+      const favorites = favoritesQuery.data;
+      const user_id = users[0].id;
+
+      let now = new Date();
+      const today = now.getDay();
+
+      filterHospitals(searchKeyword, hospitals);
+    }
+    console.log("keyword:", searchKeyword);
+  }, [
+    searchKeyword,
+    hospitalsQuery.data,
+    usersQuery.data,
+    favoritesQuery.data,
+  ]);
 
   if (
     usersQuery.isLoading ||
@@ -49,10 +88,10 @@ const SearchPage = () => {
 
   return (
     <>
-      <SearchBarFix />
+      <SearchBarFix onSearch={handleSearch} />
       {/* <SearchHeader total={hospitals.length} /> */}
       <div>
-        {hospitals.map((hospital) => {
+        {filteredHospitals.map((hospital) => {
           const dutyTimeStart = hospital[`dutyTime${today}s`]; // 오늘 요일에 해당하는 dutyTime 시작 시간
           const dutyTimeClose = hospital[`dutyTime${today}c`]; // 오늘 요일에 해당하는 dutyTime 종료 시간
 

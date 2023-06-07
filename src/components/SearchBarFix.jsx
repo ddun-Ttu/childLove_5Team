@@ -13,12 +13,19 @@ import {
 // 공통 컴포넌트
 import { Modal } from "../components/index";
 
-export const SearchBarFix = () => {
+export const SearchBarFix = ({ onSearch }) => {
+  //--------------------검색부분
   //검색어
   const [search, setSearch] = useState("");
   const onChange = (e) => {
     setSearch(e.target.value);
   };
+  // 폼 전송 처리 함수
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSearch(search);
+  };
+  //--------------------위치선택&모달창
   //위치선택 값(모달 내부), 초기값은 [서울/전체]
   const [locationFirst, setLocationFirst] = useState(
     locationData[0]["시/도"][1]
@@ -120,17 +127,17 @@ export const SearchBarFix = () => {
         </button>
       </div>
       <Style.InputBox>
-        <form>
+        <form onSubmit={handleSubmit}>
           <input
             type="text"
             value={search}
             onChange={onChange}
             placeholder="병원 이름을 검색해보세요"
           />
+          <button type="submit">
+            <img alt="search-button" src={IconSearch} />
+          </button>
         </form>
-        <button>
-          <img alt="search-button" src={IconSearch} />
-        </button>
       </Style.InputBox>
     </Style.Wrapper>
   );
