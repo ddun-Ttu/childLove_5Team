@@ -22,6 +22,8 @@ import fontSize from "./constants/fontSize";
 // import "./App.css";
 import SearchPage from "./pages/search/SearchPage";
 import { AdminHome } from "./pages/admin/AdminHome";
+import Home from "./pages/home/Home";
+import Detail from "./pages/detail/Detailpage";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +32,7 @@ function App() {
     <>
       <Container>
         <Router>
+          <Detail></Detail>
           <Footer />
           <NavigationBar />
         </Router>
