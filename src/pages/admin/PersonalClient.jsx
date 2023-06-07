@@ -34,23 +34,19 @@ export const PersonalClient = () => {
       setCheckList((prev) => prev.filter((el) => el !== id));
     }
   };
-  const handleDelete = () => {
+  const handleDelete = async (item) => {
     // 페이지네이션 데이터의 id와 체크된 열의 id 값 필터
-    const deleteId = paginatedList.filter((item) =>
-      checkList.includes(item.id)
-    );
-    console.log("삭제할 id:", deleteId[0].id);
-    fetch(`/admin/delete/${deleteId[0].id}`, {
+
+    console.log("삭제할 id:", item);
+    await fetch(`/admin/delete/${item.id}`, {
       method: "DELETE",
       headers: {
         Authorization:
           "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMS4xIiwic3ViIjoxLCJpYXQiOjE2ODYxMDg4MzksImV4cCI6MTcxNzY2NjQzOX0.KoXifXgRmenLuMXmJ_RP1ZJnjinLlyhjD-HN1GAXc5A",
       },
     });
-    //React Query에서 'invalidateQueries' 기능 사용해서 업데이트 된 목록 다시 렌더링
+    //React Query에서 'invalidateQueries' 기능 사용해서 업데이트 된 목록 다시
     queryClient.invalidateQueries("list");
-
-    setCheckList([]);
   };
 
   useEffect(() => {
@@ -112,7 +108,7 @@ export const PersonalClient = () => {
                   label={"삭제"}
                   bgcolor={colors.primary}
                   btnColor={"white"}
-                  onClick={handleDelete}
+                  onClick={() => handleDelete(item)}
                 />
               </TableData>
             </TableRow>
