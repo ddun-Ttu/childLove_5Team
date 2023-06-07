@@ -27,6 +27,10 @@ export const InputBox = styled.div`
   border-radius: 28px;
   text-align: center;
 
+  & form {
+    width: 100%;
+    display: flex;
+  }
   & input {
     font-size: 24px;
     border: none;

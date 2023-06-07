@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import {
   addressList as locationData,
   IconSearch,
-  IconUp,
   IconDown,
   IconAlarm,
 } from "../assets/index";
@@ -25,7 +24,7 @@ export const SearchBarFix = ({ onSearch }) => {
     e.preventDefault();
     onSearch(search);
   };
-  //--------------------위치선택&모달창
+  //--------------------위치선택&위치선택 모달창(알람모달과 구분 필요)
   //위치선택 값(모달 내부), 초기값은 [서울/전체]
   const [locationFirst, setLocationFirst] = useState(
     locationData[0]["시/도"][1]
@@ -89,6 +88,18 @@ export const SearchBarFix = ({ onSearch }) => {
       return null;
     }
   });
+  //------------알람 모달창 관련
+  const [isAlarmModalOpen, setIsAlarmModalOpen] = useState(false);
+  const openAlarmModal = () => {
+    setIsAlarmModalOpen(true);
+  };
+  const closeAlarmModal = () => {
+    setIsAlarmModalOpen(false);
+  };
+  const onSavedAlarmModal = () => {
+    // 알람모달에서 확인버튼 클릭 시
+    closeAlarmModal(); // 알람 모달을 닫음
+  };
   return (
     <Style.Wrapper>
       <div>
@@ -122,9 +133,19 @@ export const SearchBarFix = ({ onSearch }) => {
             </Modal>
           )}
         </Style.Location>
-        <button>
+        <button onClick={openAlarmModal}>
           <img alt="icon-alarm" src={IconAlarm} />
         </button>
+        {isAlarmModalOpen && (
+          <Modal
+            title="알람"
+            onClose={closeAlarmModal}
+            isOpen="true"
+            onSaved={onSavedAlarmModal}
+          >
+            <div>등록된 알림이 없습니다.</div>
+          </Modal>
+        )}
       </div>
       <Style.InputBox>
         <form onSubmit={handleSubmit}>

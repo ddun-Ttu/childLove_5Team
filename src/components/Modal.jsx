@@ -19,12 +19,12 @@ export const Modal = ({
   };
 
   const ModalBtnProps = {
-    btnColor: "#FFFFFF",
     btnFontSize: `${fontSize.h2}`,
-    bgcolor: `${colors.primary}`,
-    borderOutLine: `${colors.BtnborderOut}`,
+    bgcolor: `${colors.primary} !important`,
+    borderOutLine: `${colors.BtnborderOut} !important`,
     width: "fit-content",
     height: "fit-content",
+    color: "white",
   };
 
   const closeModalHandler = () => {
