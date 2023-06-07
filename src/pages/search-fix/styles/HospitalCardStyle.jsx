@@ -26,7 +26,6 @@ export const HospitalCardBox = styled(CardBoxStyle)`
   }
 `;
 
-export const HospitalName = styled.div``;
 export const InfoList = styled.div`
   display: flex;
   font-size: 16px;
