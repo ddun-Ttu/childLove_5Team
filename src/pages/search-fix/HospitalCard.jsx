@@ -9,9 +9,6 @@ import {
   IconStarFilled,
 } from "../../assets/index";
 
-// 공통 컴포넌트
-import { CardBox } from "../../components/index";
-
 //요일 정보 지정을 위한 상수
 const WEEK = ["월", "화", "수", "목", "금", "토", "일", "공휴일"];
 
@@ -55,13 +52,13 @@ export const HospitalCard = ({
   };
   return (
     <>
-      <CardBox>
-        <Style.HospitalName>{hospitalName}</Style.HospitalName>
+      <Style.HospitalCardBox>
+        <div>{hospitalName}</div>
         {INFO_PROPS.map((prop) => (
-          <React.Fragment key={prop.alt}>
+          <div key={prop.alt}>
             <img alt={prop.alt} src={prop.icon} />
             <span>{prop.content}</span>
-          </React.Fragment>
+          </div>
         ))}
         <Style.Favorite onClick={handleFavoriteClick}>
           <img
@@ -69,7 +66,7 @@ export const HospitalCard = ({
             src={favorite ? IconStarFilled : IconStarEmpty}
           ></img>
         </Style.Favorite>
-      </CardBox>
+      </Style.HospitalCardBox>
     </>
   );
 };

@@ -11,8 +11,6 @@ export const CardBox = ({ children, linkTo, display, justifyContent, alignItems 
   );
 };
 
-export default CardBox;
-
 export const CardBoxStyle = styled.div`
   position: relative;
   width: 100%;
