@@ -4,7 +4,6 @@ import { useQuery, useQueryClient } from "react-query";
 import { fetchList } from "../../server/Fetcher";
 import { Button } from "../../components/Button";
 import colors from "../../constants/colors";
-import { check } from "prettier";
 
 export const PersonalClient = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -34,13 +33,13 @@ export const PersonalClient = () => {
       setCheckList((prev) => prev.filter((el) => el !== id));
     }
   };
-  const handleDelete = () => {
+  const handleDelete = async () => {
     // 페이지네이션 데이터의 id와 체크된 열의 id 값 필터
     const deleteId = paginatedList.filter((item) =>
       checkList.includes(item.id)
     );
-    console.log("삭제할 id:", deleteId[0].id);
-    fetch(`/admin/delete/${deleteId[0].id}`, {
+
+    await fetch(`/admin/delete/${deleteId[0].id}`, {
       method: "DELETE",
       headers: {
         Authorization:
