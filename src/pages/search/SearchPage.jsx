@@ -86,6 +86,11 @@ const SearchPage = () => {
   let now = new Date();
   const today = now.getDay();
 
+  const handleFavorite = (hpid) => {
+    // 즐겨찾기 추가 또는 제거 로직 구현
+    // hpid를 기반으로 즐겨찾기 상태를 변경할 수 있습니다.
+    console.log("handleFavorite 실행, hpid:", hpid);
+  };
   return (
     <>
       <SearchBarFix onSearch={handleSearch} />
@@ -112,6 +117,7 @@ const SearchPage = () => {
               dutyTimeStart={dutyTimeStart}
               dutyTimeClose={dutyTimeClose}
               favorite={favorite}
+              handleFavorite={handleFavorite}
             />
           );
         })}

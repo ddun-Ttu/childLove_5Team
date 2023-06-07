@@ -17,12 +17,13 @@ const WEEK = ["월", "화", "수", "목", "금", "토", "일", "공휴일"];
 
 export const HospitalCard = ({
   hpid,
-  hospitalName = "엄민숙소아청소년과의원",
-  hospitalAddress = "서울시 광진구",
-  today = 1,
-  dutyTimeStart = "0900",
-  dutyTimeClose = "1830",
+  hospitalName,
+  hospitalAddress,
+  today,
+  dutyTimeStart,
+  dutyTimeClose,
   favorite,
+  handleFavorite,
 }) => {
   //요일 정보 변환
   const todayText = WEEK[today - 1];
@@ -49,7 +50,9 @@ export const HospitalCard = ({
       content: hospitalAddress,
     },
   ];
-
+  const handleFavoriteClick = () => {
+    handleFavorite(hpid); // 즐겨찾기 핸들러 함수 호출
+  };
   return (
     <>
       <CardBox>
@@ -60,7 +63,7 @@ export const HospitalCard = ({
             <span>{prop.content}</span>
           </React.Fragment>
         ))}
-        <Style.Favorite>
+        <Style.Favorite onClick={handleFavoriteClick}>
           <img
             alt={"icon-favorite"}
             src={favorite ? IconStarFilled : IconStarEmpty}
