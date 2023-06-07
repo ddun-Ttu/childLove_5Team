@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@babel/runtime-corejs3": "^7.22.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -11,13 +12,14 @@
     "react-calendar": "^4.2.1",
     "react-daum-postcode": "^3.1.1",
     "react-dom": "^18.2.0",
+    "react-kakao-maps": "^0.0.13",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.11.2",
     "react-scripts": "5.0.1",
     "react-slick": "^0.29.0",
     "react-xml-parser": "^1.1.8",
-    "slick-carousel": "^1.8.1",
     "recoil": "^0.7.7",
+    "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.11",
     "styled-reset": "^4.4.7",
     "web-vitals": "^2.1.4"
@@ -56,5 +58,6 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.32.2",
     "prettier": "^2.8.8"
-  }
+  },
+  "proxy": "http://34.64.69.226:3000/"
 }

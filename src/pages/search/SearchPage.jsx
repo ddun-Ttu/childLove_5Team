@@ -5,8 +5,10 @@ import { IconSearch, IconUp, IconDown, IconAlarm } from "../../assets/index";
 // 공통 컴포넌트
 import { NavigationBar, SearchBarFix } from "../../components/index";
 
+//import문
 import React, { useState, useEffect } from "react";
 import { useQuery } from "react-query";
+import axios from "axios";
 
 //병원리스트 - 병원카드 컴포넌트
 import { HospitalCard } from "../search-fix/HospitalCard";
@@ -28,14 +30,21 @@ const SearchPage = () => {
     setFilteredHospitals(filtered);
   };
   const usersQuery = useQuery("users", () =>
-    fetch("http://localhost:9999/user").then((response) => response.json())
+    axios.get("http://localhost:9999/user").then((response) => response.data)
   );
+
   const hospitalsQuery = useQuery("hospitals", () =>
-    fetch("http://localhost:9999/hospital").then((response) => response.json())
+    axios
+      .get("http://localhost:9999/hospital")
+      .then((response) => response.data)
   );
+
   const favoritesQuery = useQuery("favorites", () =>
-    fetch("http://localhost:9999/favorite").then((response) => response.json())
+    axios
+      .get("http://localhost:9999/favorite")
+      .then((response) => response.data)
   );
+
   useEffect(() => {
     if (
       hospitalsQuery.data &&

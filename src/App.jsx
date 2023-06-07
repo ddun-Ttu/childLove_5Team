@@ -21,7 +21,7 @@ import colors from "./constants/colors";
 import fontSize from "./constants/fontSize";
 
 // import "./App.css";
-import SearchPage from "./pages/search/SearchPage";
+import { SearchPage } from "./pages/search-fix/SearchPage";
 import { AdminHome } from "./pages/admin/AdminHome";
 import MapHospital from "./pages/map-fix/MapHospital";
 import { HospitalCard } from "./pages/search-fix/HospitalCard";
