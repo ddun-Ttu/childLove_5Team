@@ -130,17 +130,13 @@ const ReCalendar = styled(Calendar)`
     /* 기존 스타일 제거 */
     background: none;
     text-align: center;
-    margin: 5px 0 10px 0;
-    padding: 0 5px 0 5px;
     border: none;
   
     /* 추가된 스타일 */
-    width: 80px;
-    height: 80px;
     line-height: 80px;
     font-size: 18px;
     color: #121212;
-    border-radius: 50%;
+    border-radius: 100%;
   }
   }
   /*hover, focus, 선택됐을 시 */
@@ -149,6 +145,8 @@ const ReCalendar = styled(Calendar)`
   .react-calendar__tile--active {
     background: #00ad5c;
     border-radius: 100%;
+    color: white;
+    font-weight: bold;
   }
 
   /* 오늘 표시 */
