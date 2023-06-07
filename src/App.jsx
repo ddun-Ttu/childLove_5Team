@@ -28,6 +28,7 @@ import {
   Post,
   SearchPage,
   SignUp,
+  Detail,
 } from "./pages/index";
 
 const queryClient = new QueryClient();
