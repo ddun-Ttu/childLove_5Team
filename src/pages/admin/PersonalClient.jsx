@@ -35,6 +35,7 @@ export const PersonalClient = () => {
     }
   };
   const handleDelete = () => {
+    // 페이지네이션 데이터의 id와 체크된 열의 id 값 필터
     const deleteId = paginatedList.filter((item) =>
       checkList.includes(item.id)
     );
@@ -46,6 +47,7 @@ export const PersonalClient = () => {
           "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMS4xIiwic3ViIjoxLCJpYXQiOjE2ODYxMDg4MzksImV4cCI6MTcxNzY2NjQzOX0.KoXifXgRmenLuMXmJ_RP1ZJnjinLlyhjD-HN1GAXc5A",
       },
     });
+    //React Query에서 'invalidateQueries' 기능 사용해서 업데이트 된 목록 다시 렌더링
     queryClient.invalidateQueries("list");
 
     setCheckList([]);
