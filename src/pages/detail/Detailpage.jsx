@@ -31,7 +31,7 @@ import {
 import colors from "../../constants/colors";
 import fontSize from "../../constants/fontSize";
 
-// 공통 컴포넌트 수정활용
+// 공통 컴포넌트 수정활용 *즐겨찾기,뒤로가기 클릭 이벤트 추가해야함
 const NewHeader = ({ label, onClick }) => {
   return (
     <>
@@ -58,7 +58,7 @@ const Detail = () => {
   const searchParams = new URLSearchParams(location.search);
   const hospitalID = "A1100401"
   // searchParams.get("id") 위의 아이디 대체
-  const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3Rtb29uQG5hdmVyLmNvbSIsInN1YiI6NDQsImlhdCI6MTY4NjE5Mzc2NiwiZXhwIjoxNzE3NzUxMzY2fQ.odDsjoxuSy5fmGeFBxl-UQ6f0CRh6RbBMxef-11D4Ng"
+  const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vb250ZXN0QHRlc3QudGVzdCIsInN1YiI6MywiaWF0IjoxNjg2MjM2NTQzLCJleHAiOjE3MTc3OTQxNDN9.ToJBCRSygcxpdmMC-B0DyayfbdR7f6E4FEYhhEu5RhA"
   // localStorage.getItem("token"); 위의 토큰 대체
 
   const [hospitalData, setHospitalData] = useState({});
@@ -116,6 +116,7 @@ function reviewClick(label){
     .then(res => res.json())
     .then(reviewData => {
       setHospitalReviewState(reviewData.data)
+      console.log(reviewData.data)
       if(reviewData.data.length == 1){
         fetch(`${BEdata}/reviews/user/${hospitalID}`, {
           headers: {
@@ -156,6 +157,7 @@ function reviewClick(label){
             </Button>
               <UnderLine />
           </TopContentContainer>
+          <QueryMapBtn Link={"/map"}><div><img src={locationWhite} alt="" /><span>지도</span></div></QueryMapBtn>
           <BottomContentContainer>
             <HpInfo>
               <img src={locationGreen} alt="" />
@@ -194,7 +196,8 @@ function reviewClick(label){
               <ReviewButton onClick={()=>reviewClick(6)} >편한 교통·주차{hospitalReviews && <span>{JSON.stringify(hospitalReviews[5])}</span>}</ReviewButton>
             </ReviewContainer>
             <ReserveContainer>
-              <Button width={"237px"} height={"69px"} bgcolor={colors.primary} label={"예약하기"} borderOutLine={"#ffffff"} btnColor={"white"} btnFontSize={"30px"} linkTo={"/reserve"}/>
+              <Button width={"237px"} height={"69px"} bgcolor={colors.primary} label={"예약하기"} 
+              borderOutLine={"#ffffff"} btnColor={"white"} btnFontSize={"30px"} linkTo={`/detail/reserve?id=${hospitalID}`}/>
             </ReserveContainer>
           </BottomContentContainer>
         </Container>
@@ -218,6 +221,11 @@ const HeaderStar = styled.div`
   float: right;
   width: 29px;
   height: 28px;
+  margin-right: 10px;
+  @media screen and (max-width: 600px) {
+    width: 21px;
+    height: 21px;
+  }
 `
 const HeaderWrap = styled.div`
   width: 100%;
@@ -229,6 +237,9 @@ const HeaderWrap = styled.div`
     font-size: 20px;
     color: #00ad5c;
     font-weight: 600;
+    @media screen and (max-width: 600px) {
+      font-size: 17px;
+    }
   }
 `;
 
@@ -289,9 +300,15 @@ const TopContentContainer = styled.div`
   justify-content: center;
   font-weight: 600;
   font-size: 30px;
+  @media screen and (max-width: 600px) {
+    font-size: 20px;
+  }
   a {
     position: absolute;
     right: 41px;
+    @media screen and (max-width: 800px) {
+      display:none;
+    }
   }
   button {
     border: 1px solid #00A758;
@@ -307,11 +324,31 @@ const UnderLine = styled.div`
   border-bottom: 2px solid ${colors.primary};
 `;
 
+const QueryMapBtn = styled.button`
+  display: none;
+  margin-top: 20px;
+  width: 90%;
+  height: 39px;
+  background-color: ${colors.primary};
+  color: white;
+  font-size: 16px;
+  border: 1px solid #00A758;
+  border-radius: 7px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+  @media screen and (max-width: 800px) {
+    display: inline-block;
+  }
+`;
+
 const BottomContentContainer = styled.div`
   flex-direction: column;
   text-align: left;
   padding-left: 71px;
   padding-right: 71px;
+  @media screen and (max-width: 600px) {
+  padding-left: 30px;
+  padding-right: 30px;
+  }
 `;
 
 const HpInfo = styled.div`
@@ -327,6 +364,9 @@ const HpInfo = styled.div`
     margin-left: 22px;
     color: ${colors.primary};
   }
+  @media screen and (max-width: 500px) {
+    font-size: 15px;
+  }
 `;
 
 const HpInfoCard = styled.span`
@@ -335,23 +375,22 @@ const HpInfoCard = styled.span`
   padding: 7px 15px 7px 15px;
   border: solid 1px #BEBEBE;
   border-radius: 17.5px;
+  @media screen and (max-width: 640px) {
+    font-size: 13px;
+  }
 `;
 
 const HpInfoGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 10px;
-`;
-
-const ReserveContainer = styled.div`
-  margin: 41px 0 41px 0;
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  button {
-    border: 1px solid #00A758;
-    border-radius: 11px;
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+  @media screen and (max-width: 800px) {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+  }
+  @media screen and (max-width: 450px) {
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
   }
 `;
 
@@ -363,6 +402,10 @@ const ReviewContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 15px;
+  @media screen and (max-width: 700px) {
+    grid-template-columns: 1fr 1fr;
+    padding: 0;
+  }
 `;
 
 const ReviewButton = styled.button`
@@ -381,6 +424,22 @@ const ReviewButton = styled.button`
     color: #00AD5C;
     position: absolute;
     right: 10px;
+  }
+  @media screen and (max-width: 700px) {
+    padding: 7px;
+    font-size: 12px;
+  }
+`;
+
+const ReserveContainer = styled.div`
+  margin: 60px 0 41px 0;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  button {
+    border: 1px solid #00A758;
+    border-radius: 11px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   }
 `;
 

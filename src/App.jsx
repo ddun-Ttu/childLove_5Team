@@ -2,7 +2,7 @@ import { RegisterForm } from "./pages/registerForm/RegisterForm";
 import React, { useEffect, useState } from "react";
 import XMLParser from "react-xml-parser";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 // 공통 컴포넌트 연결
 import {
@@ -29,6 +29,7 @@ import {
   SearchPage,
   SignUp,
   Detail,
+  Reserve,
 } from "./pages/index";
 
 const queryClient = new QueryClient();
@@ -38,7 +39,17 @@ function App() {
     <>
       <Container>
         <Router>
-          <Detail />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/register" element={<RegisterForm />} />
+            <Route path="admin" element={<AdminHome />} />
+            {/* <Route path="/reserve" element={<ReservationChk />} /> */}
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="login" element={<Login />} />
+            <Route path="sign" element={<SignUp />} />
+            <Route path="/detail" element={<Detail />} />
+            <Route path="/detail/reserve" element={<Reserve />} />
+          </Routes>
           <Footer />
           <NavigationBar />
         </Router>

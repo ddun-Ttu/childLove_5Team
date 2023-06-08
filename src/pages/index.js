@@ -7,5 +7,7 @@ import { Post } from "./registerForm/Post";
 import HospitalCard from "./search/HospitalCard";
 import { SignUp } from "./signUp/SignUp";
 import  Detail  from "./detail/Detailpage";
+import  Reserve  from "./detail/Detailreserve";
+import SearchPage from "./search/SearchPage";
 
-export { AdminHome, Home, MyPage, Login, Post, HospitalCard, SignUp, Detail, };
+export { AdminHome, Home, MyPage, Login, Post, HospitalCard, SignUp, SearchPage, Detail, Reserve};
