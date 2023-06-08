@@ -29,9 +29,10 @@ import {
   SearchPage,
   SignUp,
   Detail,
+  Reserve,
 } from "./pages/index";
 
-const queryClient = new QueryClient();
+// const queryClient = new QueryClient();
 
 function App() {
   const [arr, setArr] = useState();
@@ -55,8 +56,18 @@ function App() {
       <Container>
         <Router>
           <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/register" element={<RegisterForm />} />
+            <Route path="admin" element={<AdminHome />} />
+            {/* <Route path="/reserve" element={<ReservationChk />} /> */}
             <Route path="/search" element={<SearchPage />} />
+            <Route path="login" element={<Login />} />
+            <Route path="sign" element={<SignUp />} />
+            <Route path="/detail" element={<Detail />} />
+            <Route path="/detail/reserve" element={<Reserve />} />
           </Routes>
+          <Footer />
+          <NavigationBar />
         </Router>
       </Container>
     </>

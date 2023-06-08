@@ -14,6 +14,7 @@
     "dayjs": "^1.11.8",
     "react": "^18.2.0",
     "react-calendar": "^4.2.1",
+    "react-datepicker": "^4.12.0",
     "react-daum-postcode": "^3.1.1",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
@@ -62,6 +63,5 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.32.2",
     "prettier": "^2.8.8"
-  },
-  "proxy": "http://34.64.69.226:3000/"
+  }
 }
