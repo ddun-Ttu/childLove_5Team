@@ -52,6 +52,26 @@ export const Home = () => {
     }
   };
 
+  // 위치정보 depth1, depth2
+  const [depth1, setDepth1] = useState("");
+  const [depth2, setDepth2] = useState("");
+  // 위치정보만 받았을 때의 전체 병원리스트
+  const [hospitalList, setHospitalList] = useState([]);
+  // 키워드 검색어
+  const [searchKeyword, setSearchKeyword] = useState("");
+  //키워드 검색 후 필터링 된 병원 리스트
+  const [keywordFilteredHospitals, setKeywordFilteredHospitals] = useState([]);
+
+  // 검색바
+  const handleDepthChange = (first, second) => {
+    setDepth1(first);
+    setDepth2(second);
+  };
+
+  const handleSearch = (keyword) => {
+    setSearchKeyword(keyword);
+  };
+
   return (
     <>
       <Container>
@@ -87,7 +107,12 @@ export const Home = () => {
           </MenuSeb>
         </TopMenuBar>
 
-        {/* <SearchBar /> */}
+        <SearchBar
+          onSearch={handleSearch}
+          depth1={depth1}
+          depth2={depth2}
+          onLocationChange={handleDepthChange}
+        />
 
         <Banner>
           <Img src={MainBanner} alt="star"></Img>

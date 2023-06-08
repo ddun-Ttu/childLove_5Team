@@ -66,8 +66,6 @@ function App() {
             <Route path="/detail" element={<Detail />} />
             <Route path="/detail/reserve" element={<Reserve />} />
           </Routes>
-          <Footer />
-          <NavigationBar />
         </Router>
       </Container>
     </>

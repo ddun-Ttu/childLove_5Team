@@ -66,6 +66,7 @@ export const SignUp = () => {
           {isHospitalView && <HospitalView />}
         </SignUpFormDiv>
       </div>
+      <NavigationBar />
     </>
   );
 };

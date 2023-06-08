@@ -154,6 +154,7 @@ export const Login = () => {
             </Link>
           </LoginUl>
         </Div>
+        <NavigationBar />
       </Container>
     </>
   );
