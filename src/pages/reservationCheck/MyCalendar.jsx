@@ -28,7 +28,7 @@ export const MyCalendar = () => {
         headers: {
           Accept: "application/json",
           Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMS4xIiwic3ViIjoxLCJpYXQiOjE2ODYxMDg4MzksImV4cCI6MTcxNzY2NjQzOX0.KoXifXgRmenLuMXmJ_RP1ZJnjinLlyhjD-HN1GAXc5A",
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGUubWFpbCIsInN1YiI6MSwiaWF0IjoxNjg2MjM0NjUxLCJleHAiOjE3MTc3OTIyNTF9.QORp6FfVmnROH3A-OCvHzYKjzZVAXjADpKcwmCwGeAA",
         },
       })
       .then((res) => {
@@ -36,16 +36,13 @@ export const MyCalendar = () => {
 
         // 추출된 정보들을 저장할 배열
         const resData = res.data.data;
-        // 추출 정보에서 날짜, 시간, 병원이름, 메모만 저장할 배열
-        const extractedData = resData.map((item) => {
-          const createdAt = dayjs(item.createdAt);
-          return {
-            date: createdAt.format("YYYY-MM-DD"),
-            time: createdAt.format("HH:mm:ss"),
-            dutyName: item.hospital.dutyName,
-            memo: item.memo,
-          };
-        });
+        // createdAt의 날짜, hospital의 dutyName, reservedTime, memo만 추출한 배열
+        const extractedData = resData.map((item) => ({
+          date: item.createdAt.split("T")[0], // createdAt에서 날짜만 추출
+          dutyName: item.hospital.dutyName,
+          reservedTime: item.reservedTime,
+          memo: item.memo,
+        }));
 
         console.log(extractedData);
 
@@ -82,23 +79,6 @@ export const MyCalendar = () => {
       return "reserved-date"; // 예약된 날짜에 해당하는 클래스 이름
     }
     return null; // 예약 없는 경우는 클래스 이름 없음
-  };
-
-  // 예약된 날짜에 해당하는 ReDetail 컴포넌트 자동 생성
-  const renderReDetails = () => {
-    if (!extractedData || extractedData.length === 0) {
-      return null;
-    }
-
-    return extractedData.map((item, index) => (
-      <ReDetail
-        key={index}
-        hospitalName={item.dutyName}
-        date={item.date}
-        time={item.time}
-        memo={item.memo}
-      />
-    ));
   };
 
   return (
@@ -138,8 +118,7 @@ export const MyCalendar = () => {
               <h3>PM 3</h3>
             </ReHour>
           </ReTime>
-          {/* 예약된 날짜에 해당하는 ReDetail 컴포넌트 자동 생성 */}
-          {renderReDetails()}
+          <ReDetail />
           <DueDate>
             <h2>D-day</h2>
           </DueDate>
