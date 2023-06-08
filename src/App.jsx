@@ -1,16 +1,19 @@
-/* eslint-disable */
-
+import { RegisterForm } from "./pages/registerForm/RegisterForm";
 import React, { useEffect, useState } from "react";
 import XMLParser from "react-xml-parser";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-// 공통 컴포넌트 연결해서 테스트함
-import { Button } from "./components/Button";
-import { NavigationBar } from "./components/NavigationBar";
-import { Container } from "./components/Container";
-import { Footer } from "./components/Footer";
-import { CardBox } from "./components/CardBox";
-import { Header } from "./components/Header";
+// 공통 컴포넌트 연결
+import {
+  Button,
+  CardBox,
+  Header,
+  NavigationBar,
+  Container,
+  Footer,
+  SearchBar,
+} from "./components/index";
 
 //Map
 import MapHospital from "../src/pages/map/MapHospital";
@@ -20,7 +23,20 @@ import MapMyPage from "../src/pages/map/MapMyPage";
 import colors from "./constants/colors";
 import fontSize from "./constants/fontSize";
 
-import "./App.css";
+// 페이지 연결
+import {
+  AdminHome,
+  Home,
+  MyPage,
+  Login,
+  Post,
+  SearchPage,
+  SignUp,
+  Detail,
+  Reserve,
+} from "./pages/index";
+
+// const queryClient = new QueryClient();
 
 function App() {
   const [arr, setArr] = useState();
@@ -43,8 +59,17 @@ function App() {
     <>
       <Container>
         <Router>
-            {/* <MapHospital /> */}
-            <MapMyPage />
+          <Routes>
+            <Route path="/" element={<Home />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+            <Route path="/SignUp" element={<SignUp />}></Route>
+            <Route path="/register" element={<RegisterForm />} />
+            <Route path="admin" element={<AdminHome />} />
+            {/* <Route path="/reserve" element={<ReservationChk />} /> */}
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/detail" element={<Detail />} />
+            <Route path="/detail/reserve" element={<Reserve />} />
+          </Routes>
         </Router>
       </Container>
     </>

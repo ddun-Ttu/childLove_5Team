@@ -25,5 +25,5 @@ yarn-error.log*
 # ignore .env files
 .env
 
-#api keys
+#apikeys
 apikeys.js
