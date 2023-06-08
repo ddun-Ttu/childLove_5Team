@@ -10,17 +10,16 @@ export const ReDetail = ({ hospitalName, reservationDate }) => {
     <>
       <CardBox>
         <HospitalName>{hospitalName}</HospitalName>
-        <input
-          placeholder="메모를 추가해보세요"
-          value=""
-          style={{ border: "none" }}
-        />
-        <button
-          onClick={"locat"}
-          style={{ border: "none", background: "none" }}
-        >
-          <img alt="icon-pen" src={IconPen}></img>
-        </button>
+        <MemoSection>
+          <input
+            placeholder="메모를 추가해보세요"
+            value=""
+            style={{ width: "90%", border: "none" }}
+          />
+          <ButtonWrapper onClick="#">
+            <img alt="icon-pen" src={IconPen} />
+          </ButtonWrapper>
+        </MemoSection>
       </CardBox>
     </>
   );
@@ -34,4 +33,17 @@ const HospitalName = styled.div`
   border-bottom: 1px solid #b2b2b2;
   padding-bottom: 10px;
   margin-bottom: 10px;
+`;
+
+const MemoSection = styled.div`
+  width: 100%;
+`;
+
+const ButtonWrapper = styled.button`
+  width: 10%;
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: right;
 `;
