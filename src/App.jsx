@@ -38,6 +38,8 @@ function App() {
     <>
       <Container>
         <Router>
+          <Login />
+          <SignUp />
           <Footer />
           <NavigationBar />
         </Router>
@@ -47,4 +49,3 @@ function App() {
 }
 
 export default App;
-
