@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Post } from "./Post";
 import { Button } from "../../components";
@@ -7,6 +7,25 @@ import mainLogo from "../../assets/mainLogo.svg";
 import { SelectBox } from "./SelectBox";
 
 export const RegisterForm = () => {
+  const [dutyName, setDutyName] = useState(""); // 병원명 인풋 관리
+  const [phone, setPhone] = useState(""); //
+
+  const handleNameInput = (e) => {
+    const value = e.target.value;
+    setDutyName(value); // 병원명 값 저장
+  };
+
+  const handlePhone = (e) => {
+    const value = e.target.value;
+    setPhone(value);
+  };
+  const phoneRegex = /^01[0-9]{1}-[0-9]{4}-[0-9]{4}$/;
+  // const phoneValid = phoneRegex.test(phone) ? true : false;
+
+  const onClick = () => {
+    console.log(dutyName);
+    console.log(phone);
+  };
   return (
     <>
       <MainLogoDiv>
@@ -16,11 +35,11 @@ export const RegisterForm = () => {
       <FormBox>
         <InputBox>
           <InputName>병원명</InputName>
-          <InputContent type="text" />
+          <InputContent type="text" onChange={handleNameInput} />
         </InputBox>
         <InputBox>
           <InputName>병원 대표번호</InputName>
-          <InputContent />
+          <InputContent type="text" onChange={handlePhone} />
         </InputBox>
         <InputBox>
           <InputName>영업시간 및 점심시간</InputName>
@@ -42,6 +61,7 @@ export const RegisterForm = () => {
             btnColor={"#ffffff"}
             bgcolor={colors.primary}
             btnFontSize={"18px"}
+            onClick={onClick}
           />
         </InputBox>
       </FormBox>
