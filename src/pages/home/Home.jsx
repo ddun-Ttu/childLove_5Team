@@ -51,6 +51,7 @@ export const Home = () => {
       toast("오류로 인해 로그아웃하지 못했습니다.");
     }
   };
+
   return (
     <>
       <Container>
