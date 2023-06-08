@@ -14,7 +14,8 @@ export const RegisterForm = () => {
   const [addr2, setAddr2] = useState(""); // 상세주소
   const [openTime, setOpenTime] = useState([]); // 오픈시간
   const [closeTime, setCloseTime] = useState([]); //마감시간
-
+  const [info, setInfo] = useState(""); // 병원 정보
+  const [notice, setNotice] = useState(""); // 주의사항
   // 함수형 태로 자식 props를 보내서 Post의  주소 데이터를 받아온다
   const getAddrData = (addr1, addr2) => {
     setAddr1(addr1);
@@ -43,22 +44,37 @@ export const RegisterForm = () => {
     setPhone(value);
   };
 
+  // 병원정보 인풋
+  const handleInfo = (e) => {
+    const value = e.target.value;
+    setInfo(value);
+  };
+
+  // 주의사항 인풋
+  const handleNotice = (e) => {
+    const value = e.target.value;
+    setNotice(value);
+  };
   // - 사용 및 유효성 검사
   const phoneRegex = /^01[0-9]{1}-[0-9]{4}-[0-9]{4}$/;
   const phoneValid = phoneRegex.test(phone) ? true : false;
 
   // 신규 등록 버튼 클릭 시 서버로 데이터 전송
-  const onClick = () => {
-    const openDutyTimes = Array(8).fill(""); // 병원 영업 시간을 저장할 배열 생성 및 초기화
-    const closeDutyTimes = Array(8).fill(""); // 병원 마감 시간 저장 배열
+  const onClick = async () => {
+    const openDutyTimes = Array(9).fill(""); // 병원 영업 시간을 저장할 배열 생성 및 초기화
+    const closeDutyTimes = Array(9).fill(""); // 병원 마감 시간 저장 배열
+
     // SelectBox 에서 받아온 openTime 배열을 돌면서 dutyTimes에 저장
     openTime.forEach((option, index) => {
       openDutyTimes[index] = option.value;
     });
 
+    // 마감 시간 저장
     closeTime.forEach((option, index) => {
       closeDutyTimes[index] = option.value;
     });
+
+    // 오픈 시간 담을 변수
     const [
       dutyTime1s,
       dutyTime2s,
@@ -68,8 +84,10 @@ export const RegisterForm = () => {
       dutyTime6s,
       dutyTime7s,
       dutyTime8s,
+      dutyTime9s,
     ] = openDutyTimes;
 
+    // 마감 시간 담을 변수
     const [
       dutyTime1c,
       dutyTime2c,
@@ -79,11 +97,37 @@ export const RegisterForm = () => {
       dutyTime6c,
       dutyTime7c,
       dutyTime8c,
+      dutyTime9c,
     ] = closeDutyTimes;
 
-    const dutyTime9s = openTime[8].value;
-    const dutyTime9c = closeTime[8].value;
+    axios.post("/hospital", {
+      dutyAddr1Depth: addr1,
+      dutyAddr2Depth: addr2,
+      dutyEtc: info,
+      dutyNotice: notice,
+      dutyName: dutyName,
+      dutyTel1: phone,
+      startLunch: dutyTime9s,
+      endLunch: dutyTime9c,
+      dutyTime1c: dutyTime1c,
+      dutyTime1s: dutyTime1s,
+      dutyTime2c: dutyTime2c,
+      dutyTime2s: dutyTime2s,
+      dutyTime3c: dutyTime3c,
+      dutyTime3s: dutyTime3s,
+      dutyTime4c: dutyTime4c,
+      dutyTime4s: dutyTime4s,
+      dutyTime5c: dutyTime5c,
+      dutyTime5s: dutyTime5s,
+      dutyTime6c: dutyTime6c,
+      dutyTime6s: dutyTime6s,
+      dutyTime7c: dutyTime7c,
+      dutyTime7s: dutyTime7s,
+      dutyTime8c: dutyTime8c,
+      dutyTime8s: dutyTime8s,
+    });
   };
+
   return (
     <>
       <MainLogoDiv>
@@ -101,6 +145,14 @@ export const RegisterForm = () => {
           {!phoneValid && phone.length > 0 && (
             <ErrorMessage>-을 붙여서 입력해주세요</ErrorMessage>
           )}
+        </InputBox>
+        <InputBox>
+          <InputName>공지사항</InputName>
+          <InputContent type="text" onChange={handleNotice} />
+        </InputBox>
+        <InputBox>
+          <InputName>병원 설명</InputName>
+          <InputContent type="text" onChange={handleInfo} />
         </InputBox>
         <InputBox>
           <InputName>영업시간 및 점심시간</InputName>
@@ -133,10 +185,7 @@ export const RegisterForm = () => {
   );
 };
 
-const MainLogoDiv = styled.div`
-  margin-top: 4%;
-`;
-
+const MainLogoDiv = styled.div``;
 const MainLogoImg = styled.img`
   padding: 3% 3% 0 3%;
 `;

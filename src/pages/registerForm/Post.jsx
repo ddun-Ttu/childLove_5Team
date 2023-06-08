@@ -41,6 +41,7 @@ export const Post = ({ getAddrData }) => {
     setDutyAddr2Depth(dutyAddr2Depth);
     setDutyAddr1Depth(dutyAddr1Depth);
     getAddrData(dutyAddr1Depth, dutyAddr2Depth);
+    console.log(data);
     handleCloseModal();
   };
 
