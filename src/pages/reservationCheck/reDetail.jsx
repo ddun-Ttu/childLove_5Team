@@ -2,8 +2,8 @@ import React, { useState } from "react"; //, { useState }
 import styled from "styled-components";
 // 공통 컴포넌트
 import { CardBox, Modal } from "../../components/index";
+// 아이콘
 import IconPen from "../../assets/iconPen.svg";
-import { ReservationMemo } from "./memoModal";
 
 // eslint-disable-next-line react/prop-types
 export const ReDetail = ({ hospitalName, reservationDate }) => {
