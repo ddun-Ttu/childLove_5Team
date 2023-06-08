@@ -1,17 +1,39 @@
-import React, { useState } from "react";
-import dayjs from "dayjs";
-import Calendar from "react-calendar";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+// 공통컴포넌트
 import CardBox from "../../components/CardBox";
+// 아이콘
 import IconLeft from "../../assets/iconLeftGreen.svg";
 import IconRight from "../../assets/iconRightGreen.svg";
-import styled from "styled-components";
+
+import dayjs from "dayjs";
+import Calendar from "react-calendar";
 import { ReDetail } from "./reDetail";
+// css
+import styled from "styled-components";
 
 export const MyCalendar = () => {
   const curDate = new Date(); // 현재 날짜
   const [value, onChange] = useState(curDate); // 클릭한 날짜 - 초기값 현재 날짜
   const activeDate = dayjs(value).format("YY.MM.DD"); // 클릭한 날짜 (년-월-일)
   const activeMonth = dayjs(value).get("month") + 1 + "월";
+
+  useEffect(() => {
+    axios
+      .get("./reservation/user", {
+        headers: {
+          Accept: "application / json",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMS4xIiwic3ViIjoxLCJpYXQiOjE2ODYxMDg4MzksImV4cCI6MTcxNzY2NjQzOX0.KoXifXgRmenLuMXmJ_RP1ZJnjinLlyhjD-HN1GAXc5A",
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   return (
     <>
