@@ -39,21 +39,20 @@ export const SelectBox = ({ getOpenTimeData, getCloseTimeData }) => {
   const [openTimeOption, setOpenTimeOption] = useState([]); // 오픈시간 담는 배열
   const [closeTimeOption, setCloseTimeOption] = useState([]); // 마감시간 담는 배열
 
-  //위와 동일
   const handleOpenTimeOptionChange = (selectedOption, index) => {
     const updatedOpenTimeOptions = [...openTimeOption];
     updatedOpenTimeOptions[index] = selectedOption;
-    setOpenTimeOption(updatedOpenTimeOptions);
+    setOpenTimeOption(updatedOpenTimeOptions); // 선택된 옵션을 오픈시간 배열에 추가
 
-    getOpenTimeData(updatedOpenTimeOptions);
+    getOpenTimeData(updatedOpenTimeOptions); // 부모 컴포넌트인 레지스터폼에서 props 로 내려온 getOpenTimeData함수에 데이터 보내는 코드
   };
-  // 위와 동일
+
   const handleCloseTimeOptionChange = (selectedOption, index) => {
     const updatedCloseTimeOptions = [...closeTimeOption];
     updatedCloseTimeOptions[index] = selectedOption;
-    setCloseTimeOption(updatedCloseTimeOptions);
+    setCloseTimeOption(updatedCloseTimeOptions); // 선택된 옵션을 마감시간 배열에 추가
 
-    getCloseTimeData(updatedCloseTimeOptions);
+    getCloseTimeData(updatedCloseTimeOptions); // 부모 컴포넌트인 레지스터폼에서 props 로 내려온 getCloseTimeData함수에 데이터 보내는 코드
   };
 
   const renderTimeTable = () => {
