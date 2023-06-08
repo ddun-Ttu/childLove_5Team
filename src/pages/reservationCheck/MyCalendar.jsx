@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-// 공통컴포넌트
-import CardBox from "../../components/CardBox";
+// 공통 컴포넌트
+import { CardBox } from "../../components/index";
 // 아이콘
 import IconLeft from "../../assets/iconLeftGreen.svg";
 import IconRight from "../../assets/iconRightGreen.svg";
@@ -17,6 +17,8 @@ export const MyCalendar = () => {
   const [value, onChange] = useState(curDate); // 클릭한 날짜 - 초기값 현재 날짜
   const activeDate = dayjs(value).format("YY.MM.DD"); // 클릭한 날짜 (년-월-일)
   const activeMonth = dayjs(value).get("month") + 1 + "월";
+  //예약 데이터 배열 설정
+  //const [mark, setMark]
 
   useEffect(() => {
     axios
@@ -29,6 +31,7 @@ export const MyCalendar = () => {
       })
       .then((res) => {
         console.log(res.data);
+        const resData = res.data;
       })
       .catch((error) => {
         console.error(error);

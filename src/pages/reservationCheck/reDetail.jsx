@@ -1,6 +1,7 @@
 import React from "react"; //, { useState }
 import styled from "styled-components";
-import CardBox from "../../components/CardBox";
+// 공통 컴포넌트
+import { CardBox } from "../../components/index";
 import IconPen from "../../assets/iconPen.svg";
 import { ReservationMemo } from "./memoModal";
 
