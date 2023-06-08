@@ -26,12 +26,17 @@ import {
 import colors from "./constants/colors";
 import fontSize from "./constants/fontSize";
 
-// import "./App.css";
-import SearchPage from "./pages/search/SearchPage";
-import { AdminHome } from "./pages/admin/AdminHome";
-import Home from "./pages/home/Home";
-import Login from "./pages/login/Login";
-import SignUp from "./pages/signUp/SignUp";
+// 페이지 연결
+import {
+  AdminHome,
+  Home,
+  MyPage,
+  Login,
+  Post,
+  SearchPage,
+  SignUp,
+  Detail,
+} from "./pages/index";
 
 // const queryClient = new QueryClient();
 
