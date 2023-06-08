@@ -32,7 +32,11 @@ export const SearchPage = () => {
 
   const favoritesQuery = useQuery("favorites", () =>
     axios
-      .get(`${BE_URL}${endpoint_favorite}${user_id}`)
+      .get(`${BE_URL}${endpoint_favorite}user`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      })
       .then((response) => response.data)
   );
 

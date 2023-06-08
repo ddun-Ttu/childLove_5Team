@@ -23,8 +23,13 @@ const SORT_OPTIONS = [
 
 //URL
 const BE_URL = `http://34.64.69.226:3000/`;
-
+const userToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG5hdmVyLmNvbSIsInN1YiI6NDIsImlhdCI6MTY4NjE1NzgyMSwiZXhwIjoxNzE3NzE1NDIxfQ.rJ62SE50lqU5cXLSuE-knIiIYhJr2KpTjLQpAERovXk";
+const endpoint_user = `users`;
+const endpoint_favorite = `favorite/`;
 const SearchPage = () => {
+  //유저 id
+  const [user_id, setUser_id] = useState(null);
   // 위치정보 depth1, depth2
   const [depth1, setDepth1] = useState("");
   const [depth2, setDepth2] = useState("");
@@ -49,7 +54,7 @@ const SearchPage = () => {
     setSearchKeyword(keyword);
   };
 
-  const filterHospitals = (keyword, hospitals) => {
+  const filterHospitals = (keyword, hospitalList) => {
     const filtered = hospitalList.filter((hospital) =>
       hospital.dutyName.includes(keyword)
     );
@@ -57,7 +62,13 @@ const SearchPage = () => {
   };
 
   const usersQuery = useQuery("users", () =>
-    axios.get("http://localhost:9999/user").then((response) => response.data)
+    axios
+      .get(`${BE_URL}${endpoint_user}`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      })
+      .then((response) => response.data)
   );
 
   const hospitalsQuery = useQuery("hospitals", () =>
@@ -72,17 +83,36 @@ const SearchPage = () => {
 
   const favoritesQuery = useQuery("favorites", () =>
     axios
-      .get("http://localhost:9999/favorite")
+      .get(`${BE_URL}${endpoint_favorite}user`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      })
       .then((response) => response.data)
   );
+  //user_id 불러오는 함수
+  useEffect(() => {
+    if (usersQuery.isSuccess) {
+      const fetchedUser_id = usersQuery.data.data.id;
+      setUser_id(fetchedUser_id);
+    }
+  }, [usersQuery]);
 
+  // user_id가 불러와졌다면, 즐겨찾기 목록 가져오기
+  useEffect(() => {
+    if (user_id !== null && favoritesQuery.isSuccess) {
+      favoritesQuery.refetch();
+    }
+  }, [favoritesQuery, user_id]);
+
+  //병원리스트 가져오기
   useEffect(() => {
     if (hospitalsQuery.isSuccess) {
       const hospitalList = hospitalsQuery.data.data;
       setHospitalList(hospitalList);
     }
   }, [hospitalsQuery.isSuccess]);
-
+  //검색 키워드에 대한 결과를 병원리스트에서 추출하기
   useEffect(() => {
     if (searchKeyword) {
       filterHospitals(searchKeyword, hospitals);
@@ -109,9 +139,8 @@ const SearchPage = () => {
   }
   const users = usersQuery.data;
   const hospitals = hospitalsQuery.data;
-  const favorites = favoritesQuery.data;
+  const favorites = favoritesQuery.data || []; // favoritesQuery.data가 없을 경우 빈 배열로 초기화
 
-  const user_id = users[0].id;
   //오늘 요일에 따라 다른 dutyTime 가져오기
   let now = new Date();
   const today = now.getDay();
@@ -133,7 +162,7 @@ const SearchPage = () => {
       (item) => item.state === selectedOptionState
     );
 
-    if (selectedFilter) {
+    if (selectedOption) {
       setSortOption(selectedOption);
       setIsSortDropdownOpen(false);
     }
@@ -147,7 +176,7 @@ const SearchPage = () => {
           depth2={depth2}
           onLocationChange={handleDepthChange}
         />
-        <div>
+        {/* <div>
           <span>{keywordFilteredHospitals.length}</span>
           <Style.SortDropdownContainer>
             <Style.SortDropdownButton
@@ -170,33 +199,32 @@ const SearchPage = () => {
             <img alt="icon-down" src={IconDown} />
           </Style.SortDropdownContainer>
         </div>
-        <div>
-          {keywordFilteredHospitals.map((hospital) => {
-            const dutyTimeStart = hospital[`dutyTime${today}s`]; // 오늘 요일에 해당하는 dutyTime 시작 시간
-            const dutyTimeClose = hospital[`dutyTime${today}c`]; // 오늘 요일에 해당하는 dutyTime 종료 시간
+        <div> */}
+        {keywordFilteredHospitals.map((hospital) => {
+          const dutyTimeStart = hospital[`dutyTime${today}s`]; // 오늘 요일에 해당하는 dutyTime 시작 시간
+          const dutyTimeClose = hospital[`dutyTime${today}c`]; // 오늘 요일에 해당하는 dutyTime 종료 시간
 
-            // 즐겨찾기 해당여부 체크 -> 즐겨찾기 api 연결 전까지 임의로 true로 하기
-            // const favorite = favorites.some(
-            //   (favoriteItem) =>
-            //     favoriteItem.user_id === user_id &&
-            //     favoriteItem.hpid === hospital.id
-            // );
-            const favorite = true;
-            return (
-              <HospitalCard
-                key={hospital.id}
-                hpid={hospital.id}
-                hospitalName={hospital.dutyName}
-                hospitalAddress={`${hospital.dutyAddr1Depth} ${hospital.dutyAddr2Depth} ${hospital.dutyAddr3Depth}`}
-                today={today}
-                dutyTimeStart={dutyTimeStart}
-                dutyTimeClose={dutyTimeClose}
-                favorite={favorite}
-                handleFavorite={handleFavorite}
-              />
-            );
-          })}
-        </div>
+          //즐겨찾기 해당여부 체크
+          const favorite = favorites.data.some(
+            (favoriteItem) =>
+              favoriteItem.user_id === user_id &&
+              favoriteItem.hpid === hospital.id
+          );
+          return (
+            <HospitalCard
+              key={hospital.id}
+              hpid={hospital.id}
+              hospitalName={hospital.dutyName}
+              hospitalAddress={`${hospital.dutyAddr1Depth} ${hospital.dutyAddr2Depth} ${hospital.dutyAddr3Depth}`}
+              today={today}
+              dutyTimeStart={dutyTimeStart}
+              dutyTimeClose={dutyTimeClose}
+              favorite={favorite}
+              handleFavorite={handleFavorite}
+            />
+          );
+        })}
+        {/* </div> */}
       </Wrapper>
       <NavigationBar />
     </>
