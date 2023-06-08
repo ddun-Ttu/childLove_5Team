@@ -15,10 +15,6 @@ import {
   SearchBar,
 } from "./components/index";
 
-//Map
-import MapHospital from "../src/pages/map/MapHospital";
-import MapMyPage from "../src/pages/map/MapMyPage";
-
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import colors from "./constants/colors";
 import fontSize from "./constants/fontSize";
@@ -34,6 +30,8 @@ import {
   SignUp,
   Detail,
   Reserve,
+  MapHospital,
+  MapMyPage,
 } from "./pages/index";
 
 // const queryClient = new QueryClient();
@@ -69,6 +67,8 @@ function App() {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/detail" element={<Detail />} />
             <Route path="/detail/reserve" element={<Reserve />} />
+            <Route path="/detail/map" element={<MapHospital />} />
+            <Route path="/mypage/map" element={<MapMyPage />} />
           </Routes>
         </Router>
       </Container>
