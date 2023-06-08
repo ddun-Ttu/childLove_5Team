@@ -1,9 +1,9 @@
 import * as Style from "./styles/MapStyle";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Map } from "react-kakao-maps-sdk";
 
 //아이콘
-import { IconMyLocationW, IconMyLocationG } from "../../assets/index";
+import { IconMyLocationW } from "../../assets/index";
 
 // 공통 컴포넌트
 import { Header, NavigationBar } from "../../components/index";
