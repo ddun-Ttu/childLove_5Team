@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { RegisterForm } from "./pages/registerForm/RegisterForm";
 import React, { useEffect, useState } from "react";
 import XMLParser from "react-xml-parser";
@@ -29,6 +28,7 @@ import {
   Post,
   SearchPage,
   SignUp,
+  Detail,
 } from "./pages/index";
 
 const queryClient = new QueryClient();
