@@ -9,7 +9,7 @@ import axios from "axios";
 import mainLogo from "../../assets/mainLogo.svg";
 
 // 공통 컴포넌트 연결 링크
-import { Button, Container } from "../../components/index";
+import { Button, Container, NavigationBar } from "../../components/index";
 
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import colors from "../../constants/colors";
@@ -135,11 +135,17 @@ export const Login = () => {
 
         <Div>
           <LoginUl>
-            <LoginLi>아이디찾기</LoginLi>
+            {/* <Link to="/">
+              <LoginLi>아이디찾기</LoginLi>
+            </Link>
             <LoginLi> | </LoginLi>
-            <LoginLi>비밀번호찾기</LoginLi>
-            <LoginLi> | </LoginLi>
-            <LoginLi>회원가입</LoginLi>
+            <Link to="/">
+              <LoginLi>비밀번호찾기</LoginLi>
+            </Link>
+            <LoginLi> | </LoginLi> */}
+            <Link to="/signUp">
+              <LoginLi>회원가입</LoginLi>
+            </Link>
           </LoginUl>
         </Div>
       </Container>
@@ -201,6 +207,6 @@ padding: 1%;
 }`;
 
 const LoginLi = styled.div`
-  padding: 0.5%;
+  // padding: 0.5%;
   color: #b2b2b2;
 `;

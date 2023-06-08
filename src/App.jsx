@@ -2,7 +2,13 @@ import { RegisterForm } from "./pages/registerForm/RegisterForm";
 import React, { useEffect, useState } from "react";
 import XMLParser from "react-xml-parser";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Routes,
+} from "react-router-dom";
 
 // 공통 컴포넌트 연결
 import {
@@ -38,8 +44,11 @@ function App() {
     <>
       <Container>
         <Router>
-          <Footer />
-          <NavigationBar />
+          <Routes>
+            <Route path="/" element={<Home />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+            <Route path="/SignUp" element={<SignUp />}></Route>
+          </Routes>
         </Router>
       </Container>
     </>
