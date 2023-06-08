@@ -39,19 +39,19 @@ import { dataHome } from "./data";
 
 export const Home = () => {
   const handleLogout = () => {
-    // Necessary logout operations such as clearing session/token, resetting state, etc.
+    // 토큰 가져오기
     const token = window.localStorage.getItem("token");
 
     if (token) {
-      // Token exists, proceed with deletion
+      // 토큰이 존재하므로 삭제 진행
       window.localStorage.removeItem("token");
       toast("로그아웃 성공");
     } else {
-      // Token does not exist, show error notification
+      // 오류 알림표시
       toast("오류로 인해 로그아웃하지 못했습니다.");
     }
 
-    // Redirect the user to the home page
+    // 사용자를 홈페이지로 리디렉션
     // window.location.href = "/";
   };
   return (
