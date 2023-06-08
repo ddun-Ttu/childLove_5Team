@@ -18,10 +18,10 @@ export const MyCalendar = () => {
   const [value, onChange] = useState(curDate); // 클릭한 날짜 - 초기값 현재 날짜
   const activeDate = dayjs(value).format("YY.MM.DD"); // 클릭한 날짜 (년-월-일)
   const activeMonth = dayjs(value).get("month") + 1 + "월";
-  //예약 데이터 배열 설정
-  //const [mark, setMark]
 
-  const [datesOnly, setDatesOnly] = useState([]); // 날짜만 추출된 배열
+  const [datesOnly, setDatesOnly] = useState([]); //날짜만 추출
+  const [extractedData, setExtractedData] = useState([]); //예약 정보만 추출
+
   useEffect(() => {
     axios
       .get("./reservation/user", {
@@ -48,9 +48,11 @@ export const MyCalendar = () => {
         });
 
         console.log(extractedData);
+
         // 날짜만 추출
         const datesOnly = extractedData.map((item) => item.date);
         setDatesOnly(datesOnly); // 날짜만 추출된 배열 설정
+        setExtractedData(extractedData); // 추출된 예약 정보 배열 설정
       })
       .catch((error) => {
         console.error(error);
@@ -80,6 +82,23 @@ export const MyCalendar = () => {
       return "reserved-date"; // 예약된 날짜에 해당하는 클래스 이름
     }
     return null; // 예약 없는 경우는 클래스 이름 없음
+  };
+
+  // 예약된 날짜에 해당하는 ReDetail 컴포넌트 자동 생성
+  const renderReDetails = () => {
+    if (!extractedData || extractedData.length === 0) {
+      return null;
+    }
+
+    return extractedData.map((item, index) => (
+      <ReDetail
+        key={index}
+        hospitalName={item.dutyName}
+        date={item.date}
+        time={item.time}
+        memo={item.memo}
+      />
+    ));
   };
 
   return (
@@ -119,7 +138,8 @@ export const MyCalendar = () => {
               <h3>PM 3</h3>
             </ReHour>
           </ReTime>
-          <ReDetail hospitalName={"아이사랑 소아과"} />
+          {/* 예약된 날짜에 해당하는 ReDetail 컴포넌트 자동 생성 */}
+          {renderReDetails()}
           <DueDate>
             <h2>D-day</h2>
           </DueDate>
@@ -217,10 +237,6 @@ const ReCalendar = styled(Calendar)`
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  .react-calendar__tile > abbr {
-    font-weight: bold;
   }
   
   .react-calendar__tile img {
