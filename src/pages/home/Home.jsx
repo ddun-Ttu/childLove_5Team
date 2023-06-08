@@ -1,7 +1,17 @@
 /* eslint-disable */
 import React from "react";
 import styled from "styled-components";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useNavigate,
+} from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+
+// 알림창 라이브러리
+import "react-toastify/dist/ReactToastify.css";
 
 // 이미지 링크
 import mainLogo from "../../assets/mainLogo.svg";
@@ -28,9 +38,32 @@ import "slick-carousel/slick/slick-theme.css";
 import { dataHome } from "./data";
 
 export const Home = () => {
+  const handleLogout = () => {
+    // Necessary logout operations such as clearing session/token, resetting state, etc.
+    const token = window.localStorage.getItem("token");
+
+    if (token) {
+      // Token exists, proceed with deletion
+      window.localStorage.removeItem("token");
+      toast("로그아웃 성공");
+    } else {
+      // Token does not exist, show error notification
+      toast("오류로 인해 로그아웃하지 못했습니다.");
+    }
+
+    // Redirect the user to the home page
+    // window.location.href = "/";
+  };
   return (
     <>
       <Container>
+        <ToastContainer
+          position="bottom-center"
+          limit={1}
+          closeButton={false}
+          autoClose={4000}
+          hideProgressBar
+        />
         <MainLogoImg src={mainLogo} alt="mainLogo"></MainLogoImg>
 
         <TopMenuBar>
@@ -46,7 +79,7 @@ export const Home = () => {
           </MenuSeb>
 
           <MenuSeb>
-            <SebP>로그아웃</SebP>
+            <LogoutBut onClick={handleLogout}>로그아웃</LogoutBut>
           </MenuSeb>
 
           <MenuSeb>
@@ -127,6 +160,8 @@ const MenuSeb = styled.div`
 `;
 
 const SebP = styled.p``;
+
+const LogoutBut = styled.p``;
 
 const LogoP = styled.p`
   color: ${colors.primary};
