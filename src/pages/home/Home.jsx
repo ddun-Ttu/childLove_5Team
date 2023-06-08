@@ -8,10 +8,10 @@ import {
   Link,
   useNavigate,
 } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
 
 // 알림창 라이브러리
 import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 
 // 이미지 링크
 import mainLogo from "../../assets/mainLogo.svg";
@@ -50,15 +50,12 @@ export const Home = () => {
       // 오류 알림표시
       toast("오류로 인해 로그아웃하지 못했습니다.");
     }
-
-    // 사용자를 홈페이지로 리디렉션
-    // window.location.href = "/";
   };
   return (
     <>
       <Container>
         <ToastContainer
-          position="bottom-center"
+          position="top-center"
           limit={1}
           closeButton={false}
           autoClose={4000}
