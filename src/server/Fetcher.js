@@ -8,6 +8,6 @@ export const fetchList = async () => {
   });
 
   const list = await res.json();
-
+  console.log(list);
   return list;
 };

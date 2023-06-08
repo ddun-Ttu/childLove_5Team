@@ -7,16 +7,17 @@ import colors from "../../constants/colors";
 import { check } from "prettier";
 
 export const PersonalClient = () => {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0); // 페이지 숫자 상태
 
   const maxPostPage = 10;
-  const queryClient = useQueryClient();
 
+  // useQuery 이용한 통신
+  const queryClient = useQueryClient();
   const { isLoading, data: list } = useQuery("list", () => fetchList());
 
-  const [checkValue, setCheckValue] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [checkList, setCheckList] = useState([]);
+  const [checkValue, setCheckValue] = useState(""); // 검색창 인풋
+  const [submitted, setSubmitted] = useState(false); // 검색창 submit 상태
+  const [checkList, setCheckList] = useState([]); // 체크박스
   const onChange = (e) => {
     setCheckValue(e.target.value);
     setSubmitted(false);
@@ -49,6 +50,7 @@ export const PersonalClient = () => {
     queryClient.invalidateQueries("list");
   };
 
+  //페이지네이션 로직
   useEffect(() => {
     if (currentPage <= maxPostPage - 1) {
       const nextPage = currentPage + 1;
@@ -60,10 +62,12 @@ export const PersonalClient = () => {
     return <h1>로딩중입니다..</h1>;
   }
 
+  // 검색창 value와 데이터의 이메일 값 비교해서 같으면 데이터 재구성
   const filteredList = list.data?.filter(
     (item) => !submitted || item.email === checkValue
   );
 
+  //페이지네이션 로직
   const startIndex = currentPage * 10;
   const endIndex = startIndex + 10;
   const paginatedList = filteredList.slice(startIndex, endIndex);
