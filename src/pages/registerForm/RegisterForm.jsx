@@ -5,26 +5,84 @@ import { Button } from "../../components";
 import colors from "../../constants/colors";
 import mainLogo from "../../assets/mainLogo.svg";
 import { SelectBox } from "./SelectBox";
+import axios from "axios";
 
 export const RegisterForm = () => {
   const [dutyName, setDutyName] = useState(""); // 병원명 인풋 관리
-  const [phone, setPhone] = useState(""); //
+  const [phone, setPhone] = useState(""); // 전화번호 관리
+  const [addr1, setAddr1] = useState(""); // 시,도 주소
+  const [addr2, setAddr2] = useState(""); // 상세주소
+  const [openTime, setOpenTime] = useState([]); // 오픈시간
+  const [closeTime, setCloseTime] = useState([]); //마감시간
 
-  const handleNameInput = (e) => {
-    const value = e.target.value;
-    setDutyName(value); // 병원명 값 저장
+  // 함수형 태로 자식 props를 보내서 Post의  주소 데이터를 받아온다
+  const getAddrData = (addr1, addr2) => {
+    setAddr1(addr1);
+    setAddr2(addr2);
   };
 
+  // 마찬가지로 SelectBox 에서 오픈시간 데이터를 받아온다.
+  const getOpenTimeData = (openTime) => {
+    setOpenTime(openTime);
+  };
+
+  // 마찬가지로 SelectBox 에서 마감시간 데이터를 받아온다.
+  const getCloseTimeData = (closeTime) => {
+    setCloseTime(closeTime);
+  };
+
+  // 병원명 인풋
+  const handleNameInput = (e) => {
+    const value = e.target.value;
+    setDutyName(value);
+  };
+
+  //병원번호 인풋
   const handlePhone = (e) => {
     const value = e.target.value;
     setPhone(value);
   };
-  const phoneRegex = /^01[0-9]{1}-[0-9]{4}-[0-9]{4}$/;
-  // const phoneValid = phoneRegex.test(phone) ? true : false;
 
+  // - 사용 및 유효성 검사
+  const phoneRegex = /^01[0-9]{1}-[0-9]{4}-[0-9]{4}$/;
+  const phoneValid = phoneRegex.test(phone) ? true : false;
+
+  // 신규 등록 버튼 클릭 시 서버로 데이터 전송
   const onClick = () => {
-    console.log(dutyName);
-    console.log(phone);
+    const openDutyTimes = Array(8).fill(""); // 병원 영업 시간을 저장할 배열 생성 및 초기화
+    const closeDutyTimes = Array(8).fill(""); // 병원 마감 시간 저장 배열
+    // SelectBox 에서 받아온 openTime 배열을 돌면서 dutyTimes에 저장
+    openTime.forEach((option, index) => {
+      openDutyTimes[index] = option.value;
+    });
+
+    closeTime.forEach((option, index) => {
+      closeDutyTimes[index] = option.value;
+    });
+    const [
+      dutyTime1s,
+      dutyTime2s,
+      dutyTime3s,
+      dutyTime4s,
+      dutyTime5s,
+      dutyTime6s,
+      dutyTime7s,
+      dutyTime8s,
+    ] = openDutyTimes;
+
+    const [
+      dutyTime1c,
+      dutyTime2c,
+      dutyTime3c,
+      dutyTime4c,
+      dutyTime5c,
+      dutyTime6c,
+      dutyTime7c,
+      dutyTime8c,
+    ] = closeDutyTimes;
+
+    const dutyTime9s = openTime[8].value;
+    const dutyTime9c = closeTime[8].value;
   };
   return (
     <>
@@ -39,14 +97,20 @@ export const RegisterForm = () => {
         </InputBox>
         <InputBox>
           <InputName>병원 대표번호</InputName>
-          <InputContent type="text" onChange={handlePhone} />
+          <InputContent type="text" value={phone} onChange={handlePhone} />
+          {!phoneValid && phone.length > 0 && (
+            <ErrorMessage>-을 붙여서 입력해주세요</ErrorMessage>
+          )}
         </InputBox>
         <InputBox>
           <InputName>영업시간 및 점심시간</InputName>
-          <SelectBox />
+          <SelectBox
+            getOpenTimeData={getOpenTimeData}
+            getCloseTimeData={getCloseTimeData}
+          />
         </InputBox>
 
-        <Post />
+        <Post addr1={addr1} getAddrData={getAddrData} />
         <InputBox>
           <InputName>병원 사진</InputName>
           <ImageBox>
@@ -150,4 +214,9 @@ const InputImage = styled.input`
   font-weight: 400;
   font-size: 20px;
   line-height: 15px;
+`;
+
+const ErrorMessage = styled.p`
+  margin-top: 2%;
+  color: #c20000;
 `;

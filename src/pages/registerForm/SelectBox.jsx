@@ -35,8 +35,7 @@ const closeTimeTable = [
   { value: "2000", label: "2000" },
 ];
 
-export const SelectBox = () => {
-  const [weekOption, setWeekOption] = useState([]); // 요일 담는 배열
+export const SelectBox = ({ getOpenTimeData, getCloseTimeData }) => {
   const [openTimeOption, setOpenTimeOption] = useState([]); // 오픈시간 담는 배열
   const [closeTimeOption, setCloseTimeOption] = useState([]); // 마감시간 담는 배열
 
@@ -45,12 +44,16 @@ export const SelectBox = () => {
     const updatedOpenTimeOptions = [...openTimeOption];
     updatedOpenTimeOptions[index] = selectedOption;
     setOpenTimeOption(updatedOpenTimeOptions);
+
+    getOpenTimeData(updatedOpenTimeOptions);
   };
   // 위와 동일
   const handleCloseTimeOptionChange = (selectedOption, index) => {
     const updatedCloseTimeOptions = [...closeTimeOption];
     updatedCloseTimeOptions[index] = selectedOption;
     setCloseTimeOption(updatedCloseTimeOptions);
+
+    getCloseTimeData(updatedCloseTimeOptions);
   };
 
   const renderTimeTable = () => {
@@ -82,9 +85,7 @@ export const SelectBox = () => {
         </TimeTable>
       );
     }
-    console.log(weekOption[0]);
-    console.log(openTimeOption[0]);
-    console.log(closeTimeOption[0]);
+
     return timetables;
   };
 
