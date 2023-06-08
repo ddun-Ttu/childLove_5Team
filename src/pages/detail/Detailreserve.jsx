@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import { BrowserRouter as Router, Route, Link, useLocation } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css'
 import { useQuery } from "react-query";
 
 // 아이콘
@@ -75,25 +77,22 @@ const NewCardBox = ({
 const BEdata = "http://34.64.69.226:3000"
 
 
+
 const Reserve = () => {
 
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
-    // const hospitalID = searchParams.get("id")
-    const hospitalID = "A1100401" //테스트용
+    const hospitalID = searchParams.get("id")
 
-    const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3Rtb29uQG5hdmVyLmNvbSIsInN1YiI6NDQsImlhdCI6MTY4NjE5Mzc2NiwiZXhwIjoxNzE3NzUxMzY2fQ.odDsjoxuSy5fmGeFBxl-UQ6f0CRh6RbBMxef-11D4Ng"
-    // localStorage.getItem("token"); 위의 토큰 대체
+    const token = localStorage.getItem("token") ? localStorage.getItem("token") : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vb250ZXN0QHRlc3QudGVzdCIsInN1YiI6MywiaWF0IjoxNjg2MjM2NTQzLCJleHAiOjE3MTc3OTQxNDN9.ToJBCRSygcxpdmMC-B0DyayfbdR7f6E4FEYhhEu5RhA"
+    // localStorage.getItem("token"); 위의 뒷부분 테스트토큰을 false로
     // if(hospitalID || token == false){
     //     alert("잘못된 접근입니다")
     // }
 
-
     const [hospitalData, setHospitalData] = useState({});
-    const [hospitalImg, setHospitalImg] = useState("");
-    const [hospitalReviews, setHospitalReviews] = useState([]);
-    const [hospitalReviewState, setHospitalReviewState] = useState({});
-    const [userReviews, setUserReviews] = useState([]);
+    const [reserveday, setReserveday] = useState("");
+    const [startDate, setStartDate] = useState(new Date());
 
     useEffect(() => {
         fetch(`${BEdata}/hospital/${hospitalID}`, {
@@ -106,18 +105,22 @@ const Reserve = () => {
           .then((hospitalID) => {
             setHospitalData(hospitalID.data);
           });
-      
-        fetch(`${BEdata}/image/hospital/${hospitalID}`)
-        .then(res => res.json())
-        .then((hospitalD) => {
-          setHospitalImg(hospitalD.data);
-        });
-    
-        fetch(`${BEdata}/reviews/${hospitalID}`)
-        .then(res => res.json())
-        .then(reviewData => {
-          setHospitalReviews(reviewData.data)
-        });
+          
+        const today = new Date();
+        let year = today.getFullYear(); // 년도
+        let month = today.getMonth() + 1;  // 월
+        let date = today.getDate();  // 날짜
+        let day = today.getDay();  // 요일
+        let transDay = function(day){
+            if(day === 0){return "일"}
+            else if(day === 1){return "월"}
+            else if(day === 2){return "화"}
+            else if(day === 3){return "수"}
+            else if(day === 4){return "목"}
+            else if(day === 5){return "금"}
+            else if(day === 6){return "토"};
+        }
+        setReserveday(`${year}.${month}.${date}. (${transDay(day)})`)
         }, []);
 
     return (
@@ -142,11 +145,18 @@ const Reserve = () => {
                     {hospitalData.dutyTime7c && hospitalData.dutyTime7s && <HpInfoCard>일 {hospitalData.dutyTime7s}-{hospitalData.dutyTime7c}</HpInfoCard> }
                 </HpInfoGrid>
                 </HpInfo>
-                <NewCardBox bgcolor={"#FEFEFE"} width={"100%"} height={"86px"} label={"05. 26. (금)"} borderRad={"16px"} color={colors.primary} fontSize={"25px"} margin={"37px 0 45px 0"}
+                <NewCardBox bgcolor={"#FEFEFE"} width={"100%"} height={"86px"} label={reserveday} borderRad={"16px"} color={colors.primary} fontSize={"25px"} margin={"37px 0 45px 0"}
                 button={ <Button width={"100px"} height={"43px"} bgcolor={colors.primary} label={<span>지도</span>} 
                     borderOutLine={"#ffffff"} btnColor={"white"} btnFontSize={"20px"} linkTo={"/map"}>
                     </Button>
                 }></NewCardBox>
+                <div>
+              <StyledDatePicker
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                dateFormat="yyyy-MM-dd"
+                />
+                </div>
             </BottomContentContainer>
         </Container>
     )
@@ -307,6 +317,13 @@ button {
     background-color: #DADADA;
     border: 1px solid ;
     cursor: not-allowed;
+  }
+`;
+
+// 스타일 - 날짜선택 api
+const StyledDatePicker = styled(DatePicker)`
+  .react-datepicker__triangle {
+    left:50px !important;
   }
 `;
 

@@ -58,8 +58,8 @@ const Detail = () => {
   const searchParams = new URLSearchParams(location.search);
   const hospitalID = "A1100401"
   // searchParams.get("id") 위의 아이디 대체
-  const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vb250ZXN0QHRlc3QudGVzdCIsInN1YiI6MywiaWF0IjoxNjg2MjM2NTQzLCJleHAiOjE3MTc3OTQxNDN9.ToJBCRSygcxpdmMC-B0DyayfbdR7f6E4FEYhhEu5RhA"
-  // localStorage.getItem("token"); 위의 토큰 대체
+  const token = localStorage.getItem("token") ? localStorage.getItem("token") : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vb250ZXN0QHRlc3QudGVzdCIsInN1YiI6MywiaWF0IjoxNjg2MjM2NTQzLCJleHAiOjE3MTc3OTQxNDN9.ToJBCRSygcxpdmMC-B0DyayfbdR7f6E4FEYhhEu5RhA"
+  // localStorage.getItem("token"); 위의 뒷부분 테스트토큰을 false로
 
   const [hospitalData, setHospitalData] = useState({});
   const [hospitalImg, setHospitalImg] = useState("");
@@ -116,7 +116,6 @@ function reviewClick(label){
     .then(res => res.json())
     .then(reviewData => {
       setHospitalReviewState(reviewData.data)
-      console.log(reviewData.data)
       if(reviewData.data.length == 1){
         fetch(`${BEdata}/reviews/user/${hospitalID}`, {
           headers: {
@@ -128,9 +127,9 @@ function reviewClick(label){
         .then(reviewcheck => { 
           setUserReviews(reviewcheck.data[0].vote)
         });
-      } else {setUserReviews([])}
-    });
-
+      } 
+    })
+    .catch(err => {alert("잘못된 유저정보입니다")})
   } else {alert("로그인이 필요합니다")}
   };
     
