@@ -1,12 +1,21 @@
-import React from "react"; //, { useState }
+import React, { useState } from "react"; //, { useState }
 import styled from "styled-components";
 // 공통 컴포넌트
-import { CardBox } from "../../components/index";
+import { CardBox, Modal } from "../../components/index";
 import IconPen from "../../assets/iconPen.svg";
 import { ReservationMemo } from "./memoModal";
 
 // eslint-disable-next-line react/prop-types
 export const ReDetail = ({ hospitalName, reservationDate }) => {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   return (
     <>
       <CardBox>
@@ -17,9 +26,17 @@ export const ReDetail = ({ hospitalName, reservationDate }) => {
             value=""
             style={{ width: "90%", border: "none" }}
           />
-          <ButtonWrapper onClick="#">
+          <ButtonWrapper onClick={openModal}>
             <img alt="icon-pen" src={IconPen} />
           </ButtonWrapper>
+          <Modal
+            isOpen={modalOpen}
+            onClose={closeModal}
+            title="메모"
+            style={{
+              width: "60%",
+            }}
+          ></Modal>
         </MemoSection>
       </CardBox>
     </>
