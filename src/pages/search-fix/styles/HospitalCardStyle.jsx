@@ -6,6 +6,7 @@ import { CardBoxStyle } from "../../../components/CardBox";
 export const HospitalCardBox = styled(CardBoxStyle)`
   padding: 2%;
   margin: 1% 0;
+  display: block !important;
 
   & > div {
     display: flex;
