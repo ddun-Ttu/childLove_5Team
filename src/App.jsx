@@ -38,8 +38,6 @@ function App() {
     <>
       <Container>
         <Router>
-          <Login />
-          <SignUp />
           <Footer />
           <NavigationBar />
         </Router>
