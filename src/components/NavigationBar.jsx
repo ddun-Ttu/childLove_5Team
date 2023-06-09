@@ -48,7 +48,7 @@ export const NavigationBar = () => {
           </NavLi>
 
           <NavLi>
-            <NavA href="#">
+            <NavA to="Mypage">
               <NavImg src={myInfo} alt="star"></NavImg>
               <NavP>내정보</NavP>
             </NavA>
