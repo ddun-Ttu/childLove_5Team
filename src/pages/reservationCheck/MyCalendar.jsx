@@ -50,6 +50,9 @@ export const MyCalendar = () => {
 
         console.log(extractedData);
 
+        // 날짜를 기준으로 배열 정렬
+        extractedData.sort((a, b) => (a.date > b.date ? 1 : -1));
+
         // 날짜만 추출
         const datesOnly = extractedData.map((item) => item.date);
         setDatesOnly(datesOnly); // 날짜만 추출된 배열 설정
@@ -141,7 +144,12 @@ export const MyCalendar = () => {
       <CardBox
         linkTo={"#"}
         bxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
-        style={{ display: "flex", flexDirection: "column" }}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          background: "linear-gradient(#00ad5c, #00ad5c)",
+          backgroundSize: "100% 100px",
+        }}
       >
         <DiaryHeader>
           <h2>{activeMonth}</h2>
@@ -220,7 +228,7 @@ const ReCalendar = styled(Calendar)`
     }
 
     .react-calendar__navigation__label > span {
-      font-size: 20px;
+      font-size: 25px;
       font-weight: bold;
       color: #121212;
     }
@@ -228,7 +236,10 @@ const ReCalendar = styled(Calendar)`
 
   /* 요일 표시 */
   .react-calendar__month-view__weekdays {
-    background: none;
+    background-color: rgba(0,173,92,0.5);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px;
     abbr { /*월,화,수... 글자 부분*/
       color: #121212};
       font-size: 18px;
