@@ -41,6 +41,7 @@ export const ReDetail = ({ hospitalName, Memo }) => {
             style={{ width: "60%" }}
           >
             <ModalInputWrapper>
+              <ModalHospitalName>{hospitalName}</ModalHospitalName>
               <ModalInput
                 placeholder="메모를 입력하세요"
                 value={memoValue}
@@ -92,7 +93,14 @@ const ModalInputWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center; /* 가운데 정렬 */
+  flex-direction: column;
   width: 100%;
+`;
+
+const ModalHospitalName = styled.h2`
+  font-size: 20px;
+  font-weight: bold;
+  margin: 5px 0 20px 0;
 `;
 
 const ModalInput = styled.textarea`
