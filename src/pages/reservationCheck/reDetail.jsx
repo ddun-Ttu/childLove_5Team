@@ -39,7 +39,15 @@ export const ReDetail = ({ hospitalName, Memo }) => {
             onClose={closeModal}
             title="메모"
             style={{ width: "60%" }}
-          ></Modal>
+          >
+            <ModalInputWrapper>
+              <ModalInput
+                placeholder="메모를 입력하세요"
+                value={memoValue}
+                onChange={handleMemoChange}
+              />
+            </ModalInputWrapper>
+          </Modal>
         </MemoSection>
       </CardBox>
     </>
@@ -78,4 +86,21 @@ const ButtonWrapper = styled.button`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+`;
+
+const ModalInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 가운데 정렬 */
+  width: 100%;
+`;
+
+const ModalInput = styled.textarea`
+  width: 60%;
+  height: 200px;
+  border: solid 1px #b2b2b2;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  resize: none;
 `;
