@@ -5,19 +5,16 @@ import { useQuery, useQueryClient } from "react-query";
 import { Button } from "../../components/Button";
 import colors from "../../constants/colors";
 
-import { instance } from "../../server/Fetcher";
+import { deleteinstance, instance } from "../../server/Fetcher";
 
 export const PersonalClient = () => {
   const [currentPage, setCurrentPage] = useState(0); // 페이지 숫자 상태
 
   const maxPostPage = 10;
 
-  // useQuery 이용한 통신
-
-  // const userToken =
-  //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMS4xIiwic3ViIjoyLCJpYXQiOjE2ODYyOTAxOTUsImV4cCI6MTcxNzg0Nzc5NX0._vIRMzSEE7L4iXeRabto1_51k0D_7XVNaU1Rmxj4Dak";
-
   const queryClient = useQueryClient();
+
+  // 인스턴스 사용하는 함수
   const listQuery = useQuery("list", async () => {
     const response = await instance.get("/"); // "/"는 baseURL에 추가된 경로입니다
     return response.data;
@@ -32,11 +29,13 @@ export const PersonalClient = () => {
     setSubmitted(false);
   };
 
+  //검색창 폼 제출
   const onSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
   };
 
+  // 체크박스 확인하는 함수
   const handleSingleCheck = (checked, id) => {
     if (checked) {
       setCheckList((prev) => [...prev, id]);
@@ -48,14 +47,7 @@ export const PersonalClient = () => {
     // 페이지네이션 데이터의 id와 체크된 열의 id 값 필터
 
     console.log("삭제할 id:", item);
-    await fetch(`/admin/delete/${item.id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMS4xIiwic3ViIjoxLCJpYXQiOjE2ODYxMDg4MzksImV4cCI6MTcxNzY2NjQzOX0.KoXifXgRmenLuMXmJ_RP1ZJnjinLlyhjD-HN1GAXc5A",
-      },
-    });
-    //React Query에서 'invalidateQueries' 기능 사용해서 업데이트 된 목록 다시
+    await deleteinstance.delete(`/${item.id}`); //React Query에서 'invalidateQueries' 기능 사용해서 업데이트 된 목록 다시
     queryClient.invalidateQueries("list");
   };
 
