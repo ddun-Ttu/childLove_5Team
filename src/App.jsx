@@ -2,7 +2,7 @@ import { RegisterForm } from "./pages/registerForm/RegisterForm";
 import React, { useEffect, useState } from "react";
 import XMLParser from "react-xml-parser";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // 공통 컴포넌트 연결
 import {
@@ -29,9 +29,13 @@ import {
   SearchPage,
   SignUp,
   Detail,
+  Reserve,
+  MapHospital,
+  MapMyPage,
+  ReservationChk,
 } from "./pages/index";
 
-const queryClient = new QueryClient();
+// const queryClient = new QueryClient();
 
 function App() {
   const [arr, setArr] = useState();
@@ -54,9 +58,19 @@ function App() {
     <>
       <Container>
         <Router>
-          <RegisterForm />
-          <Footer />
-          <NavigationBar />
+          <Routes>
+            <Route path="/" element={<Home />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+            <Route path="/SignUp" element={<SignUp />}></Route>
+            <Route path="/register" element={<RegisterForm />} />
+            <Route path="admin" element={<AdminHome />} />
+            <Route path="/reserve" element={<ReservationChk />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/detail" element={<Detail />} />
+            <Route path="/detail/reserve" element={<Reserve />} />
+            <Route path="/detail/map" element={<MapHospital />} />
+            <Route path="/mypage/map" element={<MapMyPage />} />
+          </Routes>
         </Router>
       </Container>
     </>
