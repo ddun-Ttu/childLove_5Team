@@ -119,7 +119,7 @@ export const Home = () => {
         </Banner>
 
         <BannerSeb>
-          <Link to="/SignUp">
+          <Link to="/SignUp?tab=hospital">
             <BanContainer>
               <BannerSebDiv1>
                 <BannerSebIcon
