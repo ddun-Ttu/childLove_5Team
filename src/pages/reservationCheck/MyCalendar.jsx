@@ -81,6 +81,22 @@ export const MyCalendar = () => {
     return null; // 예약 없는 경우는 클래스 이름 없음
   };
 
+  const ReDate = ({ date }) => {
+    return (
+      <div>
+        <h3>{date}</h3>
+      </div>
+    );
+  };
+
+  const ReHour = ({ time }) => {
+    return (
+      <div>
+        <h3>{time}</h3>
+      </div>
+    );
+  };
+
   return (
     <>
       <CardBox linkTo={"#"} bxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)">
@@ -104,21 +120,28 @@ export const MyCalendar = () => {
           />
         </ShowCalendar>
       </CardBox>
-      <CardBox linkTo={"#"} bxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}>
+      <CardBox
+        linkTo={"#"}
+        bxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
+        style={{ display: "flex", flexDirection: "column" }}
+      >
         <DiaryHeader>
           <h2>{activeMonth}</h2>
         </DiaryHeader>
         <DiaryMain>
-          <ReTime>
-            <ReDate>
-              <h3>10일</h3>
-              <h3>토</h3>
-            </ReDate>
-            <ReHour>
-              <h3>PM 3</h3>
-            </ReHour>
-          </ReTime>
-          <ReDetail />
+          {extractedData.map((item, index) => (
+            <React.Fragment key={index}>
+              <ReTime>
+                <ReDate date={item.date} />
+                <ReHour time={item.reservedTime} />
+              </ReTime>
+              <ReDetail
+                hospitalName={item.dutyName}
+                memo={item.memo}
+                contentWidth={100 - 33} // ReDate와 ReTime이 차지하는 너비를 제외한 나머지 너비
+              />
+            </React.Fragment>
+          ))}
           <DueDate>
             <h2>D-day</h2>
           </DueDate>
@@ -276,38 +299,27 @@ const DiaryHeader = styled.div`
 
 const DiaryMain = styled.div`
   display: flex;
-  justify-content: left;
+  flex-wrap: wrap;
+  width: 100%;
   margin: 10px;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  & > div:nth-child(1) {
+    width: 33%;
+  }
+
+  & > div:nth-child(2) {
+    width: 67%;
+  }
 `;
 
 const ReTime = styled.div`
-  width: 30%;
+  width: 33%;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;s
-`;
-
-const ReDate = styled.div`
-  width: 50%;
-  float: left;
-  display: flex;
-
-  & > h3 {
-    font-size: 18px;
-    font-weight: bold;
-    color: #121212;
-  }
-`;
-
-const ReHour = styled.div`
-  width: 50%;
-  float: left;
-  display: flex;
-
-  & > h3 {
-    font-size: 18px;
-    font-weight: bold;
-    color: #121212;
-  }
 `;
 
 const DueDate = styled.div`
