@@ -35,7 +35,7 @@ export const NavigationBar = () => {
           </NavLi>
 
           <NavLi>
-            <NavA href="#">
+            <NavA to="/">
               <NavLogo src={miniLogo} alt="star"></NavLogo>
             </NavA>
           </NavLi>
