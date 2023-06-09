@@ -8,6 +8,7 @@ import {
   Link,
   useNavigate,
 } from "react-router-dom";
+import axios from "axios";
 
 // 알림창 라이브러리
 import "react-toastify/dist/ReactToastify.css";
@@ -287,17 +288,47 @@ const SimpleSlider = () => {
     ],
   };
 
+  // 병원 데이터 get
+  const [hospitalData, setHospitalData] = useState();
+
+  const hospitalApi = async () => {
+    try {
+      const response = await axios.get(
+        "http://34.64.69.226:3000/hospital/near",
+        {
+          params: {
+            userLat: 37.5007795003494,
+            userLon: 127.1107520613008,
+          },
+        }
+      );
+      const responseData = response.data.data;
+      setHospitalData(responseData);
+      console.log("데이터 성공", responseData);
+    } catch (error) {
+      console.error("병원 데이터를 가져오는 중에 오류가 발생했습니다.:", error);
+    }
+  };
+
+  useEffect(() => {
+    hospitalApi();
+  }, []);
+
+  // console.log("데이터 보기", hospitalData[2].id);
+
+  // const [hospitalImg, setHospitalImg] = useState("");
+
   return (
     <>
       <Slider {...settings}>
-        {dataHome.map((item) => (
-          <Card>
+        {hospitalData.map((i) => (
+          <Card key={i.id}>
             <CardTop>
-              <CardImg src={item.linkImg} alt={item.linkImg}></CardImg>
+              {/* <CardImg src={item.linkImg} alt={item.linkImg}></CardImg> */}
             </CardTop>
             <CardBottom>
-              <CardTitle>{item.hospitalName}</CardTitle>
-              <CardAddress>{item.address}</CardAddress>
+              <CardTitle>{i.dutyName}</CardTitle>
+              <CardAddress>{i.dutyAddr}</CardAddress>
             </CardBottom>
           </Card>
         ))}
@@ -319,7 +350,7 @@ const CardBottom = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
-  color: #ffffff;
+  color: #000000;
 `;
 
 const CardTitle = styled.p`
