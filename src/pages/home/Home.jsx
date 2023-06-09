@@ -10,6 +10,9 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 
+// 유튜브 연결
+import YouTube from "react-youtube";
+
 // 알림창 라이브러리
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
@@ -289,7 +292,7 @@ const SimpleSlider = () => {
   };
 
   // 병원 데이터 get
-  const [hospitalData, setHospitalData] = useState();
+  const [hospitalData, setHospitalData] = useState([]);
 
   const hospitalApi = async () => {
     try {
@@ -314,22 +317,26 @@ const SimpleSlider = () => {
     hospitalApi();
   }, []);
 
-  // console.log("데이터 보기", hospitalData[2].id);
-
-  // const [hospitalImg, setHospitalImg] = useState("");
-
+  // const hpId = hospitalData.map((data) => data.id);
+  // console.log("병원 아이디", hpId);
   return (
     <>
       <Slider {...settings}>
-        {hospitalData.map((i) => (
-          <Card key={i.id}>
-            <CardTop>
-              {/* <CardImg src={item.linkImg} alt={item.linkImg}></CardImg> */}
-            </CardTop>
-            <CardBottom>
-              <CardTitle>{i.dutyName}</CardTitle>
-              <CardAddress>{i.dutyAddr}</CardAddress>
-            </CardBottom>
+        {hospitalData.map((data) => (
+          <Card key={data.id}>
+            <Link to={`/detail/${data.id}`}>
+              <CardTop>
+                {data.image ? (
+                  <CardImg src={data.image} alt={data.linkImg} />
+                ) : (
+                  <CardImgBak></CardImgBak>
+                )}
+              </CardTop>
+              <CardBottom>
+                <CardTitle>{data.dutyName}</CardTitle>
+                <CardAddress>{data.dutyAddr}</CardAddress>
+              </CardBottom>
+            </Link>
           </Card>
         ))}
       </Slider>
@@ -346,6 +353,7 @@ const CardTop = styled.div`
 `;
 const CardBottom = styled.div`
   position: absolute;
+  width: 80%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -354,8 +362,9 @@ const CardBottom = styled.div`
 `;
 
 const CardTitle = styled.p`
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 700;
+  margin-bottom: 8%;
 `;
 
 const CardAddress = styled.p`
@@ -368,4 +377,11 @@ const CardImg = styled.img`
   hieght: 100%;
   object-fit: cover;
   border-radius: 20px;
+`;
+
+const CardImgBak = styled.div`
+  width: 266px;
+  height: 266px;
+  border-radius: 20px;
+  background: rgba(0, 131, 60, 0.2);
 `;
