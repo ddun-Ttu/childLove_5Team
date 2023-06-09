@@ -1,5 +1,4 @@
 import { RegisterForm } from "./pages/registerForm/RegisterForm";
-import ReservationChk from "./pages/reservationCheck/reservationChk";
 
 import React, { useEffect, useState } from "react";
 import XMLParser from "react-xml-parser";
@@ -34,6 +33,8 @@ import {
   MapHospital,
   MapMyPage,
   ReservationChk,
+  Mypage,
+  ChildPage,
 } from "./pages/index";
 
 // const queryClient = new QueryClient();
@@ -61,29 +62,20 @@ function App() {
       {/* Router 컴포넌트 추가 */}
       <Container>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/SignUp" element={<SignUp />}></Route>
           <Route path="/register" element={<RegisterForm />} />
           <Route path="admin" element={<AdminHome />} />
           <Route path="/reserve" element={<ReservationChk />} />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="login" element={<Login />} />
-          <Route path="sign" element={<SignUp />} />
+          <Route path="/detail" element={<Detail />} />
+          <Route path="/detail/reserve" element={<Reserve />} />
+          <Route path="/detail/map" element={<MapHospital />} />
+          <Route path="/mypage/map" element={<MapMyPage />} />
+          <Route path="/Mypage" element={<Mypage />} />
+          <Route path="/Mypage/ChildPage" element={<ChildPage />} />
         </Routes>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/login" element={<Login />}></Route>
-            <Route path="/SignUp" element={<SignUp />}></Route>
-            <Route path="/register" element={<RegisterForm />} />
-            <Route path="admin" element={<AdminHome />} />
-            <Route path="/reserve" element={<ReservationChk />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/detail" element={<Detail />} />
-            <Route path="/detail/reserve" element={<Reserve />} />
-            <Route path="/detail/map" element={<MapHospital />} />
-            <Route path="/mypage/map" element={<MapMyPage />} />
-          </Routes>
-        </Router>
       </Container>
     </Router>
   );
