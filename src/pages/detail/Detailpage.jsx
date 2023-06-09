@@ -36,7 +36,7 @@ import {
 import colors from "../../constants/colors";
 import fontSize from "../../constants/fontSize";
 
-// 공통 컴포넌트 수정활용
+// 공통 컴포넌트 수정활용 *즐겨찾기,뒤로가기 클릭 이벤트 추가해야함
 const NewHeader = ({ label, onClick }) => {
   return (
     <>
@@ -61,13 +61,22 @@ const BEdata = "http://34.64.69.226:3000";
 const Detail = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const hospitalID = searchParams.get("id");
+  const hospitalID = "A1100401";
+  // searchParams.get("id") 위의 아이디 대체
+  const token = localStorage.getItem("token")
+    ? localStorage.getItem("token")
+    : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vb250ZXN0QHRlc3QudGVzdCIsInN1YiI6MywiaWF0IjoxNjg2MjM2NTQzLCJleHAiOjE3MTc3OTQxNDN9.ToJBCRSygcxpdmMC-B0DyayfbdR7f6E4FEYhhEu5RhA";
+  // localStorage.getItem("token"); 위의 뒷부분 테스트토큰을 false로
 
   const [hospitalData, setHospitalData] = useState({});
   const [hospitalImg, setHospitalImg] = useState("");
+  const [hospitalReviews, setHospitalReviews] = useState([]);
+  const [hospitalReviewState, setHospitalReviewState] = useState({});
+  const [userReviews, setUserReviews] = useState([]);
 
+  // 병원,이미지,리뷰 정보
   useEffect(() => {
-    fetch(`${BEdata}/hospital/A1106309`, {
+    fetch(`${BEdata}/hospital/${hospitalID}`, {
       headers: {
         Accept: "application / json",
       },
@@ -78,21 +87,62 @@ const Detail = () => {
         setHospitalData(hospitalID.data);
       });
 
-    fetch(`${BEdata}/image/hospital/A1106309`, {
-      headers: {
-        Accept: "application / json",
-      },
-      method: "GET",
-    })
+    fetch(`${BEdata}/image/hospital/${hospitalID}`)
       .then((res) => res.json())
       .then((hospitalD) => {
         setHospitalImg(hospitalD.data);
       });
+
+    fetch(`${BEdata}/reviews/${hospitalID}`)
+      .then((res) => res.json())
+      .then((reviewData) => {
+        setHospitalReviews(reviewData.data);
+      });
   }, []);
 
   useEffect(() => {
-    console.log(hospitalData);
-  }, [hospitalData]);
+    fetch(`${BEdata}/reviews/${hospitalID}`)
+      .then((res) => res.json())
+      .then((reviewData) => {
+        setHospitalReviews(reviewData.data);
+      });
+  }, [hospitalReviewState]);
+
+  // 병원리뷰
+  function reviewClick(label) {
+    if (token) {
+      const data = { vote: label };
+      fetch(`${BEdata}/reviews/${hospitalID}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify(data),
+      })
+        .then((res) => res.json())
+        .then((reviewData) => {
+          setHospitalReviewState(reviewData.data);
+          if (reviewData.data.length == 1) {
+            fetch(`${BEdata}/reviews/user/${hospitalID}`, {
+              headers: {
+                Authorization: token,
+              },
+              method: "GET",
+            })
+              .then((res) => res.json())
+              .then((reviewcheck) => {
+                setUserReviews(reviewcheck.data[0].vote);
+              });
+          }
+        })
+        .catch((err) => {
+          alert("잘못된 유저정보입니다");
+        });
+    } else {
+      alert("로그인이 필요합니다");
+    }
+  }
 
   return (
     <>
@@ -103,7 +153,7 @@ const Detail = () => {
         <SlideContainer>
           <SlideImg>
             {" "}
-            {hospitalImg.imageUrl == undefined ? (
+            {hospitalImg.imageUrl ? (
               <img src={hospitalImg.imageUrl} alt="" />
             ) : (
               <img src={NoImage} alt="No Image" />
@@ -135,6 +185,12 @@ const Detail = () => {
           ></Button>
           <UnderLine />
         </TopContentContainer>
+        <QueryMapBtn Link={"/map"}>
+          <div>
+            <img src={locationWhite} alt="" />
+            <span>지도</span>
+          </div>
+        </QueryMapBtn>
         <BottomContentContainer>
           <HpInfo>
             <img src={locationGreen} alt="" />
@@ -186,13 +242,54 @@ const Detail = () => {
           </HpInfo>
           <HpInfo>
             <img src={tagGreen} alt="" />
-            <HpInfoCard>{hospitalData.dutyEtc}</HpInfoCard>
+            {hospitalData.dutyEtc ? (
+              <HpInfoCard>{hospitalData.dutyEtc}</HpInfoCard>
+            ) : (
+              <HpInfoCard>태그가 없습니다</HpInfoCard>
+            )}
           </HpInfo>
           <HpInfo>
             <img src={smileGreen} alt="" />
             <h1>이런 점이 좋았어요</h1>
           </HpInfo>
-          <div>{/* 리뷰컨테이너 */}</div>
+          <ReviewContainer>
+            <ReviewButton onClick={() => reviewClick(1)}>
+              친절한 의사 선생님
+              {hospitalReviews && (
+                <span>{JSON.stringify(hospitalReviews[0])}</span>
+              )}
+            </ReviewButton>
+            <ReviewButton onClick={() => reviewClick(2)}>
+              전문적인 치료
+              {hospitalReviews && (
+                <span>{JSON.stringify(hospitalReviews[1])}</span>
+              )}
+            </ReviewButton>
+            <ReviewButton onClick={() => reviewClick(3)}>
+              상냥한 간호사·직원
+              {hospitalReviews && (
+                <span>{JSON.stringify(hospitalReviews[2])}</span>
+              )}
+            </ReviewButton>
+            <ReviewButton onClick={() => reviewClick(4)}>
+              편리한 접수·예약
+              {hospitalReviews && (
+                <span>{JSON.stringify(hospitalReviews[3])}</span>
+              )}
+            </ReviewButton>
+            <ReviewButton onClick={() => reviewClick(5)}>
+              깨끗한 시설
+              {hospitalReviews && (
+                <span>{JSON.stringify(hospitalReviews[4])}</span>
+              )}
+            </ReviewButton>
+            <ReviewButton onClick={() => reviewClick(6)}>
+              편한 교통·주차
+              {hospitalReviews && (
+                <span>{JSON.stringify(hospitalReviews[5])}</span>
+              )}
+            </ReviewButton>
+          </ReviewContainer>
           <ReserveContainer>
             <Button
               width={"237px"}
@@ -202,7 +299,7 @@ const Detail = () => {
               borderOutLine={"#ffffff"}
               btnColor={"white"}
               btnFontSize={"30px"}
-              linkTo={"/reserve"}
+              linkTo={`/detail/reserve?id=${hospitalID}`}
             />
           </ReserveContainer>
         </BottomContentContainer>
@@ -226,6 +323,11 @@ const HeaderStar = styled.div`
   float: right;
   width: 29px;
   height: 28px;
+  margin-right: 10px;
+  @media screen and (max-width: 600px) {
+    width: 21px;
+    height: 21px;
+  }
 `;
 const HeaderWrap = styled.div`
   width: 100%;
@@ -237,6 +339,9 @@ const HeaderWrap = styled.div`
     font-size: 20px;
     color: #00ad5c;
     font-weight: 600;
+    @media screen and (max-width: 600px) {
+      font-size: 17px;
+    }
   }
 `;
 
@@ -265,6 +370,7 @@ const SlideImg = styled.div`
 `;
 
 const ArrowRigth = styled.div`
+  display: none;
   position: absolute;
   right: 72px;
   transform: rotate(180deg);
@@ -276,6 +382,7 @@ const ArrowRigth = styled.div`
 `;
 
 const ArrowLeft = styled.div`
+  display: none;
   position: absolute;
   left: 72px;
   cursor: pointer;
@@ -295,9 +402,20 @@ const TopContentContainer = styled.div`
   justify-content: center;
   font-weight: 600;
   font-size: 30px;
+  @media screen and (max-width: 600px) {
+    font-size: 20px;
+  }
   a {
     position: absolute;
     right: 41px;
+    @media screen and (max-width: 800px) {
+      display: none;
+    }
+  }
+  button {
+    border: 1px solid #00a758;
+    border-radius: 7px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   }
 `;
 
@@ -308,11 +426,31 @@ const UnderLine = styled.div`
   border-bottom: 2px solid ${colors.primary};
 `;
 
+const QueryMapBtn = styled.button`
+  display: none;
+  margin-top: 20px;
+  width: 90%;
+  height: 39px;
+  background-color: ${colors.primary};
+  color: white;
+  font-size: 16px;
+  border: 1px solid #00a758;
+  border-radius: 7px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+  @media screen and (max-width: 800px) {
+    display: inline-block;
+  }
+`;
+
 const BottomContentContainer = styled.div`
   flex-direction: column;
   text-align: left;
   padding-left: 71px;
   padding-right: 71px;
+  @media screen and (max-width: 600px) {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
 `;
 
 const HpInfo = styled.div`
@@ -328,6 +466,9 @@ const HpInfo = styled.div`
     margin-left: 22px;
     color: ${colors.primary};
   }
+  @media screen and (max-width: 500px) {
+    font-size: 15px;
+  }
 `;
 
 const HpInfoCard = styled.span`
@@ -336,16 +477,64 @@ const HpInfoCard = styled.span`
   padding: 7px 15px 7px 15px;
   border: solid 1px #bebebe;
   border-radius: 17.5px;
+  @media screen and (max-width: 640px) {
+    font-size: 13px;
+  }
 `;
 
 const HpInfoGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 10px;
+  @media screen and (max-width: 800px) {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+  }
+  @media screen and (max-width: 450px) {
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+  }
+`;
+
+const ReviewContainer = styled.div`
+  padding: 0 45px 0 45px;
+  margin-top: 19px;
+  width: 100%;
+  height: 100px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 15px;
+  @media screen and (max-width: 700px) {
+    grid-template-columns: 1fr 1fr;
+    padding: 0;
+  }
+`;
+
+const ReviewButton = styled.button`
+  cursor: pointer;
+  background: #f4f4f4;
+  border: 1px solid #00ad5c;
+  border-radius: 11px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+  align-items: center;
+  justify-content: space-around;
+  font-weight: 600;
+  font-size: 14px;
+  position: relative;
+  text-align: start;
+  span {
+    color: #00ad5c;
+    position: absolute;
+    right: 10px;
+  }
+  @media screen and (max-width: 700px) {
+    padding: 7px;
+    font-size: 12px;
+  }
 `;
 
 const ReserveContainer = styled.div`
-  margin: 41px 0 41px 0;
+  margin: 60px 0 41px 0;
   display: flex;
   width: 100%;
   justify-content: center;
