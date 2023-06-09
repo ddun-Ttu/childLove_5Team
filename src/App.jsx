@@ -32,6 +32,7 @@ import {
   Reserve,
   MapHospital,
   MapMyPage,
+  ReservationChk,
 } from "./pages/index";
 
 // const queryClient = new QueryClient();
@@ -63,7 +64,7 @@ function App() {
             <Route path="/SignUp" element={<SignUp />}></Route>
             <Route path="/register" element={<RegisterForm />} />
             <Route path="admin" element={<AdminHome />} />
-            {/* <Route path="/reserve" element={<ReservationChk />} /> */}
+            <Route path="/reserve" element={<ReservationChk />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/detail" element={<Detail />} />
             <Route path="/detail/reserve" element={<Reserve />} />

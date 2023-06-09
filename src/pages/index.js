@@ -4,7 +4,7 @@ import { Home } from "./home/Home";
 // import MyPage from "./info/MyPage";
 import { Login } from "./login/Login";
 import { Post } from "./registerForm/Post";
-// import { MyCalendar } from "./reservationCheck/MyCalendar";
+import ReservationChk from "./reservationCheck/reservationChk";
 import { HospitalCard } from "./search/HospitalCard";
 import { SignUp } from "./signUp/SignUp";
 import Detail from "./detail/Detailpage";
@@ -25,5 +25,6 @@ export {
   SearchPage,
   Reserve,
   MapHospital,
-  MapMyPage
+  MapMyPage,
+  ReservationChk
 };
