@@ -148,20 +148,18 @@ export const MyCalendar = () => {
         </DiaryHeader>
         <DiaryMain>
           {extractedData.map((item, index) => (
-            <React.Fragment key={index}>
-              <ReTime>
-                <ReDate date={item.date} />
-                <ReHour time={item.reservedTime} />
-              </ReTime>
-              <ReDetail
-                hospitalName={item.dutyName}
-                memo={item.memo}
-                style={{ width: "100%" }}
-              />
-              <DueDate>
-                <h2>{calculateDday(activeDate, item.date)}</h2>
-              </DueDate>
-            </React.Fragment>
+            <DiaryItemWrapper key={index}>
+              <DiaryItem>
+                <ReTime>
+                  <ReDate date={item.date} />
+                  <ReHour time={item.reservedTime} />
+                </ReTime>
+                <ReDetail hospitalName={item.dutyName} memo={item.memo} />
+                <DueDate>
+                  <h2>{calculateDday(activeDate, item.date)}</h2>
+                </DueDate>
+              </DiaryItem>
+            </DiaryItemWrapper>
           ))}
         </DiaryMain>
       </CardBox>
@@ -324,29 +322,41 @@ const DiaryMain = styled.div`
   justify-content: space-between;
 
   & > div:nth-child(1) {
-    width: 30%;
+    flex-grow: 1;
   }
 
   & > div:nth-child(2) {
-    width: 60%;
+    flex-grow: 2;
   }
 
   & > div:nth-child(3) {
-    width: 10%;
+    flex-grow: 0.5;
   }
+`;
+
+const DiaryItemWrapper = styled.div`
+  width: 100%;
+`;
+
+const DiaryItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
 `;
 
 const ReTime = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  width: 20%;
 `;
 
 const DueDate = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 20%;
 
   & > h2 {
     width: 100%;
