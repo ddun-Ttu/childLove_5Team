@@ -5,6 +5,7 @@ import { fetchList } from "../../server/Fetcher";
 import { Button } from "../../components/Button";
 import colors from "../../constants/colors";
 import { check } from "prettier";
+import axios from "axios";
 
 export const PersonalClient = () => {
   const [currentPage, setCurrentPage] = useState(0); // 페이지 숫자 상태
@@ -12,8 +13,20 @@ export const PersonalClient = () => {
   const maxPostPage = 10;
 
   // useQuery 이용한 통신
+
+  const userToken =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMS4xIiwic3ViIjoyLCJpYXQiOjE2ODYyOTAxOTUsImV4cCI6MTcxNzg0Nzc5NX0._vIRMzSEE7L4iXeRabto1_51k0D_7XVNaU1Rmxj4Dak";
+
   const queryClient = useQueryClient();
-  const { isLoading, data: list } = useQuery("list", () => fetchList());
+  const { isLoading, data: list } = useQuery("list", () =>
+    axios
+      .get("http://34.64.69.226:3000/admin/get/generelclient", {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      })
+      .then((res) => console.log(res))
+  );
 
   const [checkValue, setCheckValue] = useState(""); // 검색창 인풋
   const [submitted, setSubmitted] = useState(false); // 검색창 submit 상태
@@ -54,7 +67,7 @@ export const PersonalClient = () => {
   useEffect(() => {
     if (currentPage <= maxPostPage - 1) {
       const nextPage = currentPage + 1;
-      queryClient.prefetchQuery(["posts", nextPage], () => fetchList());
+      queryClient.prefetchQuery(["posts", nextPage], () => fetchList);
     }
   }, [currentPage, queryClient]);
 
@@ -63,7 +76,7 @@ export const PersonalClient = () => {
   }
 
   // 검색창 value와 데이터의 이메일 값 비교해서 같으면 데이터 재구성
-  const filteredList = list.data?.filter(
+  const filteredList = list.data.data?.filter(
     (item) => !submitted || item.email === checkValue
   );
 
