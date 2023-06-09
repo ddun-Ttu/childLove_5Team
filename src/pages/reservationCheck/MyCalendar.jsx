@@ -16,7 +16,8 @@ import styled from "styled-components";
 export const MyCalendar = () => {
   const curDate = new Date(); // 현재 날짜
   const [value, onChange] = useState(curDate); // 클릭한 날짜 - 초기값 현재 날짜
-  const activeDate = dayjs(value).format("YY.MM.DD"); // 클릭한 날짜 (년-월-일)
+  const activeDate = dayjs(value); // 클릭한 날짜 (dayjs 객체로 변경)
+  const activeDateString = activeDate.format("YY.MM.DD"); // 클릭한 날짜 (년-월-일)
   const activeMonth = dayjs(value).get("month") + 1 + "월";
 
   const [datesOnly, setDatesOnly] = useState([]); //날짜만 추출
@@ -99,12 +100,26 @@ export const MyCalendar = () => {
       </div>
     );
   };
+  // 디데이 계산하는 코드
+  const calculateDday = (activeDate, targetDate) => {
+    const diffInDays = dayjs(targetDate).diff(dayjs(activeDate), "day");
+
+    if (diffInDays !== 0) {
+      if (diffInDays < 0) {
+        return `D+${Math.abs(diffInDays)}`;
+      } else {
+        return `D-${diffInDays}`;
+      }
+    } else {
+      return "Today";
+    }
+  };
 
   return (
     <>
       <CardBox linkTo={"#"} bxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)">
         <ShowDate>
-          <h1>{activeDate}</h1>
+          <h1>{activeDateString}</h1>
         </ShowDate>
       </CardBox>
       <CardBox linkTo={"#"} bxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}>
@@ -141,13 +156,13 @@ export const MyCalendar = () => {
               <ReDetail
                 hospitalName={item.dutyName}
                 memo={item.memo}
-                contentWidth={100 - 33} // ReDate와 ReTime이 차지하는 너비를 제외한 나머지 너비
+                style={{ width: "100%" }}
               />
+              <DueDate>
+                <h2>{calculateDday(activeDate, item.date)}</h2>
+              </DueDate>
             </React.Fragment>
           ))}
-          <DueDate>
-            <h2>D-day</h2>
-          </DueDate>
         </DiaryMain>
       </CardBox>
     </>
@@ -309,24 +324,26 @@ const DiaryMain = styled.div`
   justify-content: space-between;
 
   & > div:nth-child(1) {
-    width: 33%;
+    width: 30%;
   }
 
   & > div:nth-child(2) {
-    width: 67%;
+    width: 60%;
+  }
+
+  & > div:nth-child(3) {
+    width: 10%;
   }
 `;
 
 const ReTime = styled.div`
-  width: 33%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;s
+  justify-content: center;
 `;
 
 const DueDate = styled.div`
-  width: 15%;
   display: flex;
   align-items: center;
   justify-content: center;
