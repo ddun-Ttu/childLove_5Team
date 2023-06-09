@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useQuery, useQueryClient } from "react-query";
-import { fetchList } from "../../server/Fetcher";
+
 import { Button } from "../../components/Button";
 import colors from "../../constants/colors";
 
-import axios from "axios";
+import { instance } from "../../server/Fetcher";
 
 export const PersonalClient = () => {
   const [currentPage, setCurrentPage] = useState(0); // 페이지 숫자 상태
@@ -14,19 +14,14 @@ export const PersonalClient = () => {
 
   // useQuery 이용한 통신
 
-  const userToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMS4xIiwic3ViIjoyLCJpYXQiOjE2ODYyOTAxOTUsImV4cCI6MTcxNzg0Nzc5NX0._vIRMzSEE7L4iXeRabto1_51k0D_7XVNaU1Rmxj4Dak";
+  // const userToken =
+  //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMS4xIiwic3ViIjoyLCJpYXQiOjE2ODYyOTAxOTUsImV4cCI6MTcxNzg0Nzc5NX0._vIRMzSEE7L4iXeRabto1_51k0D_7XVNaU1Rmxj4Dak";
 
   const queryClient = useQueryClient();
-  const listQuery = useQuery("list", () =>
-    axios
-      .get("http://34.64.69.226:3000/admin/get/generelclient", {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      })
-      .then((res) => res.data)
-  );
+  const listQuery = useQuery("list", async () => {
+    const response = await instance.get("/"); // "/"는 baseURL에 추가된 경로입니다
+    return response.data;
+  });
 
   const list = listQuery.data;
   const [checkValue, setCheckValue] = useState(""); // 검색창 인풋
@@ -68,7 +63,7 @@ export const PersonalClient = () => {
   useEffect(() => {
     if (currentPage <= maxPostPage - 1) {
       const nextPage = currentPage + 1;
-      queryClient.prefetchQuery(["posts", nextPage], () => fetchList);
+      queryClient.prefetchQuery(["posts", nextPage], () => listQuery.data);
     }
   }, [currentPage, queryClient]);
 
