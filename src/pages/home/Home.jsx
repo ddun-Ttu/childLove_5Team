@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import {
   BrowserRouter as Router,
@@ -9,9 +9,6 @@ import {
   useNavigate,
 } from "react-router-dom";
 import axios from "axios";
-
-// 유튜브 연결
-import YouTube from "react-youtube";
 
 // 알림창 라이브러리
 import "react-toastify/dist/ReactToastify.css";
@@ -24,10 +21,17 @@ import iconPeople from "../../assets/iconPeople.svg";
 import arrowRight from "../../assets/arrowRight.svg";
 
 // 공통 컴포넌트 연결 링크
-import { NavigationBar } from "../../components/NavigationBar";
-import { Container } from "../../components/Container";
-import { Footer } from "../../components/Footer";
-import { SearchBar } from "../../components/SearchBar";
+import {
+  Button,
+  CardBox,
+  Header,
+  NavigationBar,
+  Container,
+  Footer,
+  SearchBar,
+} from "../../components/index";
+
+import { AutoplayYouTubeVideo } from "./Youtube";
 
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import colors from "../../constants/colors";
@@ -37,9 +41,6 @@ import fontSize from "../../constants/fontSize";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-// 더미 데이터
-import { dataHome } from "./data";
 
 export const Home = () => {
   const handleLogout = () => {
@@ -148,8 +149,12 @@ export const Home = () => {
         </BannerSeb>
 
         <SiliderMargin>
+          <H1>내 주변 소아과</H1>
           <SimpleSlider />
         </SiliderMargin>
+
+        <AutoplayYouTubeVideo videoId={"Os_heh8vPfs"} />
+
         <Footer />
         <NavigationBar />
       </Container>
@@ -254,6 +259,14 @@ const BannerSebH1 = styled.p`
   padding: 1%;
 `;
 
+const H1 = styled.p`
+  font-size: 30px;
+  font-weight: 900;
+  color: #121212;
+  padding: 1%;
+  margin-bottom: 3%;
+`;
+
 // 캐러셀 라이브러리
 const SimpleSlider = () => {
   const settings = {
@@ -317,8 +330,6 @@ const SimpleSlider = () => {
     hospitalApi();
   }, []);
 
-  // const hpId = hospitalData.map((data) => data.id);
-  // console.log("병원 아이디", hpId);
   return (
     <>
       <Slider {...settings}>
@@ -356,9 +367,16 @@ const CardBottom = styled.div`
   width: 80%;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
   z-index: 1;
-  color: #000000;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+
+  ${Card}:hover & {
+    opacity: 1;
+    background: rgba(0, 131, 60, 0.8);
+  }
 `;
 
 const CardTitle = styled.p`
@@ -374,7 +392,7 @@ const CardAddress = styled.p`
 
 const CardImg = styled.img`
   width: 100%;
-  hieght: 100%;
+  height: 100%;
   object-fit: cover;
   border-radius: 20px;
 `;
@@ -384,4 +402,5 @@ const CardImgBak = styled.div`
   height: 266px;
   border-radius: 20px;
   background: rgba(0, 131, 60, 0.2);
+  //
 `;
