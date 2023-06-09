@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from "react-query";
 import { fetchList } from "../../server/Fetcher";
 import { Button } from "../../components/Button";
 import colors from "../../constants/colors";
-import { check } from "prettier";
+
 import axios from "axios";
 
 export const PersonalClient = () => {
@@ -18,16 +18,17 @@ export const PersonalClient = () => {
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMS4xIiwic3ViIjoyLCJpYXQiOjE2ODYyOTAxOTUsImV4cCI6MTcxNzg0Nzc5NX0._vIRMzSEE7L4iXeRabto1_51k0D_7XVNaU1Rmxj4Dak";
 
   const queryClient = useQueryClient();
-  const { isLoading, data: list } = useQuery("list", () =>
+  const listQuery = useQuery("list", () =>
     axios
       .get("http://34.64.69.226:3000/admin/get/generelclient", {
         headers: {
           Authorization: `Bearer ${userToken}`,
         },
       })
-      .then((res) => console.log(res))
+      .then((res) => res.data)
   );
 
+  const list = listQuery.data;
   const [checkValue, setCheckValue] = useState(""); // 검색창 인풋
   const [submitted, setSubmitted] = useState(false); // 검색창 submit 상태
   const [checkList, setCheckList] = useState([]); // 체크박스
@@ -71,12 +72,11 @@ export const PersonalClient = () => {
     }
   }, [currentPage, queryClient]);
 
-  if (isLoading) {
+  if (listQuery.isLoading) {
     return <h1>로딩중입니다..</h1>;
   }
 
-  // 검색창 value와 데이터의 이메일 값 비교해서 같으면 데이터 재구성
-  const filteredList = list.data.data?.filter(
+  const filteredList = list.data?.filter(
     (item) => !submitted || item.email === checkValue
   );
 
