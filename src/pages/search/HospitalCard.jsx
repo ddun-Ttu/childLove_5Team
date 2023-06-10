@@ -21,7 +21,6 @@ export const HospitalCard = ({
   dutyTimeStart,
   dutyTimeClose,
   favorite,
-  handleFavorite,
 }) => {
   //요일 정보 변환
   const todayText = WEEK[today - 1];
@@ -51,8 +50,9 @@ export const HospitalCard = ({
       content: hospitalAddress,
     },
   ];
-  const handleFavoriteClick = () => {
-    handleFavorite(hpid); // 즐겨찾기 핸들러 함수 호출
+  const handleFavoriteClick = (event) => {
+    //즐겨찾기 클릭 시 Link로 넘어가는 것을 막음
+    event.preventDefault();
   };
   return (
     <>

@@ -1,7 +1,7 @@
 import * as Style from "./styles/SearchPageStyle";
 
 //아이콘
-import { IconSearch, IconUp, IconDown, IconAlarm } from "../../assets/index";
+import { IconDown } from "../../assets/index";
 
 // 공통 컴포넌트
 import { NavigationBar, SearchBar } from "../../components/index";
@@ -13,8 +13,6 @@ import axios from "axios";
 
 //병원리스트 - 병원카드 컴포넌트
 import { HospitalCard } from "./HospitalCard";
-import { Wrapper } from "../../components/styles/SearchBarStyle";
-// import SearchHeader from "./SearchHeader";
 
 //검색 정렬 옵션
 const SORT_OPTIONS = [
@@ -37,6 +35,9 @@ export const SearchPageFix = () => {
     setDepth1(first);
     setDepth2(second);
   };
+
+  // 키워드 검색어
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   //검색 필터 옵션
   const [option, setOption] = useState(SORT_OPTIONS[0]);
@@ -145,7 +146,7 @@ export const SearchPageFix = () => {
         <Style.SearchHeader>
           <span>총 {hospitalList.length} 개</span>
           <Style.DropdownContainer>
-            <button isOpen={isOpenOption} onClick={handleOptionClick}>
+            <button onClick={handleOptionClick}>
               {option.name}
               <img alt="icon-down" src={IconDown}></img>
             </button>
@@ -194,6 +195,7 @@ export const SearchPageFix = () => {
           <div>검색 결과가 없습니다.</div>
         )}
       </Style.Wrapper>
+      <NavigationBar />
     </>
   );
 };
