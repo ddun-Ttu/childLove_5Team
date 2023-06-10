@@ -7,14 +7,14 @@ import { IconSearch, IconUp, IconDown, IconAlarm } from "../../assets/index";
 import { NavigationBar, SearchBar } from "../../components/index";
 
 //import문
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useQuery } from "react-query";
 import axios from "axios";
 
 //병원리스트 - 병원카드 컴포넌트
 import { HospitalCard } from "./HospitalCard";
 import { Wrapper } from "../../components/styles/SearchBarStyle";
-import SearchHeader from "./SearchHeader";
+// import SearchHeader from "./SearchHeader";
 
 //검색 정렬 옵션
 const SORT_OPTIONS = [
@@ -38,8 +38,14 @@ export const SearchPageFix = () => {
     setDepth2(second);
   };
 
+  //검색 필터 옵션
+  const [option, setOption] = useState(SORT_OPTIONS[0]);
+
+  // 옵션창 펼쳐졌는지
+  const [isOpenOption, setIsOpenOption] = useState(false);
+
   // 유저 정보
-  const { data: user, userIsLoading } = useQuery(["user"], async () => {
+  const { data: userQuery, userIsLoading } = useQuery(["user"], async () => {
     try {
       const response = await axios.get(`${BE_URL}${endpoint_user}`, {
         headers: {
@@ -52,8 +58,8 @@ export const SearchPageFix = () => {
       throw error;
     }
   });
-  // 병원리스트
-  const { data: hospitalList, hospitalListIsLoading } = useQuery(
+  // 병원리스트 받아오기
+  const { data: hospitalsQuery, hospitalListIsLoading } = useQuery(
     ["hospitals", depth1, depth2],
     async () => {
       try {
@@ -70,8 +76,8 @@ export const SearchPageFix = () => {
       }
     }
   );
-  // 즐겨찾기 리스트
-  const { data: favoriteList, favoriteListIsLoading } = useQuery(
+  // 즐겨찾기 리스트 받아오기
+  const { data: favoritesQuery, favoriteListIsLoading } = useQuery(
     ["favorites"],
     async () => {
       try {
@@ -90,37 +96,85 @@ export const SearchPageFix = () => {
     }
   );
 
+  //로딩중일 경우 null값 반환
   if (userIsLoading || hospitalListIsLoading || favoriteListIsLoading) {
     return null;
   }
-  const list = hospitalList?.data ?? [];
-  console.log("list:", list);
+
+  //유저정보
+  const userData = userQuery?.data ?? [];
+  const user_id = userData.id;
+  console.log("userData:", userData);
+  //병원리스트
+  const hospitalList = hospitalsQuery?.data ?? [];
+  console.log("hospitalList:", hospitalList);
+  //즐겨찾기 리스트
+  const favoritesList = favoritesQuery?.data ?? [];
+  console.log("favoriteList:", favoritesList);
 
   //오늘 날짜(요일) 저장
   let now = new Date();
   const today = now.getDay();
 
+  // 검색 옵션버튼 클릭 시
+  const handleOptionClick = () => {
+    setIsOpenOption(!isOpenOption);
+  };
+
+  // 검색 옵션(SORT OPTION) 변경 시
+  const handleOptionChange = (e) => {
+    const selectedOptionState = e.target.value;
+    const selectedOption = SORT_OPTIONS.find(
+      (option) => option.state === selectedOptionState
+    );
+
+    if (selectedOption) {
+      setOption(selectedOption);
+      setIsOpenOption(false);
+    }
+  };
+
   return (
     <>
-      <Wrapper>
+      <Style.Wrapper>
         <SearchBar
           onSearch={() => {}}
           depth1={depth1}
           depth2={depth2}
           onLocationChange={handleDepthChange}
         />
-        {list.length > 0 ? (
-          list.map((hospital) => {
+        <Style.SearchHeader>
+          <span>총 {hospitalList.length} 개</span>
+          <Style.DropdownContainer>
+            <button isOpen={isOpenOption} onClick={handleOptionClick}>
+              {option.name}
+            </button>
+            <div isOpen={isOpenOption}>
+              {SORT_OPTIONS.map((option) => (
+                <option
+                  key={option.state}
+                  value={option.state}
+                  onClick={handleOptionChange}
+                >
+                  {option.name}
+                </option>
+              ))}
+            </div>
+          </Style.DropdownContainer>
+          <img alt="icon-down" src={IconDown}></img>
+        </Style.SearchHeader>
+        {hospitalList.length > 0 ? (
+          hospitalList.map((hospital) => {
+            console.log("몇개:", hospitalList.length);
             const dutyTimeStart = hospital[`dutyTime${today}s`]; // 오늘 요일에 해당하는 dutyTime 시작 시간
             const dutyTimeClose = hospital[`dutyTime${today}c`]; // 오늘 요일에 해당하는 dutyTime 종료 시간
 
             //즐겨찾기 해당여부 체크
-            const favorite = true;
-            //    favorites.data.some(
-            //     (favoriteItem) =>
-            //       favoriteItem.user_id === user_id &&
-            //       favoriteItem.hpid === hospital.id
-            //   );
+            const favorite = favoritesList.some(
+              (favoriteItem) =>
+                favoriteItem.user_id === user_id &&
+                favoriteItem.hpid === hospital.id
+            );
 
             return (
               <HospitalCard
@@ -139,7 +193,7 @@ export const SearchPageFix = () => {
         ) : (
           <div>No hospitals found</div>
         )}
-      </Wrapper>
+      </Style.Wrapper>
     </>
   );
 };
