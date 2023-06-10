@@ -77,6 +77,44 @@ export const Home = () => {
     setSearchKeyword(keyword);
   };
 
+  // 사용자의 현재 위치 찾기 Geolocation API & OpenStreetMap Nominatim API
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+  const [address, setAddress] = useState(null);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          setLatitude(position.coords.latitude);
+          setLongitude(position.coords.longitude);
+
+          try {
+            const response = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`
+            );
+            const data = await response.json();
+
+            const { suburb, city_district, city, province, quarter } =
+              data.address;
+            const formattedAddress = `${province} ${
+              suburb || city_district || city || ""
+            } ${quarter}`;
+
+            setAddress(formattedAddress);
+          } catch (error) {
+            console.error(error);
+          }
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+    } else {
+      console.error("현재 브라우저는 위치를 지원하지 않습니다.");
+    }
+  }, []);
+
   return (
     <>
       <Container>
@@ -150,8 +188,13 @@ export const Home = () => {
 
         <SiliderMargin>
           <MainSub>
-            <H2>현재 내 위치 :</H2>
+            {address ? (
+              <H2>현재 내 위치 : {address}</H2>
+            ) : (
+              <H2>위치찾는중...</H2>
+            )}
             <H1>내 주변 소아과</H1>
+            {/* 백엔드 요청으로 반경 몇 Km내의 병원을 볼건지 선택할 수 있는 기능 추가 예정 */}
             <H2>반경 km</H2>
           </MainSub>
           <SimpleSlider />
@@ -177,7 +220,7 @@ const H1 = styled.p`
 `;
 
 const H2 = styled.p`
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
   color: #121212;
   padding: 1%;
@@ -327,6 +370,7 @@ const SimpleSlider = () => {
   // 병원 데이터 get
   const [hospitalData, setHospitalData] = useState([]);
 
+  // 코치님 80번째줄에서 사용자의 현재 위치를 위도와 경도로 받고 있는데 그 정보를 380번째줄에 있는 params에 넣는 방법이 있을까요?ㅠㅠ
   const hospitalApi = async () => {
     try {
       const response = await axios.get(
@@ -357,12 +401,11 @@ const SimpleSlider = () => {
           <Card key={data.id}>
             <Link to={`/detail/${data.id}`}>
               <CardTop>
-                <CardImg src={data.images} alt={data.images} />
-                {/* {data.image ? (
+                {data.images[0] !== null ? (
                   <CardImg src={data.images} alt={data.images} />
                 ) : (
                   <CardImgBak></CardImgBak>
-                )} */}
+                )}
               </CardTop>
               <CardBottom>
                 <CardTitle>{data.dutyName}</CardTitle>
