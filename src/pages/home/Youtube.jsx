@@ -2,7 +2,6 @@
 /* eslint-disable */
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
-import YouTube from "react-youtube";
 
 // 스크롤 위치에 따라 유튜브 자동 재생
 export const AutoplayYouTubeVideo = ({ videoId }) => {
