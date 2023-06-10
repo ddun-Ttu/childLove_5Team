@@ -1,7 +1,7 @@
 import * as Style from "./styles/MapStyle";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { Map } from "react-kakao-maps-sdk";
+import { Map, MapMarker } from "react-kakao-maps-sdk";
 import axios from "axios";
 
 //아이콘
@@ -12,6 +12,7 @@ import {
   IconMapGray,
   IconTel,
   IconMyLocationW,
+  IconMapG,
 } from "../../assets/index";
 
 // 공통 컴포넌트
@@ -63,7 +64,9 @@ export const MapHospital = () => {
 
   //병원 데이터
   const hospitalData = hospitalQuery?.data ?? [];
-  console.log(hospitalData);
+  //위도&경도
+  const hospitalLat = hospitalData.wgs84Lat;
+  const hospitalLon = hospitalData.wgs84Lon;
 
   //요일 정보 변환
   const todayText = WEEK[today - 1];
@@ -91,9 +94,26 @@ export const MapHospital = () => {
             top: 0,
             left: 0,
           }}
-          center={{ lat: 37.5665, lng: 126.978 }}
+          center={{ lat: `${hospitalLat}`, lng: `${hospitalLon}` }}
           level={3}
-        />
+        >
+          <MapMarker
+            position={{ lat: `${hospitalLat}`, lng: `${hospitalLon}` }}
+            image={{
+              src: { IconMapG }, // 마커이미지의 주소입니다
+              size: {
+                width: 64,
+                height: 69,
+              }, // 마커이미지의 크기입니다
+              options: {
+                offset: {
+                  x: 27,
+                  y: 69,
+                }, // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+              },
+            }}
+          />
+        </Map>
         <Style.CardBoxWrap isOpen={isOpen}>
           <CardBox linkTo={"#"}>
             <div>
