@@ -1,10 +1,9 @@
 import * as Style from "./styles/MapStyle";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Map } from "react-kakao-maps-sdk";
-import styled from "styled-components";
 
 //아이콘
-import { IconMyLocationW, IconMyLocationG } from "../../assets/index";
+import { IconMyLocationW } from "../../assets/index";
 
 // 공통 컴포넌트
 import { Header, NavigationBar } from "../../components/index";
@@ -14,11 +13,6 @@ export const MapMyPage = () => {
     const mapElement = document.getElementById("map");
     mapElement.style.display = "block"; // display를 block으로 변경하여 보이도록 설정
   }, []);
-  const [isOpen, setIsOpen] = useState(true);
-
-  const handleToggle = () => {
-    setIsOpen(!isOpen);
-  };
 
   return (
     <Style.Wrapper>

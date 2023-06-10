@@ -1,5 +1,4 @@
-import { useState } from "react";
-import * as Style from "./ModalStyle";
+import * as Style from "./styles/ModalStyle";
 
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import colors from "../constants/colors";
