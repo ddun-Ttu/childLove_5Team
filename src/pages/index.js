@@ -14,6 +14,7 @@ import { MapHospital } from "./map/MapHospital";
 import { MapMyPage } from "./map/MapMyPage";
 import Mypage from "./info/MyPage";
 import ChildPage from "./info/ChildPage";
+import { Favorite } from "./favorite/Favorite";
 
 export {
   AdminHome,
@@ -30,4 +31,5 @@ export {
   MapMyPage,
   ReservationChk,
   ChildPage,
+  Favorite,
 };
