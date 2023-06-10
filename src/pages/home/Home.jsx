@@ -337,11 +337,12 @@ const SimpleSlider = () => {
           <Card key={data.id}>
             <Link to={`/detail/${data.id}`}>
               <CardTop>
-                {data.image ? (
-                  <CardImg src={data.image} alt={data.linkImg} />
+                <CardImg src={data.images} alt={data.images} />
+                {/* {data.image ? (
+                  <CardImg src={data.images} alt={data.images} />
                 ) : (
                   <CardImgBak></CardImgBak>
-                )}
+                )} */}
               </CardTop>
               <CardBottom>
                 <CardTitle>{data.dutyName}</CardTitle>
@@ -362,6 +363,7 @@ const Card = styled.div`
 const CardTop = styled.div`
   margin: 0 2% 0 2%;
 `;
+
 const CardBottom = styled.div`
   position: absolute;
   width: 80%;
@@ -373,9 +375,18 @@ const CardBottom = styled.div`
   opacity: 0;
   transition: opacity 0.3s ease;
 
-  ${Card}:hover & {
+  &:hover {
+    &::after {
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
     opacity: 1;
-    background: rgba(0, 131, 60, 0.8);
   }
 `;
 
