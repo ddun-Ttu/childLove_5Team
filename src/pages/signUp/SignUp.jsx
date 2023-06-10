@@ -400,7 +400,7 @@ const HospitalView = () => {
             type="text"
           ></SignUpInput>
           <P>
-            *찾으시는 병원이 없으실 경우 하단에 신규병원 등록신청하기를
+            *찾으시는 병원이 없으실 경우 하단에 신규 병원 등록 신청하기를
             눌러주세요.
           </P>
         </SignUpInputDiv>
@@ -472,10 +472,19 @@ const HospitalView = () => {
             }}
           />
         </SignUpBtn>
+
+        <Link to="/register">
+          <ButP>신규 병원 등록 신청하기</ButP>
+        </Link>
       </SignUpForm>
     </>
   );
 };
+
+const ButP = styled.p`
+  margin-top: 4%;
+  font-size: 20px;
+`;
 
 const ButtonHospital = styled.button`
   /* 일반 버튼 스타일 */
