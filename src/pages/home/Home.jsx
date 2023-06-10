@@ -149,7 +149,11 @@ export const Home = () => {
         </BannerSeb>
 
         <SiliderMargin>
-          <H1>내 주변 소아과</H1>
+          <MainSub>
+            <H2>현재 내 위치 :</H2>
+            <H1>내 주변 소아과</H1>
+            <H2>반경 km</H2>
+          </MainSub>
           <SimpleSlider />
         </SiliderMargin>
 
@@ -162,6 +166,30 @@ export const Home = () => {
   );
 };
 export default Home;
+
+const H1 = styled.p`
+  font-size: 30px;
+  font-weight: 900;
+  color: #121212;
+  padding: 1%;
+  margin-bottom: 3%;
+  width: 33.33%;
+`;
+
+const H2 = styled.p`
+  font-size: 20px;
+  font-weight: 600;
+  color: #121212;
+  padding: 1%;
+  margin-bottom: 3%;
+  width: 33.33%;
+`;
+
+const MainSub = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`;
 
 const SiliderMargin = styled.div`
   margin: 5% 0 8% 0;
@@ -257,14 +285,6 @@ const BannerSebH1 = styled.p`
   font-weight: 700;
   color: #383838;
   padding: 1%;
-`;
-
-const H1 = styled.p`
-  font-size: 30px;
-  font-weight: 900;
-  color: #121212;
-  padding: 1%;
-  margin-bottom: 3%;
 `;
 
 // 캐러셀 라이브러리
