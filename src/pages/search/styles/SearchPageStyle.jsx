@@ -28,7 +28,7 @@ export const SearchHeader = styled.div`
 
 export const DropdownContainer = styled.div`
   position: relative;
-  display: inline-block;
+  display: flex;
 
   & > button {
     font-size: 20px;
@@ -44,7 +44,6 @@ export const DropdownContainer = styled.div`
   }
 
   & > div {
-    display: ${({ isOpen }) => (isOpen ? "block" : "none")};
     position: absolute;
     top: 100%;
     left: 0;

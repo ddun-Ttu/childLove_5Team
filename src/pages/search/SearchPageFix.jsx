@@ -104,13 +104,12 @@ export const SearchPageFix = () => {
   //유저정보
   const userData = userQuery?.data ?? [];
   const user_id = userData.id;
-  console.log("userData:", userData);
+
   //병원리스트
   const hospitalList = hospitalsQuery?.data ?? [];
-  console.log("hospitalList:", hospitalList);
+
   //즐겨찾기 리스트
   const favoritesList = favoritesQuery?.data ?? [];
-  console.log("favoriteList:", favoritesList);
 
   //오늘 날짜(요일) 저장
   let now = new Date();
@@ -148,24 +147,25 @@ export const SearchPageFix = () => {
           <Style.DropdownContainer>
             <button isOpen={isOpenOption} onClick={handleOptionClick}>
               {option.name}
+              <img alt="icon-down" src={IconDown}></img>
             </button>
-            <div isOpen={isOpenOption}>
-              {SORT_OPTIONS.map((option) => (
-                <option
-                  key={option.state}
-                  value={option.state}
-                  onClick={handleOptionChange}
-                >
-                  {option.name}
-                </option>
-              ))}
-            </div>
+            {isOpenOption && (
+              <div>
+                {SORT_OPTIONS.map((option) => (
+                  <option
+                    key={option.state}
+                    value={option.state}
+                    onClick={handleOptionChange}
+                  >
+                    {option.name}
+                  </option>
+                ))}
+              </div>
+            )}
           </Style.DropdownContainer>
-          <img alt="icon-down" src={IconDown}></img>
         </Style.SearchHeader>
         {hospitalList.length > 0 ? (
           hospitalList.map((hospital) => {
-            console.log("몇개:", hospitalList.length);
             const dutyTimeStart = hospital[`dutyTime${today}s`]; // 오늘 요일에 해당하는 dutyTime 시작 시간
             const dutyTimeClose = hospital[`dutyTime${today}c`]; // 오늘 요일에 해당하는 dutyTime 종료 시간
 
@@ -191,7 +191,7 @@ export const SearchPageFix = () => {
             );
           })
         ) : (
-          <div>No hospitals found</div>
+          <div>검색 결과가 없습니다.</div>
         )}
       </Style.Wrapper>
     </>

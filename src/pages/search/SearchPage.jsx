@@ -14,7 +14,7 @@ import axios from "axios";
 //병원리스트 - 병원카드 컴포넌트
 import { HospitalCard } from "./HospitalCard";
 import { Wrapper } from "../../components/styles/SearchBarStyle";
-import SearchHeader from "./SearchHeader";
+// import SearchHeader from "./SearchHeader";
 
 //검색 정렬 옵션
 const SORT_OPTIONS = [
@@ -209,11 +209,11 @@ export const SearchPage = () => {
           depth2={depth2}
           onLocationChange={handleDepthChange}
         />
-        <SearchHeader
+        {/* <SearchHeader
           total={hospitalList.length}
           sortOption={"byPopular"}
           onOptionChange={handleSortOptionChange}
-        ></SearchHeader>
+        ></SearchHeader> */}
         {hospitalsQuery.isLoading ? (
           <div>Loading...</div>
         ) : hospitalsQuery.isError ? (
