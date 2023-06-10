@@ -1,13 +1,9 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  & > div:first-child {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    box-sizing: border-box;
-    padding: 0 2%;
-    flex-direction: column;
+  & p {
+    font-size: 20px;
+    margin: 5%;
   }
 `;
 
@@ -18,6 +14,7 @@ export const SearchHeader = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 0 2%;
 
   & > span {

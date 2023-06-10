@@ -33,10 +33,11 @@ import {
   MapHospital,
   MapMyPage,
   ReservationChk,
+  Favorite,
 } from "./pages/index";
 
 // const queryClient = new QueryClient();
-import { SearchPageFix } from "./pages/search/SearchPageFix";
+
 function App() {
   const [arr, setArr] = useState();
 
@@ -65,11 +66,12 @@ function App() {
             <Route path="/register" element={<RegisterForm />} />
             <Route path="admin" element={<AdminHome />} />
             <Route path="/reserve" element={<ReservationChk />} />
-            <Route path="/search" element={<SearchPageFix />} />
+            <Route path="/search" element={<SearchPage />} />
             <Route path="/detail/:hpid" element={<Detail />} />
             <Route path="/detail/reserve" element={<Reserve />} />
             <Route path="/detail/map" element={<MapHospital />} />
             <Route path="/mypage/map" element={<MapMyPage />} />
+            <Route path="/favorite" element={<Favorite />} />
           </Routes>
         </Router>
       </Container>
