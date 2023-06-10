@@ -58,12 +58,14 @@ export const NavigationBar = () => {
     </>
   );
 };
-
 const Nav = styled.div`
   width: 100%;
   border-top: 1px solid ${colors.InputBorderOut};
-  margin: auto;
+  position: fixed;
+  max-width: 834px;
+  bottom: 0;
   z-index: 99;
+  background-color: #ffffff;
 `;
 
 const NavUl = styled.ul`
@@ -75,9 +77,8 @@ const NavUl = styled.ul`
 `;
 
 const NavLi = styled.li`
-width: 33.3%;
-padding: 1%;
-}
+  width: 20%;
+  padding: 1%;
 `;
 
 const NavA = styled(Link)`
