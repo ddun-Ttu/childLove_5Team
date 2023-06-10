@@ -7,6 +7,7 @@ import miniLogo from "../assets/miniLogo.svg";
 import myInfo from "../assets/myInfo.svg";
 import reservation from "../assets/reservation.svg";
 
+import { Link } from "react-router-dom";
 // 상수값 연결 링크
 import colors from "../constants/colors";
 import fontSize from "../constants/fontSize";
@@ -20,21 +21,21 @@ export const NavigationBar = () => {
       <Nav>
         <NavUl>
           <NavLi>
-            <NavA href="#">
+            <NavA to="/reserve">
               <NavImg src={reservation} alt="star"></NavImg>
               <NavP>예약현황</NavP>
             </NavA>
           </NavLi>
 
           <NavLi>
-            <NavA href="#">
+            <NavA to="/search">
               <NavImg src={map} alt="star"></NavImg>
               <NavP>병원찾기</NavP>
             </NavA>
           </NavLi>
 
           <NavLi>
-            <NavA href="#">
+            <NavA to="/">
               <NavLogo src={miniLogo} alt="star"></NavLogo>
             </NavA>
           </NavLi>
@@ -47,7 +48,7 @@ export const NavigationBar = () => {
           </NavLi>
 
           <NavLi>
-            <NavA href="#">
+            <NavA to="Mypage">
               <NavImg src={myInfo} alt="star"></NavImg>
               <NavP>내정보</NavP>
             </NavA>
@@ -79,7 +80,7 @@ padding: 1%;
 }
 `;
 
-const NavA = styled.a`
+const NavA = styled(Link)`
   color: ${colors.fontColor};
 `;
 
