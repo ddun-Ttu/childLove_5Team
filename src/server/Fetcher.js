@@ -15,7 +15,7 @@ export const instance = axios.create({
 });
 
 export const deleteinstance = axios.create({
-  baseURL: "http://34.64.69.226:3000/admin/delete/",
+  baseURL: "http://34.64.69.226:3000/",
   timeout: 1000,
   headers: {
     Authorization: `Bearer ${userToken}`,

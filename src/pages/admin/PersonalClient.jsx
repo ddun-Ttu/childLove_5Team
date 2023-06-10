@@ -9,8 +9,7 @@ import { deleteinstance, instance } from "../../server/Fetcher";
 
 export const PersonalClient = () => {
   const [currentPage, setCurrentPage] = useState(0); // 페이지 숫자 상태
-
-  const maxPostPage = 10;
+  const [maxPostPage, setMaxPostPage] = useState(currentPage + 1);
 
   const queryClient = useQueryClient();
 
@@ -21,11 +20,11 @@ export const PersonalClient = () => {
   });
 
   const list = listQuery.data;
-  const [checkValue, setCheckValue] = useState(""); // 검색창 인풋
+  const [searchInput, setsearchInput] = useState(""); // 검색창 인풋
   const [submitted, setSubmitted] = useState(false); // 검색창 submit 상태
   const [checkList, setCheckList] = useState([]); // 체크박스
   const onChange = (e) => {
-    setCheckValue(e.target.value);
+    setsearchInput(e.target.value);
     setSubmitted(false);
   };
 
@@ -43,11 +42,12 @@ export const PersonalClient = () => {
       setCheckList((prev) => prev.filter((el) => el !== id));
     }
   };
+
   const handleDelete = async (item) => {
     // 페이지네이션 데이터의 id와 체크된 열의 id 값 필터
 
     console.log("삭제할 id:", item);
-    await deleteinstance.delete(`/admin/get/generelclient/${item.id}`); //React Query에서 'invalidateQueries' 기능 사용해서 업데이트 된 목록 다시
+    await deleteinstance.delete(`admin/delete/${item.id}`); //React Query에서 'invalidateQueries' 기능 사용해서 업데이트 된 목록 다시
     queryClient.invalidateQueries("list");
   };
 
@@ -64,7 +64,7 @@ export const PersonalClient = () => {
   }
 
   const filteredList = list.data?.filter(
-    (item) => !submitted || item.email === checkValue
+    (item) => !submitted || item.email === searchInput
   );
 
   //페이지네이션 로직
@@ -77,7 +77,7 @@ export const PersonalClient = () => {
       <PersonalTitle>개인 클라이언트 관리</PersonalTitle>
       <SearchBox>
         <form onSubmit={onSubmit}>
-          <InputContent type="text" value={checkValue} onChange={onChange} />
+          <InputContent type="text" value={searchInput} onChange={onChange} />
         </form>
       </SearchBox>
       <Table>
@@ -128,7 +128,7 @@ export const PersonalClient = () => {
         </button>
         <span>Page {currentPage + 1}</span>
         <button
-          disabled={currentPage >= maxPostPage - 1}
+          disabled={currentPage >= maxPostPage}
           onClick={() => setCurrentPage((prev) => prev + 1)}
         >
           다음 페이지
