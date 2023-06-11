@@ -1,52 +1,76 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useQuery, useQueryClient } from "react-query";
-import { fetchList } from "../../server/Fetcher";
+
 import { Button } from "../../components/Button";
 import colors from "../../constants/colors";
-import { check } from "prettier";
+
+import { deleteinstance, instance } from "../../server/Fetcher";
 
 export const PersonalClient = () => {
   const [currentPage, setCurrentPage] = useState(0); // 페이지 숫자 상태
+  const [maxPostPage, setMaxPostPage] = useState(currentPage + 1);
+  const [checkArray, setCheckArray] = useState([]);
+  const [isAllChecked, setIsAllChecked] = useState(false);
 
-  const maxPostPage = 10;
-
-  // useQuery 이용한 통신
   const queryClient = useQueryClient();
-  const { isLoading, data: list } = useQuery("list", () => fetchList());
 
-  const [checkValue, setCheckValue] = useState(""); // 검색창 인풋
+  // 인스턴스 사용하는 함수
+  const listQuery = useQuery("list", async () => {
+    const response = await instance.get("/admin/get/generelclient"); // "/"는 baseURL에 추가된 경로입니다
+    return response.data;
+  });
+
+  const list = listQuery.data;
+  const [searchInput, setsearchInput] = useState(""); // 검색창 인풋
   const [submitted, setSubmitted] = useState(false); // 검색창 submit 상태
   const [checkList, setCheckList] = useState([]); // 체크박스
   const onChange = (e) => {
-    setCheckValue(e.target.value);
+    setsearchInput(e.target.value);
     setSubmitted(false);
   };
 
+  //검색창 폼 제출
   const onSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
   };
 
+  const allCheck = () => {
+    setIsAllChecked(!isAllChecked);
+    if (!isAllChecked) {
+      const ids = paginatedList.map((item) => item.id);
+      setCheckList(ids);
+    } else {
+      setCheckList([]);
+    }
+  };
+  // 체크박스 확인하는 함수
   const handleSingleCheck = (checked, id) => {
     if (checked) {
       setCheckList((prev) => [...prev, id]);
     } else {
       setCheckList((prev) => prev.filter((el) => el !== id));
     }
-  };
-  const handleDelete = async (item) => {
-    // 페이지네이션 데이터의 id와 체크된 열의 id 값 필터
 
-    console.log("삭제할 id:", item);
-    await fetch(`/admin/delete/${item.id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMS4xIiwic3ViIjoxLCJpYXQiOjE2ODYxMDg4MzksImV4cCI6MTcxNzY2NjQzOX0.KoXifXgRmenLuMXmJ_RP1ZJnjinLlyhjD-HN1GAXc5A",
+    const copy = [...checkList];
+    copy.push(Number(id));
+    setCheckArray(copy);
+  };
+
+  const arrayDelete = async () => {
+    console.log("idArray", checkArray);
+    await deleteinstance.delete("/admin/deleteall", {
+      data: {
+        userIds: checkArray,
       },
     });
-    //React Query에서 'invalidateQueries' 기능 사용해서 업데이트 된 목록 다시
+    queryClient.invalidateQueries("list");
+  };
+  // 페이지네이션 데이터의 id와 체크된 열의 id 값 필터
+  const handleDelete = async (item) => {
+    console.log("삭제할 id:", item);
+    await deleteinstance.delete(`admin/delete/${item.id}`); //React Query에서 'invalidateQueries' 기능 사용해서 업데이트 된 목록 다시
     queryClient.invalidateQueries("list");
   };
 
@@ -54,17 +78,16 @@ export const PersonalClient = () => {
   useEffect(() => {
     if (currentPage <= maxPostPage - 1) {
       const nextPage = currentPage + 1;
-      queryClient.prefetchQuery(["posts", nextPage], () => fetchList());
+      queryClient.prefetchQuery(["posts", nextPage], () => listQuery.data);
     }
   }, [currentPage, queryClient]);
 
-  if (isLoading) {
+  if (listQuery.isLoading) {
     return <h1>로딩중입니다..</h1>;
   }
 
-  // 검색창 value와 데이터의 이메일 값 비교해서 같으면 데이터 재구성
   const filteredList = list.data?.filter(
-    (item) => !submitted || item.email === checkValue
+    (item) => !submitted || item.email === searchInput
   );
 
   //페이지네이션 로직
@@ -77,14 +100,18 @@ export const PersonalClient = () => {
       <PersonalTitle>개인 클라이언트 관리</PersonalTitle>
       <SearchBox>
         <form onSubmit={onSubmit}>
-          <InputContent type="text" value={checkValue} onChange={onChange} />
+          <InputContent type="text" value={searchInput} onChange={onChange} />
         </form>
       </SearchBox>
       <Table>
         <thead>
           <tr>
             <TableHeader>
-              <Checkbox type="checkbox" />
+              <Checkbox
+                type="checkbox"
+                checked={isAllChecked}
+                onChange={allCheck}
+              />
             </TableHeader>
             <TableHeader>가입날짜</TableHeader>
             <TableHeader>이름</TableHeader>
@@ -98,6 +125,7 @@ export const PersonalClient = () => {
             <TableRow key={item.id}>
               <TableData>
                 <Checkbox
+                  checked={checkList.includes(item.id)}
                   onChange={(e) => handleSingleCheck(e.target.checked, item.id)}
                 />
               </TableData>
@@ -118,21 +146,40 @@ export const PersonalClient = () => {
             </TableRow>
           ))}
         </tbody>
+        <tbody>
+          <Button
+            width={"80px"}
+            height={"30px"}
+            label={"선택삭제"}
+            bgcolor={colors.primary}
+            btnColor={"white"}
+            onClick={arrayDelete}
+          />
+        </tbody>
       </Table>
+
       <ButtonBox>
-        <button
-          disabled={currentPage <= 0}
+        <Button
+          width={"80px"}
+          height={"30px"}
+          label={"이전페이지"}
+          bgcolor={colors.primary}
+          btnColor={"white"}
+          disabled={currentPage >= maxPostPage}
           onClick={() => setCurrentPage((prev) => prev - 1)}
-        >
-          이전 페이지
-        </button>
+        ></Button>
         <span>Page {currentPage + 1}</span>
-        <button
-          disabled={currentPage >= maxPostPage - 1}
+        <Button
+          width={"80px"}
+          height={"30px"}
+          label={"다음페이지"}
+          bgcolor={colors.primary}
+          btnColor={"white"}
+          disabled={currentPage >= maxPostPage}
           onClick={() => setCurrentPage((prev) => prev + 1)}
         >
           다음 페이지
-        </button>
+        </Button>
       </ButtonBox>
     </>
   );
@@ -207,18 +254,9 @@ const InputContent = styled.input`
 
 const ButtonBox = styled.div`
   display: flex;
-  justify-content: center;
+
   align-items: center;
   margin-top: 2%;
-
-  button {
-    background-color: #e5e5e5;
-    border: none;
-    padding: 12px 20px;
-    margin-right: 10px;
-    cursor: pointer;
-    outline: none;
-  }
 
   span {
     font-family: "Inter";

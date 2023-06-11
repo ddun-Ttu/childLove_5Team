@@ -19,8 +19,8 @@ import colors from "../../constants/colors";
 
 import MyPage from "./MyPage";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const userToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1bkBlbWFpbC5jb20iLCJzdWIiOjE4LCJpYXQiOjE2ODYzNzY1NDYsImV4cCI6MTcxNzkzNDE0Nn0.nDZfyySUgGh3_eHKfw4hoh8LYXsv2u5ljcB1NdyEGcM";
@@ -122,13 +122,15 @@ function ChildPage() {
         }}
       />
       <Space />
-      {boxCreators.map(createBox => createBox())}
+      {boxCreators.map((createBox) => createBox())}
       <CardBox>
         <div>
           <MyButton onClick={handleClick}>추가하기</MyButton>
         </div>
       </CardBox>
-      <BackButton as={Link} to="/MyPage">돌아가기</BackButton>
+      <BackButton as={Link} to="/MyPage">
+        돌아가기
+      </BackButton>
       <Space />
       <NavigationBar />
     </Container>
