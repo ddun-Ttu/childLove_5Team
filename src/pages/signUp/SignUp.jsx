@@ -298,6 +298,9 @@ const HospitalView = () => {
   //버튼 활성화
   const [notAllow, setNotAllow] = useState(true);
 
+  // 병원 이름
+  const [hospitalNameInput, sethospitalNameInput] = useState("");
+
   // 이메일 유효성 검사
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -376,11 +379,21 @@ const HospitalView = () => {
       });
   };
 
-  const [hospitalNameInput, setHospitalNameInput] = useState("");
-
-  // hospital name Get event handler
-  const handleHospitalName = (e) => {
-    setHospitalNameInput(e.target.value);
+  // 병원명 Get 이벤트 핸들러
+  const handleHospitalName = async (e) => {
+    sethospitalNameInput(e.target.value);
+    const hospitalName = e.target.value;
+    try {
+      const response = await axios.get(
+        `/hospital/hospitalName/${hospitalName}`
+      );
+      const MyComponent = () => <Select options={hospitalName} />;
+      console.log("성공", response.data.data);
+      console.log("인풋", hospitalName);
+    } catch (error) {
+      console.error("Error:", error);
+      console.log("에러", hospitalNameInput);
+    }
   };
 
   return (
@@ -405,12 +418,14 @@ const HospitalView = () => {
 
         <SignUpInputDiv>
           <InputTitle>병원명</InputTitle>
-          <MyComponent
-            placeholder="Search hospital name"
+          <SignUpInput
+            placeholder="병원명을 검색해주세요"
             type="text"
             value={hospitalNameInput}
             onChange={handleHospitalName}
-          />
+          ></SignUpInput>
+          <MyComponent />
+
           <P>
             *찾으시는 병원이 없으실 경우 하단에 신규 병원 등록 신청하기를
             눌러주세요.
@@ -608,47 +623,3 @@ const P = styled.p`
 const ErrorMaessage = styled.p`
   color: #c20000;
 `;
-
-// 병원 검색창
-const MyComponent = ({ value, onChange }) => {
-  const [hospitalData, setHospitalData] = useState([]);
-  const [filteredOptions, setFilteredOptions] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`/hospital/hospitalName/소아과`);
-        console.log("success", response.data.data);
-        setHospitalData(response.data.data);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-
-    fetchData();
-  }, [value]);
-
-  useEffect(() => {
-    const filtered = hospitalData.filter((data) =>
-      data.name.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredOptions(filtered);
-  }, [value, hospitalData]);
-
-  // if (hospitalData.length === 0) {
-  //   return null; // or render a loading indicator
-  // }
-
-  return (
-    <>
-      <Select
-        options={filteredOptions.map((data) => ({
-          value: data.name,
-          label: data.name,
-        }))}
-        value={value}
-        onChange={onChange}
-      />
-    </>
-  );
-};
