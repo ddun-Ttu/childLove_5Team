@@ -21,3 +21,5 @@ export const deleteinstance = axios.create({
     Authorization: `Bearer ${userToken}`,
   },
 });
+
+// 토큰 유무 2개, 폼데이터
