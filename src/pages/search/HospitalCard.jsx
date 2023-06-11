@@ -1,5 +1,6 @@
-import React from "react";
 import * as Style from "./styles/HospitalCardStyle";
+import React from "react";
+import { Link } from "react-router-dom";
 
 //아이콘
 import {
@@ -10,7 +11,8 @@ import {
 } from "../../assets/index";
 
 //요일 정보 지정을 위한 상수
-const WEEK = ["월", "화", "수", "목", "금", "토", "일", "공휴일"];
+//일~월 : 0~6
+const WEEK = ["일", "월", "화", "수", "목", "금", "토"];
 
 export const HospitalCard = ({
   hpid,
@@ -20,15 +22,17 @@ export const HospitalCard = ({
   dutyTimeStart,
   dutyTimeClose,
   favorite,
-  handleFavorite,
 }) => {
   //요일 정보 변환
-  const todayText = WEEK[today - 1];
+  const todayText = WEEK[today];
 
   // 시간 형식을 변환하는 함수
   const formatTime = (time) => {
-    const hours = time.slice(0, 2);
-    const minutes = time.slice(2);
+    if (!time) {
+      return null;
+    }
+    const hours = time?.slice(0, 2);
+    const minutes = time?.slice(2);
     return `${hours}:${minutes}`;
   };
 
@@ -37,9 +41,12 @@ export const HospitalCard = ({
     {
       alt: "icon-clock",
       icon: IconClockHospital,
-      content: `${todayText}요일 ${formatTime(dutyTimeStart)} ~ ${formatTime(
-        dutyTimeClose
-      )}`,
+      content: dutyTimeStart
+        ? // dutyTime이 null 값일 경우 휴무로 표시
+          `${todayText}요일 ${formatTime(dutyTimeStart)} ~ ${formatTime(
+            dutyTimeClose
+          )}`
+        : `${todayText}요일 휴무`,
     },
     {
       alt: "icon-location",
@@ -47,26 +54,29 @@ export const HospitalCard = ({
       content: hospitalAddress,
     },
   ];
-  const handleFavoriteClick = () => {
-    handleFavorite(hpid); // 즐겨찾기 핸들러 함수 호출
+  const handleFavoriteClick = (event) => {
+    //즐겨찾기 클릭 시 Link로 넘어가는 것을 막음
+    event.preventDefault();
   };
   return (
     <>
-      <Style.HospitalCardBox>
-        <div>{hospitalName}</div>
-        {INFO_PROPS.map((prop) => (
-          <div key={prop.alt}>
-            <img alt={prop.alt} src={prop.icon} />
-            <span>{prop.content}</span>
-          </div>
-        ))}
-        <Style.Favorite onClick={handleFavoriteClick}>
-          <img
-            alt={"icon-favorite"}
-            src={favorite ? IconStarFilled : IconStarEmpty}
-          ></img>
-        </Style.Favorite>
-      </Style.HospitalCardBox>
+      <Link to={`/detail/${hpid}`}>
+        <Style.HospitalCardBox>
+          <div>{hospitalName}</div>
+          {INFO_PROPS.map((prop) => (
+            <div key={prop.alt}>
+              <img alt={prop.alt} src={prop.icon} />
+              <span>{prop.content}</span>
+            </div>
+          ))}
+          <Style.Favorite onClick={handleFavoriteClick}>
+            <img
+              alt={"icon-favorite"}
+              src={favorite ? IconStarFilled : IconStarEmpty}
+            ></img>
+          </Style.Favorite>
+        </Style.HospitalCardBox>
+      </Link>
     </>
   );
 };

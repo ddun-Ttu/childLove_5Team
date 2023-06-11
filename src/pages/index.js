@@ -12,11 +12,14 @@ import Reserve from "./detail/Detailreserve";
 import { SearchPage } from "./search/SearchPage";
 import { MapHospital } from "./map/MapHospital";
 import { MapMyPage } from "./map/MapMyPage";
+import Mypage from "./info/MyPage";
+import ChildPage from "./info/ChildPage";
+import { Favorite } from "./favorite/Favorite";
 
 export {
   AdminHome,
   Home,
-  //   MyPage,
+  Mypage,
   Login,
   Post,
   HospitalCard,
@@ -26,5 +29,7 @@ export {
   Reserve,
   MapHospital,
   MapMyPage,
-  ReservationChk
+  ReservationChk,
+  ChildPage,
+  Favorite,
 };
