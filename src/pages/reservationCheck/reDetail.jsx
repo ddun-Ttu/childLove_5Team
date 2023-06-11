@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { CardBox, Modal } from "../../components/index";
 import IconPen from "../../assets/iconPen.svg";
 
-export const ReDetail = ({ hospitalName, Memo }) => {
+export const ReDetail = ({ hospitalName, memo }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [memoValue, setMemoValue] = useState("");
 
@@ -15,8 +15,14 @@ export const ReDetail = ({ hospitalName, Memo }) => {
     setModalOpen(false);
   };
 
+  // 메모 입력을 위해 input을 클릭하면 모달이 꺼지는데 어떻게 해결할지 모르겠습니다
+  //
   const handleMemoChange = (event) => {
     setMemoValue(event.target.value);
+  };
+
+  const modalInputClickHandler = (e) => {
+    e.stopPropagation();
   };
 
   return (
@@ -27,8 +33,9 @@ export const ReDetail = ({ hospitalName, Memo }) => {
           <InputWrapper>
             <MemoInput
               placeholder="메모를 추가해보세요"
-              value={Memo ? Memo : memoValue}
+              value={memo ? memo : memoValue}
               onChange={handleMemoChange}
+              // style={{ color: "#d9d9d9" }}
             />
             <ButtonWrapper onClick={openModal}>
               <img alt="icon-pen" src={IconPen} />
@@ -40,7 +47,7 @@ export const ReDetail = ({ hospitalName, Memo }) => {
             title="메모"
             style={{ width: "60%" }}
           >
-            <ModalInputWrapper>
+            <ModalInputWrapper onClick={modalInputClickHandler}>
               <ModalHospitalName>{hospitalName}</ModalHospitalName>
               <ModalInput
                 placeholder="메모를 입력하세요"
@@ -92,7 +99,7 @@ const ButtonWrapper = styled.button`
 const ModalInputWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center; /* 가운데 정렬 */
+  justify-content: center;
   flex-direction: column;
   width: 100%;
 `;
