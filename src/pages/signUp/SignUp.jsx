@@ -32,6 +32,8 @@ import {
   SearchBar,
 } from "../../components/index";
 
+import { MyComponent } from "./MyComponent";
+
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import colors from "../../constants/colors";
 import fontSize from "../../constants/fontSize";
@@ -387,7 +389,6 @@ const HospitalView = () => {
       const response = await axios.get(
         `/hospital/hospitalName/${hospitalName}`
       );
-      const MyComponent = () => <Select options={hospitalName} />;
       console.log("성공", response.data.data);
       console.log("인풋", hospitalName);
     } catch (error) {
@@ -418,12 +419,12 @@ const HospitalView = () => {
 
         <SignUpInputDiv>
           <InputTitle>병원명</InputTitle>
-          <SignUpInput
+          {/* <SignUpInput
             placeholder="병원명을 검색해주세요"
             type="text"
             value={hospitalNameInput}
             onChange={handleHospitalName}
-          ></SignUpInput>
+          ></SignUpInput> */}
           <MyComponent />
 
           <P>
