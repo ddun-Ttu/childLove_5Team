@@ -89,9 +89,10 @@ export const MyCalendar = () => {
   };
 
   const ReDate = ({ date }) => {
+    const formattedDate = dayjs(date).format("MM월DD일");
     return (
       <div>
-        <h3>{date}</h3>
+        <h2>{formattedDate}</h2>
       </div>
     );
   };
@@ -351,19 +352,20 @@ const DiaryItemWrapper = styled.div`
 
 const DiaryItem = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
-  width: 100%;
-  margin-bottom: 10px;
+  margin: 5px 10px 10px 10px;
 `;
 
 const ReTime = styled.div`
   display: flex;
   align-items: center;
-  width: 20%;
+  justify-content: space-between;
+  width: 30%;
+  margin-right: 20px;
 `;
 
 const DueDate = styled.div`
+  float: left
   display: flex;
   align-items: center;
   justify-content: center;
