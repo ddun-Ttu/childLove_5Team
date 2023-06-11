@@ -10,6 +10,9 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 
+// 검색창 라이브러리
+import Select from "react-select";
+
 // 알림창 라이브러리
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
@@ -373,6 +376,13 @@ const HospitalView = () => {
       });
   };
 
+  const [hospitalNameInput, setHospitalNameInput] = useState("");
+
+  // hospital name Get event handler
+  const handleHospitalName = (e) => {
+    setHospitalNameInput(e.target.value);
+  };
+
   return (
     <>
       <ToastContainer
@@ -395,10 +405,12 @@ const HospitalView = () => {
 
         <SignUpInputDiv>
           <InputTitle>병원명</InputTitle>
-          <SignUpInput
-            placeholder="병원명을 검색해주세요"
+          <MyComponent
+            placeholder="Search hospital name"
             type="text"
-          ></SignUpInput>
+            value={hospitalNameInput}
+            onChange={handleHospitalName}
+          />
           <P>
             *찾으시는 병원이 없으실 경우 하단에 신규 병원 등록 신청하기를
             눌러주세요.
@@ -596,3 +608,47 @@ const P = styled.p`
 const ErrorMaessage = styled.p`
   color: #c20000;
 `;
+
+// 병원 검색창
+const MyComponent = ({ value, onChange }) => {
+  const [hospitalData, setHospitalData] = useState([]);
+  const [filteredOptions, setFilteredOptions] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/hospital/hospitalName/소아과`);
+        console.log("success", response.data.data);
+        setHospitalData(response.data.data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchData();
+  }, [value]);
+
+  useEffect(() => {
+    const filtered = hospitalData.filter((data) =>
+      data.name.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredOptions(filtered);
+  }, [value, hospitalData]);
+
+  // if (hospitalData.length === 0) {
+  //   return null; // or render a loading indicator
+  // }
+
+  return (
+    <>
+      <Select
+        options={filteredOptions.map((data) => ({
+          value: data.name,
+          label: data.name,
+        }))}
+        value={value}
+        onChange={onChange}
+      />
+    </>
+  );
+};
