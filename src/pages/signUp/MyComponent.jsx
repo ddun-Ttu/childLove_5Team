@@ -8,7 +8,7 @@ export const MyComponent = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/hospital/hospitalName/영");
+        const response = await axios.get("/hospital/all");
         const data = response.data.data;
 
         const updatedOptions = data.map((item) => ({

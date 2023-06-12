@@ -381,21 +381,21 @@ const HospitalView = () => {
       });
   };
 
-  // 병원명 Get 이벤트 핸들러
-  const handleHospitalName = async (e) => {
-    sethospitalNameInput(e.target.value);
-    const hospitalName = e.target.value;
-    try {
-      const response = await axios.get(
-        `/hospital/hospitalName/${hospitalName}`
-      );
-      console.log("성공", response.data.data);
-      console.log("인풋", hospitalName);
-    } catch (error) {
-      console.error("Error:", error);
-      console.log("에러", hospitalNameInput);
-    }
-  };
+  // // 병원명 Get 이벤트 핸들러
+  // const handleHospitalName = async (e) => {
+  //   sethospitalNameInput(e.target.value);
+  //   const hospitalName = e.target.value;
+  //   try {
+  //     const response = await axios.get(
+  //       `/hospital/hospitalName/${hospitalName}`
+  //     );
+  //     console.log("성공", response.data.data);
+  //     console.log("인풋", hospitalName);
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     console.log("에러", hospitalNameInput);
+  //   }
+  // };
 
   return (
     <>

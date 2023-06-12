@@ -373,15 +373,13 @@ const SimpleSlider = () => {
   // 코치님 80번째줄에서 사용자의 현재 위치를 위도와 경도로 받고 있는데 그 정보를 380번째줄에 있는 params에 넣는 방법이 있을까요?ㅠㅠ
   const hospitalApi = async () => {
     try {
-      const response = await axios.get(
-        "http://34.64.69.226:3000/hospital/near",
-        {
-          params: {
-            userLat: 37.5007795003494,
-            userLon: 127.1107520613008,
-          },
-        }
-      );
+      const response = await axios.get("/hospital/near", {
+        params: {
+          userLat: 37.5007795003494,
+          userLon: 127.1107520613008,
+          // r: 5,
+        },
+      });
       const responseData = response.data.data;
       setHospitalData(responseData);
       console.log("데이터 성공", responseData);
@@ -394,26 +392,32 @@ const SimpleSlider = () => {
     hospitalApi();
   }, []);
 
+  console.log("Hospital Data:", hospitalData);
+
   return (
     <>
       <Slider {...settings}>
-        {hospitalData.map((data) => (
-          <Card key={data.id}>
-            <Link to={`/detail/${data.id}`}>
-              <CardTop>
-                {data.images[0] !== null ? (
-                  <CardImg src={data.images} alt={data.images} />
-                ) : (
-                  <CardImgBak></CardImgBak>
-                )}
-              </CardTop>
-              <CardBottom>
-                <CardTitle>{data.dutyName}</CardTitle>
-                <CardAddress>{data.dutyAddr}</CardAddress>
-              </CardBottom>
-            </Link>
-          </Card>
-        ))}
+        {hospitalData.length > 0 ? (
+          hospitalData.map((data) => (
+            <Card key={data.id}>
+              <Link to={`/detail/${data.id}`}>
+                <CardTop>
+                  {data.images[0] !== null ? (
+                    <CardImg src={data.images} alt={data.images} />
+                  ) : (
+                    <CardImgBak></CardImgBak>
+                  )}
+                </CardTop>
+                <CardBottom>
+                  <CardTitle>{data.dutyName}</CardTitle>
+                  <CardAddress>{data.dutyAddr}</CardAddress>
+                </CardBottom>
+              </Link>
+            </Card>
+          ))
+        ) : (
+          <div>No hospital data available</div>
+        )}
       </Slider>
     </>
   );
