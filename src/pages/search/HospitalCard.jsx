@@ -1,6 +1,8 @@
 import * as Style from "./styles/HospitalCardStyle";
 import React from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useMutation } from "react-query";
 
 //아이콘
 import {
@@ -12,9 +14,17 @@ import {
 
 //utils
 import { formatTime } from "../../utils.js";
+
 //요일 정보 지정을 위한 상수
 //일~월 : 0~6
 const WEEK = ["일", "월", "화", "수", "목", "금", "토"];
+
+//URL
+const BE_URL = `http://34.64.69.226:3000/`;
+// const userToken =
+// "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGUubWFpbCIsInN1YiI6MSwiaWF0IjoxNjg2MjM0NjUxLCJleHAiOjE3MTc3OTIyNTF9.QORp6FfVmnROH3A-OCvHzYKjzZVAXjADpKcwmCwGeAA";
+// const endpoint_user = `users`;
+const endpoint_favorite = `favorite`;
 
 export const HospitalCard = ({
   hpid,
@@ -46,9 +56,32 @@ export const HospitalCard = ({
       content: hospitalAddress,
     },
   ];
+
+  // favorite post 보내기
+  const userToken = localStorage.getItem("token");
+  const { mutate: handleFavorite } = useMutation(() =>
+    axios.post(
+      `${BE_URL}${endpoint_favorite}`,
+      { hospitalId: hpid },
+      {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      }
+    )
+  );
   const handleFavoriteClick = (event) => {
     //즐겨찾기 클릭 시 Link로 넘어가는 것을 막음
     event.preventDefault();
+
+    try {
+      handleFavorite();
+      console.log("Favorite post 요청 성공");
+      // 필요한 추가 작업 수행
+    } catch (error) {
+      console.error("Favorite post 요청 실패", error);
+      // 필요한 에러 처리 작업 수행
+    }
   };
   return (
     <>

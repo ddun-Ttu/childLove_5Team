@@ -36,12 +36,12 @@ import {
   Favorite,
 } from "./pages/index";
 
-// const queryClient = new QueryClient();
+const queryClient = new QueryClient();
 
 function App() {
   const [arr, setArr] = useState();
 
-  console.log(arr);
+  // console.log(arr);
 
   useEffect(() => {
     fetch(
@@ -58,22 +58,24 @@ function App() {
   return (
     <>
       <Container>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/login" element={<Login />}></Route>
-            <Route path="/SignUp" element={<SignUp />}></Route>
-            <Route path="/register" element={<RegisterForm />} />
-            <Route path="admin" element={<AdminHome />} />
-            <Route path="/reserve" element={<ReservationChk />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/detail/:hpid" element={<Detail />} />
-            <Route path="/detail/reserve" element={<Reserve />} />
-            <Route path="/detail/map" element={<MapHospital />} />
-            <Route path="/mypage/map" element={<MapMyPage />} />
-            <Route path="/favorite" element={<Favorite />} />
-          </Routes>
-        </Router>
+        <QueryClientProvider client={queryClient}>
+          <Router>
+            <Routes>
+              <Route path="/" element={<Home />}></Route>
+              <Route path="/login" element={<Login />}></Route>
+              <Route path="/SignUp" element={<SignUp />}></Route>
+              <Route path="/register" element={<RegisterForm />} />
+              <Route path="admin" element={<AdminHome />} />
+              <Route path="/reserve" element={<ReservationChk />} />
+              <Route path="/search" element={<SearchPage />} />
+              <Route path="/detail/:hpid" element={<Detail />} />
+              <Route path="/detail/reserve" element={<Reserve />} />
+              <Route path="/detail/map" element={<MapHospital />} />
+              <Route path="/mypage/map" element={<MapMyPage />} />
+              <Route path="/favorite" element={<Favorite />} />
+            </Routes>
+          </Router>
+        </QueryClientProvider>
       </Container>
     </>
   );

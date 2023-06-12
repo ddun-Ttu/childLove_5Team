@@ -37,7 +37,7 @@ export const Favorite = () => {
   const { data: userInfo, userIsLoading } = useQuery(
     ["user"],
     // instance를 사용해 중복되는 옵션 제거 -> ?????
-    axios.get(`${BE_URL}${endpoint_user}`),
+    () => axios.get(`${BE_URL}${endpoint_user}`),
     {
       //백엔드에서 주는 데이터를 내가 원하는 가공해서 받을 수 있습니다.
       select: (response) => {
@@ -56,7 +56,7 @@ export const Favorite = () => {
     async () => {
       try {
         const response = axios
-          .get(`${BE_URL}${endpoint_favorite}user`, {
+          .get(`${BE_URL}${endpoint_favorite}`, {
             headers: {
               Authorization: `Bearer ${userToken}`,
             },
