@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Post } from "./Post";
 import { Button, Container } from "../../components";
@@ -22,7 +22,7 @@ export const RegisterForm = () => {
   const [lng, setLng] = useState(0); // 경도
   const [fullAddress, setFullAddress] = useState(""); //전체주소
   const [images, setImages] = useState([]); // 병원 이미지
-
+  const [notAllow, setNotAllow] = useState(true);
   // 함수형 태로 자식 props를 보내서 Post의  주소 데이터를 받아온다
   const getAddrData = (addr1, addr2, lat, lng, fullAddress) => {
     setAddr1(addr1);
@@ -152,6 +152,13 @@ export const RegisterForm = () => {
     wgs84Lon: lng,
   };
 
+  useEffect(() => {
+    if (dutyName && fullAddress && images.length > 0) {
+      setNotAllow(false);
+    } else {
+      setNotAllow(true);
+    }
+  }, [dutyName, fullAddress, images]);
   const onClick = () => {
     const formData = new FormData();
 
@@ -173,7 +180,7 @@ export const RegisterForm = () => {
         },
       })
       .then((response) => {
-        console.log("성공");
+        window.location.href = "/signUp";
       });
   };
 
@@ -188,6 +195,7 @@ export const RegisterForm = () => {
           <InputBox>
             <InputName>병원명</InputName>
             <InputContent type="text" onChange={handleNameInput} />
+            <P>필수 입력 사항입니다.</P>
           </InputBox>
           <InputBox>
             <InputName>병원 대표번호</InputName>
@@ -256,13 +264,18 @@ export const RegisterForm = () => {
                 </div>
               );
             })}
+            <P>사진, 주소, 병원명을 반드시 등록해주세요</P>
           </InputBox>
 
-          <RegisterBox>
-            <NavBtn to="/signUp" onClick={onClick}>
-              <span style={{ color: "white" }}>신규등록 </span>
-            </NavBtn>
-          </RegisterBox>
+          <Button
+            label={"신규등록"}
+            onClick={onClick}
+            disabled={notAllow}
+            bgcolor={colors.primary}
+            btnColor={"#ffffff"}
+            width={"100px"}
+            btnFontSize={"18px"}
+          ></Button>
         </FormBox>
       </Container>
     </>
@@ -336,23 +349,8 @@ const ErrorMessage = styled.p`
   color: #c20000;
 `;
 
-const NavBtn = styled(Link)`
-  color: #ffffff;
-  width: 80%;
-  height: 35%;
-  padding: 10px 20px;
-  background-color: ${colors.primary};
-
-  font-size: 18px;
-  font-weight: bold;
-  text-decoration: none;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-`;
-
-const RegisterBox = styled.div`
-  width: 70%;
-  display: flex;
-  justify-content: center;
+const P = styled.p`
+  font-size: 14px;
+  color: #c20000;
+  margin-top: 3%;
 `;
