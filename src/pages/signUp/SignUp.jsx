@@ -7,11 +7,9 @@ import {
   Route,
   Link,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
 import axios from "axios";
-
-// 검색창 라이브러리
-import Select from "react-select";
 
 // 알림창 라이브러리
 import "react-toastify/dist/ReactToastify.css";
@@ -123,7 +121,6 @@ const UserView = () => {
     } else {
       setPwValid(false);
     }
-    console.log(e.target.value);
   };
 
   // 비밀번호 확인 검사
@@ -134,7 +131,6 @@ const UserView = () => {
     } else {
       setPwCheckValid(false);
     }
-    console.log(e.target.value);
   };
 
   // 핸드폰 유효성 검사
@@ -167,7 +163,7 @@ const UserView = () => {
   const register = () => {
     // axios를 사용하여 POST 요청 만들기
     axios
-      .post("/users/clientsignup", {
+      .post("http://34.64.69.226:3000/users/clientsignup", {
         name: name,
         email: email,
         password: pw,
@@ -176,7 +172,8 @@ const UserView = () => {
       .then((response) => {
         // 회원가입 성공
         // 홈으로 이동
-        window.location.href = "/";
+        useNavigate("/");
+        // window.location.href = "/";
         console.log("등록 성공", response.data);
       })
       .catch((error) => {
@@ -318,7 +315,6 @@ const HospitalView = () => {
     } else {
       setPwValid(false);
     }
-    console.log(e.target.value);
   };
 
   // 비밀번호 확인 검사
@@ -329,7 +325,6 @@ const HospitalView = () => {
     } else {
       setPwCheckValid(false);
     }
-    console.log(e.target.value);
   };
 
   // 핸드폰 유효성 검사
@@ -362,8 +357,8 @@ const HospitalView = () => {
   const register = () => {
     // axios를 사용하여 POST 요청 만들기
     axios
-      .post("http://34.64.69.226:3000/users/managersignup", {
-        hospitalId: name,
+      .post("/users/managersignup", {
+        hospitalId: selectedOption.key,
         name: name,
         email: email,
         password: pw,
@@ -371,7 +366,8 @@ const HospitalView = () => {
       })
       .then((response) => {
         // 성공적인 응답 처리
-        window.location.href = "/";
+        useNavigate("/");
+        // window.location.href = "/";
         console.log("등록 성공", response.data);
       })
       .catch((error) => {
