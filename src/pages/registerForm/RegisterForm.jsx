@@ -6,6 +6,7 @@ import colors from "../../constants/colors";
 import mainLogo from "../../assets/mainLogo.svg";
 import { SelectBox } from "./SelectBox";
 import axios from "axios";
+import { instance } from "../../server/Fetcher";
 
 export const RegisterForm = () => {
   const [dutyName, setDutyName] = useState(""); // 병원명 인풋 관리
@@ -19,6 +20,7 @@ export const RegisterForm = () => {
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
   const [fullAddress, setFullAddress] = useState("");
+  const [images, setImages] = useState([""]);
 
   // 함수형 태로 자식 props를 보내서 Post의  주소 데이터를 받아온다
   const getAddrData = (addr1, addr2, lat, lng, fullAddress) => {
@@ -67,76 +69,119 @@ export const RegisterForm = () => {
   const phoneValid = phoneRegex.test(phone) ? true : false;
 
   // 신규 등록 버튼 클릭 시 서버로 데이터 전송
-  const onClick = async () => {
-    const openDutyTimes = Array(9).fill(""); // 병원 영업 시간을 저장할 배열 생성 및 초기화
-    const closeDutyTimes = Array(9).fill(""); // 병원 마감 시간 저장 배열
 
-    // SelectBox 에서 받아온 openTime 배열을 돌면서 dutyTimes에 저장
-    openTime.forEach((option, index) => {
-      openDutyTimes[index] = option.value;
+  const openDutyTimes = Array(9).fill(""); // 병원 영업 시간을 저장할 배열 생성 및 초기화
+  const closeDutyTimes = Array(9).fill(""); // 병원 마감 시간 저장 배열
+
+  // SelectBox 에서 받아온 openTime 배열을 돌면서 dutyTimes에 저장
+  openTime.forEach((option, index) => {
+    openDutyTimes[index] = option.value;
+  });
+
+  // 마감 시간 저장
+  closeTime.forEach((option, index) => {
+    closeDutyTimes[index] = option.value;
+  });
+
+  // 오픈 시간 담을 변수
+  const [
+    dutyTime1s,
+    dutyTime2s,
+    dutyTime3s,
+    dutyTime4s,
+    dutyTime5s,
+    dutyTime6s,
+    dutyTime7s,
+    dutyTime8s,
+    dutyTime9s,
+  ] = openDutyTimes;
+
+  // 마감 시간 담을 변수
+  const [
+    dutyTime1c,
+    dutyTime2c,
+    dutyTime3c,
+    dutyTime4c,
+    dutyTime5c,
+    dutyTime6c,
+    dutyTime7c,
+    dutyTime8c,
+    dutyTime9c,
+  ] = closeDutyTimes;
+  const formData = new FormData();
+
+  const data = {
+    dutyAddr: fullAddress,
+    dutyAddr1Depth: addr1,
+    dutyAddr2Depth: addr2,
+    dutyAddr3Depth: addr2,
+    dutyEtc: info,
+    notice: notice,
+    dutyName: dutyName,
+    dutyTel1: phone,
+    dutyTime9s: dutyTime9s,
+    dutyTime9c: dutyTime9c,
+    dutyTime1c: dutyTime1c,
+    dutyTime1s: dutyTime1s,
+    dutyTime2c: dutyTime2c,
+    dutyTime2s: dutyTime2s,
+    dutyTime3c: dutyTime3c,
+    dutyTime3s: dutyTime3s,
+    dutyTime4c: dutyTime4c,
+    dutyTime4s: dutyTime4s,
+    dutyTime5c: dutyTime5c,
+    dutyTime5s: dutyTime5s,
+    dutyTime6c: dutyTime6c,
+    dutyTime6s: dutyTime6s,
+    dutyTime7c: dutyTime7c,
+    dutyTime7s: dutyTime7s,
+    dutyTime8c: dutyTime8c,
+    dutyTime8s: dutyTime8s,
+    wgs84Lat: lat,
+    wgs84Lon: lng,
+  };
+
+  for (const key in data) {
+    if (data.hasOwnProperty(key)) {
+      formData.append(key, data[key]);
+    }
+  }
+  const setFile = (e, argI) => {
+    if (e.target.files[0]) {
+      formData.append("files", e.target.files[0]);
+      const file = e.target.files[0];
+
+      setImages(
+        images.map((image, i) => {
+          if (argI === i) {
+            return file;
+          } else {
+            return image;
+          }
+        })
+      );
+    }
+  };
+  console.log(images);
+
+  const deleteFile = (argI) => {
+    setImages((prevImages) => {
+      const updatedImages = prevImages.filter((_, i) => i !== argI);
+      return updatedImages;
     });
+  };
+  const onClick = () => {
+    console.log([...formData]);
 
-    // 마감 시간 저장
-    closeTime.forEach((option, index) => {
-      closeDutyTimes[index] = option.value;
-    });
-
-    // 오픈 시간 담을 변수
-    const [
-      dutyTime1s,
-      dutyTime2s,
-      dutyTime3s,
-      dutyTime4s,
-      dutyTime5s,
-      dutyTime6s,
-      dutyTime7s,
-      dutyTime8s,
-      dutyTime9s,
-    ] = openDutyTimes;
-
-    // 마감 시간 담을 변수
-    const [
-      dutyTime1c,
-      dutyTime2c,
-      dutyTime3c,
-      dutyTime4c,
-      dutyTime5c,
-      dutyTime6c,
-      dutyTime7c,
-      dutyTime8c,
-      dutyTime9c,
-    ] = closeDutyTimes;
-
-    axios.post("/hospital", {
-      dutyAddr: fullAddress,
-      dutyAddr1Depth: addr1,
-      dutyAddr2Depth: addr2,
-      dutyAddr3Depth: addr2,
-      dutyEtc: info,
-      notice: notice,
-      dutyName: dutyName,
-      dutyTel1: phone,
-      dutyTime9s: dutyTime9s,
-      dutyTime9c: dutyTime9c,
-      dutyTime1c: dutyTime1c,
-      dutyTime1s: dutyTime1s,
-      dutyTime2c: dutyTime2c,
-      dutyTime2s: dutyTime2s,
-      dutyTime3c: dutyTime3c,
-      dutyTime3s: dutyTime3s,
-      dutyTime4c: dutyTime4c,
-      dutyTime4s: dutyTime4s,
-      dutyTime5c: dutyTime5c,
-      dutyTime5s: dutyTime5s,
-      dutyTime6c: dutyTime6c,
-      dutyTime6s: dutyTime6s,
-      dutyTime7c: dutyTime7c,
-      dutyTime7s: dutyTime7s,
-      dutyTime8c: dutyTime8c,
-      dutyTime8s: dutyTime8s,
-      wgs84Lat: lat,
-      wgs84Lon: lng,
-    });
+    // instance
+    //   .post("image", formData, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   })
+    //   .then((response) => {
+    //     // 요청이 성공할 때 실행할 코드 작성
+    //   });
   };
 
   return (
@@ -176,10 +221,29 @@ export const RegisterForm = () => {
         <Post addr1={addr1} getAddrData={getAddrData} />
         <InputBox>
           <InputName>병원 사진</InputName>
-          <ImageBox>
-            <InputImage type="file" />
-          </ImageBox>
+
+          {images.map((image, i) => {
+            return (
+              <>
+                <ImageBox key={i}>
+                  <InputImage type="file" onChange={(e) => setFile(e, i)} />
+                </ImageBox>
+                <button onClick={() => deleteFile(i)}>x</button>
+              </>
+            );
+          })}
         </InputBox>
+        <Button
+          label={"이미지 추가하기"}
+          width={"100%"}
+          height={"35%"}
+          btnColor={"#ffffff"}
+          bgcolor={colors.primary}
+          btnFontSize={"18px"}
+          onClick={() => {
+            setImages([...images, ""]);
+          }}
+        />
         <InputBox>
           <Button
             label={"신규 등록하기"}
@@ -200,10 +264,8 @@ const MainLogoDiv = styled.div``;
 const MainLogoImg = styled.img`
   padding: 3% 3% 0 3%;
 `;
-
 const H1 = styled.p`
   font-size: 38px;
-  margin: 0;
   padding: 2%;
   color: #00ad5c;
   font-weight: 700;

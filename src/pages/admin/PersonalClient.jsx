@@ -22,11 +22,12 @@ export const PersonalClient = () => {
   });
 
   const list = listQuery.data;
-  const [searchInput, setsearchInput] = useState(""); // 검색창 인풋
+  console.log(list);
+  const [searchInput, setSearchInput] = useState(""); // 검색창 인풋
   const [submitted, setSubmitted] = useState(false); // 검색창 submit 상태
   const [checkList, setCheckList] = useState([]); // 체크박스
   const onChange = (e) => {
-    setsearchInput(e.target.value);
+    setSearchInput(e.target.value);
     setSubmitted(false);
   };
 
@@ -146,6 +147,7 @@ export const PersonalClient = () => {
             </TableRow>
           ))}
         </tbody>
+
         <tbody>
           <Button
             width={"80px"}
@@ -165,8 +167,12 @@ export const PersonalClient = () => {
           label={"이전페이지"}
           bgcolor={colors.primary}
           btnColor={"white"}
-          disabled={currentPage > maxPostPage}
-          onClick={() => setCurrentPage((prev) => prev - 1)}
+          disabled={currentPage < 1}
+          onClick={() => {
+            if (currentPage >= 1) {
+              setCurrentPage((prev) => prev - 1);
+            }
+          }}
         ></Button>
         <span>Page {currentPage + 1}</span>
         <Button
