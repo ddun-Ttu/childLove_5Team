@@ -23,9 +23,10 @@ export const ModifyForm = () => {
   const [lng, setLng] = useState(0); // 경도
   const [fullAddress, setFullAddress] = useState(""); //전체주소
   const [images, setImages] = useState([]); // 병원 이미지
-  const [notAllow, setNotAllow] = useState(true);
-  // 함수형 태로 자식 props를 보내서 Post의  주소 데이터를 받아온다
+  const [notAllow, setNotAllow] = useState(true); // 버튼의 활성화/비활성화
+  const [isEditing, setIsEditing] = useState(false);
 
+  // 함수형 태로 자식 props를 보내서 Post의  주소 데이터를 받아온다
   const getAddrData = (addr1, addr2, lat, lng, fullAddress) => {
     setAddr1(addr1);
     setAddr2(addr2);
@@ -154,6 +155,7 @@ export const ModifyForm = () => {
     wgs84Lon: lng,
   };
 
+  // 3가지 부분의 값이 존재하면 button 활성화
   useEffect(() => {
     if (dutyName && fullAddress && images.length > 0) {
       setNotAllow(false);
@@ -161,6 +163,8 @@ export const ModifyForm = () => {
       setNotAllow(true);
     }
   }, [dutyName, fullAddress, images]);
+
+  // 사진, 데이터들을 보내기 위해서 FormData 사용
   const onClick = () => {
     const formData = new FormData();
 
@@ -175,15 +179,19 @@ export const ModifyForm = () => {
     });
 
     console.log(formData);
-    instance
-      .post("hospital", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        window.location.href = "/signUp";
-      });
+    // instance
+    //   .put(`hospital/${hospitalId}`, formData, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   })
+    //   .then((response) => {});
+
+    setIsEditing(!isEditing);
+  };
+
+  const handleEditing = async () => {
+    setIsEditing(!isEditing);
   };
 
   return (
@@ -195,24 +203,71 @@ export const ModifyForm = () => {
         </MainLogoDiv>
         <FormBox>
           <InputBox>
-            <InputName>병원명</InputName>
-            <InputContent type="text" onChange={handleNameInput} />
-            <P>필수 입력 사항입니다.</P>
-          </InputBox>
-          <InputBox>
-            <InputName>병원 대표번호</InputName>
-            <InputContent type="text" value={phone} onChange={handlePhone} />
-            {!phoneValid && phone.length > 0 && (
-              <ErrorMessage>-을 붙여서 입력해주세요</ErrorMessage>
+            {!isEditing ? (
+              <>
+                <InputName>병원명</InputName>
+                <TextBox>
+                  <p>좋은 병원 </p>
+                </TextBox>
+              </>
+            ) : (
+              <>
+                <InputName>병원명</InputName>
+                <InputContent type="text" onChange={handleNameInput} />
+              </>
             )}
           </InputBox>
           <InputBox>
-            <InputName>공지사항</InputName>
-            <InputContent type="text" onChange={handleNotice} />
+            {!isEditing ? (
+              <>
+                <InputName>병원 대표번호</InputName>
+                <TextBox>
+                  <p>010-2455-2213 </p>
+                </TextBox>
+              </>
+            ) : (
+              <>
+                <InputName>병원 대표번호</InputName>
+                <InputContent
+                  type="text"
+                  value={phone}
+                  onChange={handlePhone}
+                />
+                {!phoneValid && phone.length > 0 && (
+                  <ErrorMessage>-을 붙여서 입력해주세요</ErrorMessage>
+                )}
+              </>
+            )}
           </InputBox>
           <InputBox>
-            <InputName>병원 설명</InputName>
-            <InputContent type="text" onChange={handleInfo} />
+            {!isEditing ? (
+              <>
+                <InputName>공지사항</InputName>
+                <TextBox>
+                  <p>주사가 많이 아파요 </p>
+                </TextBox>
+              </>
+            ) : (
+              <>
+                <InputName>공지사항</InputName>
+                <InputContent type="text" onChange={handleNotice} />
+              </>
+            )}
+          </InputBox>
+          <InputBox>
+            {!isEditing ? (
+              <>
+                <InputName>병원 설명</InputName>
+                <TextBox>
+                  <p>주차 공간없어요 </p>
+                </TextBox>
+              </>
+            ) : (
+              <>
+                <InputName>병원 설명</InputName>
+                <InputContent type="text" onChange={handleInfo} />
+              </>
+            )}
           </InputBox>
           <InputBox>
             <InputName>영업시간 및 점심시간</InputName>
@@ -221,8 +276,21 @@ export const ModifyForm = () => {
               getCloseTimeData={getCloseTimeData}
             />
           </InputBox>
+          {!isEditing ? (
+            <>
+              <InputBox>
+                <InputName>주소</InputName>
+                <TextBox>
+                  <p>성수낙낙 </p>
+                </TextBox>
+              </InputBox>
+            </>
+          ) : (
+            <>
+              <Post addr1={addr1} getAddrData={getAddrData} />
+            </>
+          )}
 
-          <Post addr1={addr1} getAddrData={getAddrData} />
           <InputBox>
             <ImageBox>
               <InputName>병원 사진</InputName>
@@ -269,15 +337,30 @@ export const ModifyForm = () => {
             <P>사진, 주소, 병원명을 반드시 등록해주세요</P>
           </InputBox>
 
-          <Button
-            label={"신규등록"}
-            onClick={onClick}
-            disabled={notAllow}
-            bgcolor={colors.primary}
-            btnColor={"#ffffff"}
-            width={"100px"}
-            btnFontSize={"18px"}
-          ></Button>
+          {!isEditing ? (
+            <>
+              <Button
+                label={"수정 시작"}
+                onClick={handleEditing}
+                bgcolor={colors.primary}
+                btnColor={"#ffffff"}
+                width={"100px"}
+                btnFontSize={"18px"}
+              ></Button>
+            </>
+          ) : (
+            <>
+              <Button
+                label={"수정 완료"}
+                onClick={onClick}
+                disabled={notAllow}
+                bgcolor={colors.primary}
+                btnColor={"#ffffff"}
+                width={"100px"}
+                btnFontSize={"18px"}
+              ></Button>
+            </>
+          )}
         </FormBox>
       </Container>
     </>
@@ -355,4 +438,10 @@ const P = styled.p`
   font-size: 14px;
   color: #c20000;
   margin-top: 3%;
+`;
+
+const TextBox = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
 `;
