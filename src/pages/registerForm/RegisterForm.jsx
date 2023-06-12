@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { Post } from "./Post";
 import { Button } from "../../components";
@@ -20,8 +20,18 @@ export const RegisterForm = () => {
   const [lat, setLat] = useState(0); // 위도
   const [lng, setLng] = useState(0); // 경도
   const [fullAddress, setFullAddress] = useState(""); //전체주소
-  const [images, setImages] = useState([""]); // 병원 이미지
+  const [images, setImages] = useState([]); // 병원 이미지
 
+  const fileInputRef = useRef(null);
+
+  const handleChange = (e) => {
+    const newImages = [...images, e.target.files[0]];
+    setImages(newImages);
+  };
+
+  const handleClick = () => {
+    fileInputRef.current.click();
+  };
   // 함수형 태로 자식 props를 보내서 Post의  주소 데이터를 받아온다
   const getAddrData = (addr1, addr2, lat, lng, fullAddress) => {
     setAddr1(addr1);
@@ -148,31 +158,7 @@ export const RegisterForm = () => {
   }
 
   // 이미지 파일 추가
-  const setFile = (e, argI) => {
-    if (e.target.files[0]) {
-      formData.append("files", e.target.files[0]);
-      const file = e.target.files[0];
 
-      setImages(
-        images.map((image, i) => {
-          if (argI === i) {
-            return file;
-          } else {
-            return image;
-          }
-        })
-      );
-    }
-  };
-  console.log(images);
-
-  //선택한 이미지 삭제
-  const deleteFile = (argI) => {
-    setImages((prevImages) => {
-      const updatedImages = prevImages.filter((_, i) => i !== argI);
-      return updatedImages;
-    });
-  };
   const onClick = () => {
     console.log([...formData]);
 
@@ -224,15 +210,31 @@ export const RegisterForm = () => {
         <Post addr1={addr1} getAddrData={getAddrData} />
         <InputBox>
           <InputName>병원 사진</InputName>
-
-          {images.map((image, i) => {
+          <button onClick={handleClick}>Upload a file</button>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleChange}
+            style={{ display: "none" }}
+          />
+          {images.map((image, argI) => {
             return (
-              <>
-                <ImageBox key={i}>
-                  <InputImage type="file" onChange={(e) => setFile(e, i)} />
-                </ImageBox>
-                <button onClick={() => deleteFile(i)}>x</button>
-              </>
+              <div key={argI}>
+                <div>{image.name}</div>
+                <div>
+                  <button
+                    onClick={() => {
+                      setImages(
+                        images.filter((image, i) => {
+                          return argI !== i;
+                        })
+                      );
+                    }}
+                  >
+                    x
+                  </button>
+                </div>
+              </div>
             );
           })}
         </InputBox>
