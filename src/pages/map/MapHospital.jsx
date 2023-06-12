@@ -17,9 +17,12 @@ import {
 
 // 공통 컴포넌트
 import { Header, NavigationBar, CardBox } from "../../components/index";
+//utils
+import { formatTime } from "../../utils.js";
 
 //요일 정보 지정을 위한 상수
-const WEEK = ["월", "화", "수", "목", "금", "토", "일", "공휴일"];
+//일~월 : 0~6
+const WEEK = ["일", "월", "화", "수", "목", "금", "토"];
 //오늘 날짜(요일) 저장
 let now = new Date();
 const today = now.getDay();
@@ -69,19 +72,13 @@ export const MapHospital = () => {
   const hospitalLon = hospitalData.wgs84Lon;
 
   //요일 정보 변환
-  const todayText = WEEK[today - 1];
-  const dutyTimeStart = hospitalData[`dutyTime${today}s`]; // 오늘 요일에 해당하는 dutyTime 시작 시간
-  const dutyTimeClose = hospitalData[`dutyTime${today}c`]; // 오늘 요일에 해당하는 dutyTime 종료 시간
+  const todayText = WEEK[today];
+  //today가 0일 경우(일요일) 7번째 dutyTime값을 가져오도록 함
+  const dutyTimeStart =
+    today === 0 ? hospitalData.dutyTime7s : hospitalData[`dutyTime${today}s`]; // 오늘 요일에 해당하는 dutyTime 시작 시간
+  const dutyTimeClose =
+    today === 0 ? hospitalData.dutyTime7c : hospitalData[`dutyTime${today}c`]; // 오늘 요일에 해당하는 dutyTime 종료 시간
 
-  // 시간 형식을 변환하는 함수
-  const formatTime = (time) => {
-    if (!time) {
-      return null;
-    }
-    const hours = time?.slice(0, 2);
-    const minutes = time?.slice(2);
-    return `${hours}:${minutes}`;
-  };
   return (
     <Style.Wrapper>
       <Header label={hospitalData.dutyName} />
@@ -99,19 +96,6 @@ export const MapHospital = () => {
         >
           <MapMarker
             position={{ lat: `${hospitalLat}`, lng: `${hospitalLon}` }}
-            image={{
-              src: { IconMapG }, // 마커이미지의 주소입니다
-              size: {
-                width: 64,
-                height: 69,
-              }, // 마커이미지의 크기입니다
-              options: {
-                offset: {
-                  x: 27,
-                  y: 69,
-                }, // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-              },
-            }}
           />
         </Map>
         <Style.CardBoxWrap isOpen={isOpen}>
@@ -127,9 +111,12 @@ export const MapHospital = () => {
                 <div>
                   <img alt={"icon-clock"} src={IconClockMap} />
                   <span>
-                    {`${todayText}요일 ${formatTime(
-                      dutyTimeStart
-                    )} ~ ${formatTime(dutyTimeClose)}`}
+                    {dutyTimeStart
+                      ? // dutyTime이 null 값일 경우 휴무로 표시
+                        `${todayText}요일 ${formatTime(
+                          dutyTimeStart
+                        )} ~ ${formatTime(dutyTimeClose)}`
+                      : `${todayText}요일 휴무`}
                   </span>
                 </div>
                 <div>

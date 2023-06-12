@@ -34,19 +34,21 @@ export const Favorite = () => {
   // 옵션창 펼쳐졌는지
   const [isOpenOption, setIsOpenOption] = useState(false);
   // 유저 정보
-  const { data: userQuery, userIsLoading } = useQuery(["user"], async () => {
-    try {
-      const response = await axios.get(`${BE_URL}${endpoint_user}`, {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      });
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      throw error;
+  const { data: userInfo, userIsLoading } = useQuery(
+    ["user"],
+    // instance를 사용해 중복되는 옵션 제거 -> ?????
+    axios.get(`${BE_URL}${endpoint_user}`),
+    {
+      //백엔드에서 주는 데이터를 내가 원하는 가공해서 받을 수 있습니다.
+      select: (response) => {
+        return response.data; // 이 데이터는 위의 userInfo로 받을 수 있어요.
+      },
+      // 에러 핸들링
+      onError: (error) => {
+        console.log(error);
+      },
     }
-  });
+  );
 
   // 즐겨찾기 리스트 받아오기
   const { data: favoritesQuery, favoriteListIsLoading } = useQuery(
@@ -63,7 +65,6 @@ export const Favorite = () => {
         return response.data;
       } catch (error) {
         console.log(error);
-        throw error;
       }
     }
   );
@@ -74,7 +75,7 @@ export const Favorite = () => {
   }
 
   //유저정보
-  const userData = userQuery?.data ?? [];
+  const userData = userInfo?.data ?? [];
   const user_id = userData.id;
 
   //즐겨찾기 리스트
