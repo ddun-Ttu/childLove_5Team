@@ -204,7 +204,7 @@ export const Home = () => {
           <SimpleSlider />
         </SiliderMargin>
 
-        <AutoplayYouTubeVideo videoId={"Os_heh8vPfs"} />
+        <AutoplayYouTubeVideo videoId={"efzr12y8vUc"} />
 
         <Footer />
         <NavigationBar />
@@ -414,7 +414,7 @@ const SimpleSlider = () => {
         params: {
           userLat: 37.5007795003494,
           userLon: 127.1107520613008,
-          r: 5,
+          r: 10,
         },
       });
       const responseData = response.data.data;
