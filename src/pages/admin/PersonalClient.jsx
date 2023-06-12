@@ -5,7 +5,7 @@ import { useQuery, useQueryClient } from "react-query";
 import { Button } from "../../components/Button";
 import colors from "../../constants/colors";
 
-import { deleteinstance, instance } from "../../server/Fetcher";
+import { instance } from "../../server/Fetcher";
 
 export const PersonalClient = () => {
   const [currentPage, setCurrentPage] = useState(0); // 페이지 숫자 상태
@@ -61,7 +61,7 @@ export const PersonalClient = () => {
 
   const arrayDelete = async () => {
     console.log("idArray", checkArray);
-    await deleteinstance.delete("/admin/deleteall", {
+    await instance.delete("/admin/deleteall", {
       data: {
         userIds: checkArray,
       },
@@ -71,7 +71,7 @@ export const PersonalClient = () => {
   // 페이지네이션 데이터의 id와 체크된 열의 id 값 필터
   const handleDelete = async (item) => {
     console.log("삭제할 id:", item);
-    await deleteinstance.delete(`admin/delete/${item.id}`); //React Query에서 'invalidateQueries' 기능 사용해서 업데이트 된 목록 다시
+    await instance.delete(`admin/delete/${item.id}`); //React Query에서 'invalidateQueries' 기능 사용해서 업데이트 된 목록 다시
     queryClient.invalidateQueries("list");
   };
 
@@ -147,19 +147,17 @@ export const PersonalClient = () => {
             </TableRow>
           ))}
         </tbody>
-
-        <tbody>
-          <Button
-            width={"80px"}
-            height={"30px"}
-            label={"선택삭제"}
-            bgcolor={colors.primary}
-            btnColor={"white"}
-            onClick={arrayDelete}
-          />
-        </tbody>
       </Table>
-
+      <AlignBtn>
+        <Button
+          width={"80px"}
+          height={"30px"}
+          label={"선택삭제"}
+          bgcolor={colors.primary}
+          btnColor={"white"}
+          onClick={arrayDelete}
+        />
+      </AlignBtn>
       <ButtonBox>
         <Button
           width={"80px"}
@@ -270,4 +268,11 @@ const ButtonBox = styled.div`
     font-weight: 600;
     font-size: 24px;
   }
+`;
+
+const AlignBtn = styled.div`
+  display: flex;
+  width: 90%;
+  justify-content: flex-start;
+  padding-top: 2%;
 `;

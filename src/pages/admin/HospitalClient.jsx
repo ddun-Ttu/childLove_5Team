@@ -88,7 +88,7 @@ export const HospitalClient = () => {
   }
 
   const filteredList = list.data?.filter(
-    (item) => !submitted || item.email === searchInput
+    (item) => !submitted || item.phoneNumber === searchInput
   );
 
   //페이지네이션 로직
@@ -116,7 +116,7 @@ export const HospitalClient = () => {
             </TableHeader>
             <TableHeader>가입날짜</TableHeader>
             <TableHeader>이름</TableHeader>
-            <TableHeader>아이디</TableHeader>
+            <TableHeader>병원명</TableHeader>
             <TableHeader>연락처</TableHeader>
             <TableHeader>삭제</TableHeader>
           </tr>
@@ -132,7 +132,7 @@ export const HospitalClient = () => {
               </TableData>
               <TableData>{item.createdAt.slice(0, 10)}</TableData>
               <TableData>{item.name}</TableData>
-              <TableData>{item.email}</TableData>
+              <TableData>{item.hospital?.dutyName}</TableData>
               <TableData>{item.phoneNumber}</TableData>
               <TableData>
                 <Button
@@ -147,18 +147,17 @@ export const HospitalClient = () => {
             </TableRow>
           ))}
         </tbody>
-
-        <tbody>
-          <Button
-            width={"80px"}
-            height={"30px"}
-            label={"선택삭제"}
-            bgcolor={colors.primary}
-            btnColor={"white"}
-            onClick={arrayDelete}
-          />
-        </tbody>
       </Table>
+      <AlignBtn>
+        <Button
+          width={"80px"}
+          height={"30px"}
+          label={"선택삭제"}
+          bgcolor={colors.primary}
+          btnColor={"white"}
+          onClick={arrayDelete}
+        />
+      </AlignBtn>
 
       <ButtonBox>
         <Button
@@ -270,4 +269,11 @@ const ButtonBox = styled.div`
     font-weight: 600;
     font-size: 24px;
   }
+`;
+
+const AlignBtn = styled.div`
+  display: flex;
+  width: 90%;
+  justify-content: flex-start;
+  padding-top: 2%;
 `;

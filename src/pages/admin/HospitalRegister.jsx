@@ -60,17 +60,15 @@ export const HospitalRegister = () => {
     setCheckArray(copy);
   };
 
-  const arrayDelete = async () => {
+  const checkRegister = async () => {
     console.log("idArray", checkArray);
     await instance.patch("/admin/verifyall", {
-      data: {
-        userIds: checkArray,
-      },
+      userIds: checkArray,
     });
     queryClient.invalidateQueries("list");
   };
   // 페이지네이션 데이터의 id와 체크된 열의 id 값 필터
-  const handleDelete = async (item) => {
+  const handleRegister = async (item) => {
     console.log("삭제할 id:", item);
     await instance.patch(`/admin/verify/${item.id}`); //React Query에서 'invalidateQueries' 기능 사용해서 업데이트 된 목록 다시
     queryClient.invalidateQueries("list");
@@ -89,7 +87,7 @@ export const HospitalRegister = () => {
   }
 
   const filteredList = list.data?.filter(
-    (item) => !submitted || item.email === searchInput
+    (item) => !submitted || item.phoneNumber === searchInput
   );
 
   //페이지네이션 로직
@@ -116,8 +114,8 @@ export const HospitalRegister = () => {
               />
             </TableHeader>
             <TableHeader>가입날짜</TableHeader>
-            <TableHeader>이름</TableHeader>
-            <TableHeader>아이디</TableHeader>
+            <TableHeader>병원명</TableHeader>
+            <TableHeader>주소</TableHeader>
             <TableHeader>연락처</TableHeader>
             <TableHeader>등록</TableHeader>
           </tr>
@@ -132,8 +130,8 @@ export const HospitalRegister = () => {
                 />
               </TableData>
               <TableData>{item.createdAt.slice(0, 10)}</TableData>
-              <TableData>{item.name}</TableData>
-              <TableData>{item.email}</TableData>
+              <TableData>{item.hospital?.dutyName}</TableData>
+              <TableData>{item.hospital.dutyAddr}</TableData>
               <TableData>{item.phoneNumber}</TableData>
               <TableData>
                 <Button
@@ -142,24 +140,23 @@ export const HospitalRegister = () => {
                   label={"등록"}
                   bgcolor={colors.primary}
                   btnColor={"white"}
-                  onClick={() => handleDelete(item)}
+                  onClick={() => handleRegister(item)}
                 />
               </TableData>
             </TableRow>
           ))}
         </tbody>
-
-        <tbody>
-          <Button
-            width={"80px"}
-            height={"30px"}
-            label={"선택 등록"}
-            bgcolor={colors.primary}
-            btnColor={"white"}
-            onClick={arrayDelete}
-          />
-        </tbody>
       </Table>
+      <AlignBtn>
+        <Button
+          width={"80px"}
+          height={"30px"}
+          label={"선택 등록"}
+          bgcolor={colors.primary}
+          btnColor={"white"}
+          onClick={checkRegister}
+        />
+      </AlignBtn>
 
       <ButtonBox>
         <Button
@@ -271,4 +268,11 @@ const ButtonBox = styled.div`
     font-weight: 600;
     font-size: 24px;
   }
+`;
+
+const AlignBtn = styled.div`
+  display: flex;
+  width: 90%;
+  justify-content: flex-start;
+  padding-top: 2%;
 `;
