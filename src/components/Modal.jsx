@@ -32,8 +32,8 @@ export const Modal = ({
 
   return (
     <>
-    {isOpen && (
-      <Style.ModalContainer>
+      {isOpen && (
+        <Style.ModalContainer>
           <Style.ModalBackdrop onClick={closeModalHandler}>
             <Style.ModalView onClick={(e) => e.stopPropagation()}>
               <Style.ModalTitle>
@@ -58,7 +58,7 @@ export const Modal = ({
               </div>
             </Style.ModalView>
           </Style.ModalBackdrop>
-      </Style.ModalContainer>
+        </Style.ModalContainer>
       )}
     </>
   );
