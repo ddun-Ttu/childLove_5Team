@@ -21,9 +21,6 @@ const WEEK = ["일", "월", "화", "수", "목", "금", "토"];
 
 //URL
 const BE_URL = `http://34.64.69.226:3000/`;
-// const userToken =
-// "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGUubWFpbCIsInN1YiI6MSwiaWF0IjoxNjg2MjM0NjUxLCJleHAiOjE3MTc3OTIyNTF9.QORp6FfVmnROH3A-OCvHzYKjzZVAXjADpKcwmCwGeAA";
-// const endpoint_user = `users`;
 const endpoint_favorite = `favorite`;
 
 export const HospitalCard = ({
