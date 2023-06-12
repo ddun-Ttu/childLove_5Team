@@ -17,10 +17,10 @@ export const RegisterForm = () => {
   const [closeTime, setCloseTime] = useState([]); //마감시간
   const [info, setInfo] = useState(""); // 병원 정보
   const [notice, setNotice] = useState(""); // 주의사항
-  const [lat, setLat] = useState(0);
-  const [lng, setLng] = useState(0);
-  const [fullAddress, setFullAddress] = useState("");
-  const [images, setImages] = useState([""]);
+  const [lat, setLat] = useState(0); // 위도
+  const [lng, setLng] = useState(0); // 경도
+  const [fullAddress, setFullAddress] = useState(""); //전체주소
+  const [images, setImages] = useState([""]); // 병원 이미지
 
   // 함수형 태로 자식 props를 보내서 Post의  주소 데이터를 받아온다
   const getAddrData = (addr1, addr2, lat, lng, fullAddress) => {
@@ -146,6 +146,8 @@ export const RegisterForm = () => {
       formData.append(key, data[key]);
     }
   }
+
+  // 이미지 파일 추가
   const setFile = (e, argI) => {
     if (e.target.files[0]) {
       formData.append("files", e.target.files[0]);
@@ -164,6 +166,7 @@ export const RegisterForm = () => {
   };
   console.log(images);
 
+  //선택한 이미지 삭제
   const deleteFile = (argI) => {
     setImages((prevImages) => {
       const updatedImages = prevImages.filter((_, i) => i !== argI);
