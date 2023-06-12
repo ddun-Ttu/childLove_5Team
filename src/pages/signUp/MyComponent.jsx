@@ -4,7 +4,6 @@ import Select from "react-select";
 
 export const MyComponent = () => {
   const [options, setOptions] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,7 +18,7 @@ export const MyComponent = () => {
         }));
 
         setOptions(updatedOptions);
-        console.log("데이터", data);
+        // console.log("데이터", data);
       } catch (error) {
         console.log(error);
       }
@@ -29,8 +28,7 @@ export const MyComponent = () => {
   }, []);
 
   const handleSelectChange = (selectedOption) => {
-    setSelectedOption(selectedOption); // 선택한 옵션 상태 업데이트
-    console.log(selectedOption);
+    console.log("선택", selectedOption);
   };
   return <Select options={options} onChange={handleSelectChange} />;
 };

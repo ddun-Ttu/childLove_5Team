@@ -163,7 +163,7 @@ const UserView = () => {
   const register = () => {
     // axios를 사용하여 POST 요청 만들기
     axios
-      .post("http://34.64.69.226:3000/users/clientsignup", {
+      .post("/users/clientsignup", {
         name: name,
         email: email,
         password: pw,
@@ -172,8 +172,8 @@ const UserView = () => {
       .then((response) => {
         // 회원가입 성공
         // 홈으로 이동
-        useNavigate("/");
-        // window.location.href = "/";
+        // useNavigate("/");
+        window.location.href = "/";
         console.log("등록 성공", response.data);
       })
       .catch((error) => {
@@ -358,7 +358,7 @@ const HospitalView = () => {
     // axios를 사용하여 POST 요청 만들기
     axios
       .post("/users/managersignup", {
-        hospitalId: selectedOption.key,
+        hospitalId: name,
         name: name,
         email: email,
         password: pw,
@@ -366,7 +366,7 @@ const HospitalView = () => {
       })
       .then((response) => {
         // 성공적인 응답 처리
-        useNavigate("/");
+        // useNavigate("/");
         // window.location.href = "/";
         console.log("등록 성공", response.data);
       })
