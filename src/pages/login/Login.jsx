@@ -79,6 +79,7 @@ export const Login = () => {
         const token = response.data.data.token;
         // 토큰 local storage에 저장
         localStorage.setItem("token", token);
+        console.log(response.data.data);
       })
       .catch((error) => {
         // 오류처리
