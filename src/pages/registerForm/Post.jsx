@@ -81,7 +81,6 @@ export const Post = ({ getAddrData }) => {
           <InputName>주소</InputName>
           <Button
             width={"100px"}
-            height={"30px"}
             bgcolor={colors.primary}
             onClick={handleOpenModal}
             btnColor={"#FFFFFF"}

@@ -1,12 +1,13 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { Post } from "./Post";
-import { Button } from "../../components";
+import { Button, Container } from "../../components";
 import colors from "../../constants/colors";
 import mainLogo from "../../assets/mainLogo.svg";
 import { SelectBox } from "./SelectBox";
-import axios from "axios";
+
 import { instance } from "../../server/Fetcher";
+import { Link } from "react-router-dom";
 
 export const RegisterForm = () => {
   const [dutyName, setDutyName] = useState(""); // 병원명 인풋 관리
@@ -22,16 +23,6 @@ export const RegisterForm = () => {
   const [fullAddress, setFullAddress] = useState(""); //전체주소
   const [images, setImages] = useState([]); // 병원 이미지
 
-  const fileInputRef = useRef(null);
-
-  const handleChange = (e) => {
-    const newImages = [...images, e.target.files[0]];
-    setImages(newImages);
-  };
-
-  const handleClick = () => {
-    fileInputRef.current.click();
-  };
   // 함수형 태로 자식 props를 보내서 Post의  주소 데이터를 받아온다
   const getAddrData = (addr1, addr2, lat, lng, fullAddress) => {
     setAddr1(addr1);
@@ -78,8 +69,19 @@ export const RegisterForm = () => {
   const phoneRegex = /^01[0-9]{1}-[0-9]{4}-[0-9]{4}$/;
   const phoneValid = phoneRegex.test(phone) ? true : false;
 
-  // 신규 등록 버튼 클릭 시 서버로 데이터 전송
+  // 이미지 파일 추가
+  const fileInputRef = useRef(null);
 
+  const handleChange = (e) => {
+    const newImages = [...images, e.target.files[0]];
+    setImages(newImages);
+  };
+
+  const handleClick = () => {
+    fileInputRef.current.click();
+  };
+
+  // 신규 등록 버튼 클릭 시 서버로 데이터 전송
   const openDutyTimes = Array(9).fill(""); // 병원 영업 시간을 저장할 배열 생성 및 초기화
   const closeDutyTimes = Array(9).fill(""); // 병원 마감 시간 저장 배열
 
@@ -118,7 +120,6 @@ export const RegisterForm = () => {
     dutyTime8c,
     dutyTime9c,
   ] = closeDutyTimes;
-  const formData = new FormData();
 
   const data = {
     dutyAddr: fullAddress,
@@ -151,116 +152,119 @@ export const RegisterForm = () => {
     wgs84Lon: lng,
   };
 
-  for (const key in data) {
-    if (data.hasOwnProperty(key)) {
-      formData.append(key, data[key]);
-    }
-  }
-
-  // 이미지 파일 추가
-
   const onClick = () => {
-    console.log([...formData]);
+    const formData = new FormData();
 
-    // instance
-    //   .post("image", formData, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   })
-    //   .then((response) => {
-    //     // 요청이 성공할 때 실행할 코드 작성
-    //   });
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        formData.append(key, data[key]);
+      }
+    }
+
+    images.forEach((image, index) => {
+      formData.append("files", image);
+    });
+
+    console.log(formData);
+    instance
+      .post("hospital", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        console.log("성공");
+      });
   };
 
   return (
     <>
-      <MainLogoDiv>
-        <MainLogoImg src={mainLogo}></MainLogoImg>
-        <H1>병원 신규 등록</H1>
-      </MainLogoDiv>
-      <FormBox>
-        <InputBox>
-          <InputName>병원명</InputName>
-          <InputContent type="text" onChange={handleNameInput} />
-        </InputBox>
-        <InputBox>
-          <InputName>병원 대표번호</InputName>
-          <InputContent type="text" value={phone} onChange={handlePhone} />
-          {!phoneValid && phone.length > 0 && (
-            <ErrorMessage>-을 붙여서 입력해주세요</ErrorMessage>
-          )}
-        </InputBox>
-        <InputBox>
-          <InputName>공지사항</InputName>
-          <InputContent type="text" onChange={handleNotice} />
-        </InputBox>
-        <InputBox>
-          <InputName>병원 설명</InputName>
-          <InputContent type="text" onChange={handleInfo} />
-        </InputBox>
-        <InputBox>
-          <InputName>영업시간 및 점심시간</InputName>
-          <SelectBox
-            getOpenTimeData={getOpenTimeData}
-            getCloseTimeData={getCloseTimeData}
-          />
-        </InputBox>
+      <Container>
+        <MainLogoDiv>
+          <MainLogoImg src={mainLogo}></MainLogoImg>
+          <H1>병원 신규 등록</H1>
+        </MainLogoDiv>
+        <FormBox>
+          <InputBox>
+            <InputName>병원명</InputName>
+            <InputContent type="text" onChange={handleNameInput} />
+          </InputBox>
+          <InputBox>
+            <InputName>병원 대표번호</InputName>
+            <InputContent type="text" value={phone} onChange={handlePhone} />
+            {!phoneValid && phone.length > 0 && (
+              <ErrorMessage>-을 붙여서 입력해주세요</ErrorMessage>
+            )}
+          </InputBox>
+          <InputBox>
+            <InputName>공지사항</InputName>
+            <InputContent type="text" onChange={handleNotice} />
+          </InputBox>
+          <InputBox>
+            <InputName>병원 설명</InputName>
+            <InputContent type="text" onChange={handleInfo} />
+          </InputBox>
+          <InputBox>
+            <InputName>영업시간 및 점심시간</InputName>
+            <SelectBox
+              getOpenTimeData={getOpenTimeData}
+              getCloseTimeData={getCloseTimeData}
+            />
+          </InputBox>
 
-        <Post addr1={addr1} getAddrData={getAddrData} />
-        <InputBox>
-          <InputName>병원 사진</InputName>
-          <button onClick={handleClick}>Upload a file</button>
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleChange}
-            style={{ display: "none" }}
-          />
-          {images.map((image, argI) => {
-            return (
-              <div key={argI}>
-                <div>{image.name}</div>
-                <div>
-                  <button
-                    onClick={() => {
-                      setImages(
-                        images.filter((image, i) => {
-                          return argI !== i;
-                        })
-                      );
-                    }}
-                  >
-                    x
-                  </button>
+          <Post addr1={addr1} getAddrData={getAddrData} />
+          <InputBox>
+            <ImageBox>
+              <InputName>병원 사진</InputName>
+              <Button
+                label={"사진 등록"}
+                btnColor={"#ffffff"}
+                bgcolor={colors.primary}
+                btnFontSize={"18px"}
+                onClick={handleClick}
+                width={"100px"}
+              ></Button>
+            </ImageBox>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleChange}
+              style={{ display: "none" }}
+            />
+            {images.map((image, argI) => {
+              return (
+                <div key={argI}>
+                  <ImageBox>
+                    <div>{image.name}</div>
+                    <div>
+                      <Button
+                        btnColor={"#ffffff"}
+                        bgcolor={colors.primary}
+                        label={"취소"}
+                        width={"100px"}
+                        btnFontSize={"18px"}
+                        onClick={() => {
+                          setImages(
+                            images.filter((image, i) => {
+                              return argI !== i;
+                            })
+                          );
+                        }}
+                      ></Button>
+                    </div>
+                  </ImageBox>
                 </div>
-              </div>
-            );
-          })}
-        </InputBox>
-        <Button
-          label={"이미지 추가하기"}
-          width={"100%"}
-          height={"35%"}
-          btnColor={"#ffffff"}
-          bgcolor={colors.primary}
-          btnFontSize={"18px"}
-          onClick={() => {
-            setImages([...images, ""]);
-          }}
-        />
-        <InputBox>
-          <Button
-            label={"신규 등록하기"}
-            width={"100%"}
-            height={"35%"}
-            btnColor={"#ffffff"}
-            bgcolor={colors.primary}
-            btnFontSize={"18px"}
-            onClick={onClick}
-          />
-        </InputBox>
-      </FormBox>
+              );
+            })}
+          </InputBox>
+
+          <RegisterBox>
+            <NavBtn to="/signUp" onClick={onClick}>
+              <span style={{ color: "white" }}>신규등록 </span>
+            </NavBtn>
+          </RegisterBox>
+        </FormBox>
+      </Container>
     </>
   );
 };
@@ -295,6 +299,12 @@ export const InputBox = styled.div`
   flex-direction: column;
 `;
 
+const ImageBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+`;
+
 export const InputName = styled.span`
   font-family: "Inter";
   font-style: normal;
@@ -321,29 +331,28 @@ export const InputContent = styled.input`
   line-height: 15px;
 `;
 
-const ImageBox = styled.div`
-  width: 100%;
-  box-sizing: border-box;
-  height: 50px;
-  border: 1px solid #a8a8a8;
-  border-radius: 5px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding-left: 10px;
-`;
-
-const InputImage = styled.input`
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 15px;
-`;
-
 const ErrorMessage = styled.p`
   margin-top: 2%;
   color: #c20000;
+`;
+
+const NavBtn = styled(Link)`
+  color: #ffffff;
+  width: 80%;
+  height: 35%;
+  padding: 10px 20px;
+  background-color: ${colors.primary};
+
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+`;
+
+const RegisterBox = styled.div`
+  width: 70%;
+  display: flex;
+  justify-content: center;
 `;
