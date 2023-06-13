@@ -146,9 +146,6 @@ export const SearchPageTest3 = () => {
     return null;
   }
 
-  //병원리스트
-  //   const hospitalList = hospitalsQuery?.data ?? [];
-
   //즐겨찾기 리스트
   const favoritesList = favoritesQuery?.data ?? [];
 
@@ -185,7 +182,12 @@ export const SearchPageTest3 = () => {
       today === 0 ? hospital.dutyTime7s : hospital[`dutyTime${today}s`]; // 오늘 요일에 해당하는 dutyTime 시작 시간
     const dutyTimeClose =
       today === 0 ? hospital.dutyTime7c : hospital[`dutyTime${today}c`]; // 오늘 요일에 해당하는 dutyTime 종료 시간
-
+    //즐겨찾기 해당여부 체크
+    const favorite = favoritesList.some(
+      (favoriteItem) =>
+        favoriteItem.userId === user_id &&
+        favoriteItem.hospitalId === hospital.id
+    );
     return (
       <HospitalCard
         key={hospital.id}
@@ -195,7 +197,7 @@ export const SearchPageTest3 = () => {
         today={today}
         dutyTimeStart={dutyTimeStart}
         dutyTimeClose={dutyTimeClose}
-        favorite={true}
+        favorite={favorite}
       />
     );
   };

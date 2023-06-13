@@ -37,6 +37,7 @@ import {
   ModifyForm,
 } from "./pages/index";
 import { MapHospitalTest } from "./pages/map/MapHospitalTest";
+import { SearchPageTest3 } from "./pages/search/SearchPageTest3";
 
 // const queryClient = new QueryClient();
 
@@ -69,6 +70,7 @@ function App() {
         <Route path="admin" element={<AdminHome />} />
         <Route path="/reserve" element={<ReservationChk />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/test" element={<SearchPageTest3 />} />
         <Route path="/detail/:hpid" element={<Detail />} />
         <Route path="/detail/" element={<Detail />} />
         <Route path="/detail/reserve" element={<Reserve />} />
