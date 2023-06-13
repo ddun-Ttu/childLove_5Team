@@ -14,7 +14,7 @@ import axios from "axios";
 // 알림창 라이브러리
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
-
+import { instance } from "../../server/Fetcher";
 // 이미지 링크
 import mainLogo from "../../assets/mainLogo.svg";
 
@@ -72,7 +72,7 @@ export const Login = () => {
 
   const getUserLoginInfo = async () => {
     // axios를 사용하여 post 요청
-    await axios
+    await instance
       .post("/users/login", {
         email: email,
         password: pw,
