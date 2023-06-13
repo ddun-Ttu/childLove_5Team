@@ -61,7 +61,7 @@ const BEdata = "http://34.64.69.226:5000/api";
 const Detail = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const hospitalID = searchParams.get("id") 
+  const hospitalID = searchParams.get("id");
   // const token = localStorage.getItem("token") ? localStorage.getItem("token") : false;
 
   // const hospitalID = "A1100401"; // 임시 하드코딩 아이디
@@ -305,7 +305,6 @@ const Detail = () => {
         </BottomContentContainer>
         <NavigationBar></NavigationBar>
       </Container>
-      
     </>
   );
 };
