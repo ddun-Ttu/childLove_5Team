@@ -25,6 +25,7 @@ import {
   SearchBar,
   Modal,
 } from "../../components/index";
+import {formatTime} from "../../utils"
 
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import colors from "../../constants/colors";
@@ -183,7 +184,7 @@ const Reserve = () => {
     };
     setReserveday({year: nowyear, month: nowmonth, date: nowdate, day: transDay(nowdayNum), dayNum: nowdayNum});
   }, []);
-
+  
   useEffect(()=>{
     setDutyTimes({
       "월" : [hospitalData.dutyTime1s,hospitalData.dutyTime1c],
@@ -328,7 +329,7 @@ const Reserve = () => {
           })
         });
       
-      alert("예약되었습니다, 예약확인 페이지로 연결합니다");
+      alert("예약되었습니다, 예약확인 페이지로 이동합니다");
       navigate("/reserve");
 
     } else {
@@ -352,37 +353,37 @@ const Reserve = () => {
           <HpInfoGrid>
             {hospitalData.dutyTime1c && hospitalData.dutyTime1s && (
               <HpInfoCard>
-                월 {hospitalData.dutyTime1s}-{hospitalData.dutyTime1c}
+                월 {formatTime(hospitalData.dutyTime1s)}-{formatTime(hospitalData.dutyTime1c)}
               </HpInfoCard>
             )}
             {hospitalData.dutyTime2c && hospitalData.dutyTime2s && (
               <HpInfoCard>
-                화 {hospitalData.dutyTime2s}-{hospitalData.dutyTime2c}
+                화 {formatTime(hospitalData.dutyTime2s)}-{formatTime(hospitalData.dutyTime2c)}
               </HpInfoCard>
             )}
             {hospitalData.dutyTime3c && hospitalData.dutyTime3s && (
               <HpInfoCard>
-                수 {hospitalData.dutyTime3s}-{hospitalData.dutyTime3c}
+                수 {formatTime(hospitalData.dutyTime3s)}-{formatTime(hospitalData.dutyTime3c)}
               </HpInfoCard>
             )}
             {hospitalData.dutyTime4c && hospitalData.dutyTime4s && (
               <HpInfoCard>
-                목 {hospitalData.dutyTime4s}-{hospitalData.dutyTime4c}
+                목 {formatTime(hospitalData.dutyTime4s)}-{formatTime(hospitalData.dutyTime4c)}
               </HpInfoCard>
             )}
             {hospitalData.dutyTime5c && hospitalData.dutyTime5s && (
               <HpInfoCard>
-                금 {hospitalData.dutyTime5s}-{hospitalData.dutyTime5c}
+                금 {formatTime(hospitalData.dutyTime5s)}-{formatTime(hospitalData.dutyTime5c)}
               </HpInfoCard>
             )}
             {hospitalData.dutyTime6c && hospitalData.dutyTime6s && (
               <HpInfoCard>
-                토 {hospitalData.dutyTime6s}-{hospitalData.dutyTime6c}
+                토 {formatTime(hospitalData.dutyTime6s)}-{formatTime(hospitalData.dutyTime6c)}
               </HpInfoCard>
             )}
             {hospitalData.dutyTime7c && hospitalData.dutyTime7s && (
               <HpInfoCard>
-                일 {hospitalData.dutyTime7s}-{hospitalData.dutyTime7c}
+                일 {formatTime(hospitalData.dutyTime7s)}-{formatTime(hospitalData.dutyTime7c)}
               </HpInfoCard>
             )}
           </HpInfoGrid>
@@ -430,7 +431,7 @@ const Reserve = () => {
               <ReserveTime key={index} clicked={index == clickedBtn} onClick={()=>{
                 if(checkReserve(time, reserveday)){return alert("이미 예약된 날짜입니다")}else{hadleBtn(index); setClickedBtnTime(time);}
               }} when={time} disabled={checkReserve(time, reserveday)}>
-                <span>{time}</span>
+                <span>{formatTime(time)}</span>
               </ReserveTime>
           ))}
         </ReserveTimes>
