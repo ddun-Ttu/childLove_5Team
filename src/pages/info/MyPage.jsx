@@ -15,8 +15,6 @@ import colors from "../../constants/colors";
 const userToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1bkBlbWFpbC5jb20iLCJzdWIiOjIwMDA0LCJpYXQiOjE2ODY2Mzk3MjMsImV4cCI6MTcxODE5NzMyM30.owESvX7FLjD-WjxESrMnEoR4glhF1AEBiedQ3WRo0Ok";
 
-const endpoint_user = "users";
-
 //주소, 번호, 이메일 칸 앞에 로고넣기 위해 사용
 const Logo = styled.img`
   margin-right: 10px;
@@ -232,7 +230,11 @@ function MyPage() {
           },
         }
       );
-      console.log(editData);
+      if (response.status === 200) {
+        console.log("User data successfully updated!");
+      } else {
+        console.error("Failed to update user data!");
+      }
     } catch (error) {
       console.error(error);
     }
