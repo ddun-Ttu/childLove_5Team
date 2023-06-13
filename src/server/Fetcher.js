@@ -14,9 +14,6 @@ export const instance = axios.create({
   },
 });
 
-const adminToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjEyM0AxLmNvbSIsInN1YiI6MjAwMiwiaWF0IjoxNjg2NjMyMTIyLCJleHAiOjE3MTgxODk3MjJ9.4CEL9ON9tKgdEAq1Om8m7K6jh2ZE_DYJmqwttaP0I2s";
-
 export const adminInstance = axios.create({
   baseURL: "http://34.64.69.226:5000/api",
   timeout: 1000,
@@ -24,7 +21,7 @@ export const adminInstance = axios.create({
 
 adminInstance.interceptors.request.use(
   (config) => {
-    config.headers.Authorization = `Bearer ${adminToken}`;
+    config.headers.Authorization = `Bearer ${testToken}`;
     return config;
   },
   (error) => {
