@@ -437,8 +437,8 @@ const Reserve = () => {
         </div>
         {reserveTimeTable.length>0 && <ReserveSubmit onClick={()=>{handleSubmit(clickedBtnTime)}}>선택완료</ReserveSubmit>}
       </BottomContentContainer>
+      <NavigationBar></NavigationBar>
     </Container>
-    <NavigationBar></NavigationBar>
     </>
   );
 };
