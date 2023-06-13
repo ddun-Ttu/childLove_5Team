@@ -304,6 +304,7 @@ const Detail = () => {
           </ReserveContainer>
         </BottomContentContainer>
       </Container>
+      <NavigationBar></NavigationBar>
     </>
   );
 };

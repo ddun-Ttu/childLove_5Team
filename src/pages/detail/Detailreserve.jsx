@@ -337,7 +337,7 @@ const Reserve = () => {
   }
 
 
-  return (
+  return (<>
     <Container>
       <HeaderContainer>
         <NewHeader label={hospitalData.dutyName} />
@@ -438,6 +438,8 @@ const Reserve = () => {
         {reserveTimeTable.length>0 && <ReserveSubmit onClick={()=>{handleSubmit(clickedBtnTime)}}>선택완료</ReserveSubmit>}
       </BottomContentContainer>
     </Container>
+    <NavigationBar></NavigationBar>
+    </>
   );
 };
 
