@@ -41,7 +41,7 @@ export const MapHospitalTest = () => {
   };
 
   // 해당 병원 데이터 받아오기
-  const { data: hospitalQuery, hospitalIsLoading } = useQuery(
+  const { data: hospitalQuery, isLoading: hospitalIsLoading } = useQuery(
     ["hospital"],
     async () => {
       try {

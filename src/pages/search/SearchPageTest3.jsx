@@ -75,52 +75,50 @@ export const SearchPageTest3 = () => {
   const user_id = userData.id;
 
   // 병원리스트 받아오기 - 키 값: 위치정보/정렬옵션/키워드 변경 시 자동렌더링
-  const { data: hospitalsQuery, hospitalListIsLoading } = useQuery(
-    ["hospitals", depth1, depth2, option, searchKeyword],
-    async () => {
-      try {
-        const response = await axios.get(
-          // depth2가 전체면 depth1만 넣어서 요청보냄
-          depth2 === "전체"
-            ? `${BE_URL}hospital?depth1=${depth1}&size=10&page=1&sort=${option.state}&dutyName=${searchKeyword}`
-            : `${BE_URL}hospital?depth1=${depth1}&depth2=${depth2}&size=10&page=1&sort=${option.state}&dutyName=${searchKeyword}`
-        );
-        return response.data;
-      } catch (error) {
-        console.log(error);
-        throw error;
-      }
-    }
-  );
+  // const { data: hospitalsQuery, hospitalListIsLoading } = useQuery(
+  //   ["hospitals", depth1, depth2, option, searchKeyword],
+  //   async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         // depth2가 전체면 depth1만 넣어서 요청보냄
+  //         depth2 === "전체"
+  //           ? `${BE_URL}hospital?depth1=${depth1}&size=10&page=1&sort=${option.state}&dutyName=${searchKeyword}`
+  //           : `${BE_URL}hospital?depth1=${depth1}&depth2=${depth2}&size=10&page=1&sort=${option.state}&dutyName=${searchKeyword}`
+  //       );
+  //       return response.data;
+  //     } catch (error) {
+  //       console.log(error);
+  //       throw error;
+  //     }
+  //   }
+  // );
 
   //무한스크롤
   // 서버에서 아이템을 가지고 오는 함수
-  const getHospital = useCallback(async () => {
-    setLoading(true);
-    await axios
-      .get(
-        // depth2가 전체면 depth1만 넣어서 요청보냄
-        depth2 === "전체"
-          ? `${BE_URL}hospital?depth1=${depth1}&size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`
-          : `${BE_URL}hospital?depth1=${depth1}&depth2=${depth2}&size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`
-      )
-      .then((res) => {
-        setHospitalList((prevState) => [...prevState, res]);
-      });
-    setLoading(false);
-  }, [page]);
-
-  // `getItems` 가 바뀔 때 마다 함수 실행
   useEffect(() => {
+    const getHospital = async () => {
+      setLoading(true);
+      await axios
+        .get(
+          // depth2가 전체면 depth1만 넣어서 요청보냄
+          depth2 === "전체"
+            ? `${BE_URL}hospital?depth1=${depth1}&size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`
+            : `${BE_URL}hospital?depth1=${depth1}&depth2=${depth2}&size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`
+        )
+        .then((res) => {
+          setHospitalList((prevState) => [...prevState, ...res.data.data]);
+        });
+      setLoading(false);
+    };
     getHospital();
-  }, [getHospital]);
+  }, [page]);
 
   useEffect(() => {
     // 사용자가 마지막 요소를 보고 있고, 로딩 중이 아니라면
     if (inView && !loading) {
       setPage((prevState) => prevState + 1);
     }
-  }, [inView, loading]);
+  }, [inView]);
   // 즐겨찾기 리스트 받아오기
   const { data: favoritesQuery, favoriteIsLoading } = useQuery(
     ["favorites"],
@@ -144,7 +142,7 @@ export const SearchPageTest3 = () => {
   );
 
   //로딩중일 경우 null값 반환
-  if (userIsLoading || hospitalListIsLoading || favoriteIsLoading) {
+  if (userIsLoading || favoriteIsLoading) {
     return null;
   }
 
@@ -182,27 +180,24 @@ export const SearchPageTest3 = () => {
   };
 
   const renderHospitalCards = (hospital) => {
-    const hospitalCards = () => {
-      //today가 0일 경우(일요일) 7번째 dutyTime값을 가져오도록 함
-      const dutyTimeStart =
-        today === 0 ? hospital.dutyTime7s : hospital[`dutyTime${today}s`]; // 오늘 요일에 해당하는 dutyTime 시작 시간
-      const dutyTimeClose =
-        today === 0 ? hospital.dutyTime7c : hospital[`dutyTime${today}c`]; // 오늘 요일에 해당하는 dutyTime 종료 시간
+    //today가 0일 경우(일요일) 7번째 dutyTime값을 가져오도록 함
+    const dutyTimeStart =
+      today === 0 ? hospital.dutyTime7s : hospital[`dutyTime${today}s`]; // 오늘 요일에 해당하는 dutyTime 시작 시간
+    const dutyTimeClose =
+      today === 0 ? hospital.dutyTime7c : hospital[`dutyTime${today}c`]; // 오늘 요일에 해당하는 dutyTime 종료 시간
 
-      return (
-        <HospitalCard
-          key={hospital.id}
-          hpid={hospital.id}
-          hospitalName={hospital.dutyName}
-          hospitalAddress={`${hospital.dutyAddr1Depth} ${hospital.dutyAddr2Depth} ${hospital.dutyAddr3Depth}`}
-          today={today}
-          dutyTimeStart={dutyTimeStart}
-          dutyTimeClose={dutyTimeClose}
-          favorite={true}
-        />
-      );
-    };
-    return hospitalCards;
+    return (
+      <HospitalCard
+        key={hospital.id}
+        hpid={hospital.id}
+        hospitalName={hospital.dutyName}
+        hospitalAddress={`${hospital.dutyAddr1Depth} ${hospital.dutyAddr2Depth} ${hospital.dutyAddr3Depth}`}
+        today={today}
+        dutyTimeStart={dutyTimeStart}
+        dutyTimeClose={dutyTimeClose}
+        favorite={true}
+      />
+    );
   };
 
   return (
