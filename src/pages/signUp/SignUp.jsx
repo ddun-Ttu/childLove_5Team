@@ -172,8 +172,8 @@ const UserView = () => {
       .then((response) => {
         // 회원가입 성공
         // 홈으로 이동
-        // useNavigate("/");
-        window.location.href = "/";
+        useNavigate("/");
+
         console.log("등록 성공", response.data);
       })
       .catch((error) => {
@@ -298,7 +298,7 @@ const HospitalView = () => {
   const [notAllow, setNotAllow] = useState(true);
 
   // 병원 이름
-  const [hospitalNameInput, sethospitalNameInput] = useState("");
+  const [hospitalNameInput, setHospitalNameInput] = useState("");
 
   // 이메일 유효성 검사
   const handleEmail = (e) => {
@@ -344,6 +344,10 @@ const HospitalView = () => {
     }
   };
 
+  // 병원명 검색
+  const hpName = (e) => {
+    setHospitalNameInput(e.target.value);
+  };
   // 버튼 활성화
   useEffect(() => {
     if (emailValid && pwValid && pwCheckValid && nameValid && phoneValid) {
@@ -366,9 +370,7 @@ const HospitalView = () => {
       })
       .then((response) => {
         // 성공적인 응답 처리
-        // useNavigate("/");
-        // window.location.href = "/";
-        console.log("등록 성공", response.data);
+        useNavigate("/");
       })
       .catch((error) => {
         // 오류 처리
@@ -399,7 +401,14 @@ const HospitalView = () => {
 
         <SignUpInputDiv>
           <InputTitle>병원명</InputTitle>
-          <MyComponent />
+          <SignUpInput
+            placeholder="병원명을 검색해주세요"
+            type="text"
+            value={hospitalNameInput}
+            onChange={hpName}
+          ></SignUpInput>
+
+          <MyComponent hospitalNameInput={hospitalNameInput} />
 
           <P>
             *찾으시는 병원이 없으실 경우 하단에 신규 병원 등록 신청하기를
