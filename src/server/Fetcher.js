@@ -4,6 +4,8 @@ import axios from "axios";
 const userToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMS4xIiwic3ViIjoyLCJpYXQiOjE2ODYyOTAxOTUsImV4cCI6MTcxNzg0Nzc5NX0._vIRMzSEE7L4iXeRabto1_51k0D_7XVNaU1Rmxj4Dak";
 
+const testToken = localStorage.getItem("token");
+
 const adminToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjEyM0AxLmNvbSIsInN1YiI6MjAwMiwiaWF0IjoxNjg2NjMyMTIyLCJleHAiOjE3MTgxODk3MjJ9.4CEL9ON9tKgdEAq1Om8m7K6jh2ZE_DYJmqwttaP0I2s";
 

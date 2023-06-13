@@ -9,7 +9,7 @@ import { adminInstance } from "../../server/Fetcher";
 
 export const PersonalClient = () => {
   const [currentPage, setCurrentPage] = useState(0); // 페이지 숫자 상태
-  const [maxPostPage, setMaxPostPage] = useState(currentPage + 1);
+  const maxPostPage = currentPage + 1;
   const [checkArray, setCheckArray] = useState([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
 
@@ -74,14 +74,6 @@ export const PersonalClient = () => {
     await adminInstance.delete(`admin/delete/${item.id}`); //React Query에서 'invalidateQueries' 기능 사용해서 업데이트 된 목록 다시
     queryClient.invalidateQueries("list");
   };
-
-  //페이지네이션 로직
-  useEffect(() => {
-    if (currentPage <= maxPostPage - 1) {
-      const nextPage = currentPage + 1;
-      queryClient.prefetchQuery(["posts", nextPage], () => listQuery.data);
-    }
-  }, [currentPage, queryClient]);
 
   if (listQuery.isLoading) {
     return <h1>로딩중입니다..</h1>;
@@ -179,7 +171,7 @@ export const PersonalClient = () => {
           label={"다음페이지"}
           bgcolor={colors.primary}
           btnColor={"white"}
-          disabled={currentPage >= maxPostPage}
+          disabled={currentPage > maxPostPage}
           onClick={() => setCurrentPage((prev) => prev + 1)}
         >
           다음 페이지
