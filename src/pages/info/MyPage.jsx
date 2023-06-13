@@ -231,9 +231,9 @@ function MyPage() {
         }
       );
       if (response.status === 200) {
-        console.log("User data successfully updated!");
+        console.log("Success");
       } else {
-        console.error("Failed to update user data!");
+        console.error("Faile");
       }
     } catch (error) {
       console.error(error);
