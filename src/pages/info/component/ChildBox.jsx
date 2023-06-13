@@ -4,13 +4,43 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import styled from "styled-components";
-import colors from "../../constants/colors";
+import colors from "../../../constants/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import { instance } from "axios";
+
+import male from "../image/male.png";
+import female from "../image/female.png";
+import malegreen from "../image/malegreen.png";
+import femalegreen from "../image/femalegreen.png";
 
 const userToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1bkBlbWFpbC5jb20iLCJzdWIiOjIwLCJpYXQiOjE2ODY0NTkwNTUsImV4cCI6MTcxODAxNjY1NX0.IqsJIcLYwGZB8sheLdMiBIK1odVAlJsGNJ2NYaNok1E";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1bkBlbWFpbC5jb20iLCJzdWIiOjIwMDA0LCJpYXQiOjE2ODY2Mzk3MjMsImV4cCI6MTcxODE5NzMyM30.owESvX7FLjD-WjxESrMnEoR4glhF1AEBiedQ3WRo0Ok";
+
+const Space = styled.div`
+  margin-bottom: 20px;
+`;
+
+const Space2 = styled.div`
+  margin-bottom: 5px;
+`;
+
+const InputBox = styled.input`
+  width: 280px;
+  box-sizing: border-box;
+  font-weight: bold;
+  font-size: 24px;
+  padding: 2%;
+`;
+
+const Input2Box = styled.input`
+  width: 75px;
+  box-sizing: border-box;
+  font-weight: bold;
+  font-size: 11px;
+  padding: 2%;
+`;
 
 // ChildBox의 저장버튼 구현
 const SaveButton = styled.button`
@@ -26,6 +56,30 @@ const SaveButton = styled.button`
   padding: 0% 2.5%;
 `;
 
+const GenderButton = styled.button`
+  position: absolute;
+  top: 15px;
+  width: 30px;
+  border: 1px solid ${colors.BtnborderOut};
+  border-radius: 5px;
+  background-color: ${(props) => (props.selected ? "green" : "grey")};
+  cursor: pointer;
+  padding: 5px;
+`;
+
+const GenderImage = styled.img`
+  width: 17px;
+  height: 27px;
+`;
+
+const MaleButton = styled(GenderButton)`
+  right: 50px;
+`;
+
+const FemaleButton = styled(GenderButton)`
+  right: 10px;
+`;
+
 export const ChildBox = ({
   id,
   gender,
@@ -35,22 +89,30 @@ export const ChildBox = ({
   image,
   onRemove,
   linkTo,
+  defaultEditable,
+  alwaysShowEditAndRemove,
 }) => {
-  let modifyBirth = null;
-  if (birth !== undefined || null) {
-    modifyBirth = birth?.split("-");
-  } else {
-    modifyBirth = Array(null, null, null);
-  }
   if (image?.length === 0) {
     image = null;
   }
   const [selectedImage, setSelectedImage] = useState(image);
   const [kidName, setKidName] = useState(name);
-  const [birthYear, setBirthYear] = useState(modifyBirth[0]);
-  const [birthMonth, setBirthMonth] = useState(modifyBirth[1]);
-  const [birthDay, setBirthDay] = useState(modifyBirth[2]);
-  const [isEditable, setIsEditable] = useState(true);
+  const [birthYear, setBirthYear] = useState("");
+  const [birthMonth, setBirthMonth] = useState("");
+  const [birthDay, setBirthDay] = useState("");
+  const [isEditable, setIsEditable] = useState(defaultEditable);
+
+  useEffect(() => {
+    setIsEditable(defaultEditable);
+    if (birth === undefined) {
+    } else if (birth !== null) {
+      const modifyBirth = birth.split("-");
+      setBirthYear(modifyBirth[0]);
+      setBirthMonth(modifyBirth[1]);
+      setBirthDay(modifyBirth[2]);
+    } else if (birth === null) {
+    }
+  }, [defaultEditable]);
 
   //사용자가 선택한 이미지 파일에 대한 참조(URL)를 selectedImage 상태에 저장
   const handleImageChange = (e) => {
@@ -112,16 +174,18 @@ export const ChildBox = ({
       alert("생년은 네 자리, 월과 일은 두 자리 숫자로 입력해야 합니다");
       return;
     }
-    // 모든 유효성 검사를 통과하면 편집 가능 상태를 반전시킴
-    /*지금 이 상태는 에러가 날 수 밖에 없습니다. 왜냐하면 id를 어떻게 받을지에 대해서 우리는 생각을 해볼 필요가 있습니다.
-      만약. onRemove(id)에서 id를 제대로 받고 있다면 위에 'handleButtonClick'의 argument에서 id는 딱히 없어도 동작할
-      가능성은 있겠지만, 지금 현재로써는 저는 이게 동작하는지 가늠하기가 어렵군요*/
+    if (!selectedGender) {
+      alert("성별을 선택해주세요");
+      return;
+    }
+
     const originalBirth = `${birthYear}-${birthMonth}-${birthDay}`;
     await axios.patch(
-      `http://34.64.69.226:3000/kid/${id}`,
+      `http://34.64.69.226:5000/api/kid/${id}`,
       {
         name: kidName,
         birth: originalBirth,
+        gender: selectedGender,
       },
       {
         headers: {
@@ -152,10 +216,40 @@ export const ChildBox = ({
     visibility: hidden;
   `;
 
+  const handleGenderClick = (gender) => {
+    setSelectedGender(gender);
+  };
+
+  // 처음 성별 상태를 API에서 받아온 성별로 설정
+  const [selectedGender, setSelectedGender] = useState(gender);
+
+  const imageContainerStyle = {
+    marginRight: isEditable ? "0px" : "50px",
+    flex: 1,
+  };
+
+  const nameBirthContainerStyle = {
+    marginLeft: isEditable ? "10px" : "50px",
+    marginLeft: "10px",
+    flex: 4,
+  };
+
+  const MaleImageAfterSave = styled.img`
+    width: 21px;
+    height: 22px;
+    margin-left: 5px;
+  `;
+
+  const FemaleImageAfterSave = styled.img`
+    width: 17px;
+    height: 27px;
+    margin-left: 5px;
+  `;
+
   return (
     <ChildBoxStyle>
       <div style={{ display: "flex", alignItems: "flex-start" }}>
-        <div>
+        <div style={imageContainerStyle}>
           {selectedImage ? (
             isEditable ? (
               <>
@@ -181,7 +275,7 @@ export const ChildBox = ({
             <Placeholder />
           )}
         </div>
-        <div style={{ marginLeft: "10px" }}>
+        <div style={nameBirthContainerStyle}>
           <div>
             {isEditable ? (
               <>
@@ -197,7 +291,21 @@ export const ChildBox = ({
                 />
               </>
             ) : (
-              <p style={{ fontWeight: "bold", textAlign: "left" }}>{kidName}</p>
+              <p
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "20px",
+                  textAlign: "left",
+                }}
+              >
+                {kidName}
+                {selectedGender === "male" && (
+                  <MaleImageAfterSave src={malegreen} alt="malegreen" />
+                )}
+                {selectedGender === "female" && (
+                  <FemaleImageAfterSave src={femalegreen} alt="femalegreen" />
+                )}
+              </p>
             )}
           </div>
           <Space2 />
@@ -233,7 +341,13 @@ export const ChildBox = ({
               </>
             ) : (
               <>
-                <p style={{ fontWeight: "bold", textAlign: "left" }}>
+                <p
+                  style={{
+                    fontWeight: "bold",
+                    textAlign: "left",
+                    marginTop: "20px",
+                  }}
+                >
                   {birthYear}년 {birthMonth}월 {birthDay}일
                 </p>
               </>
@@ -241,25 +355,39 @@ export const ChildBox = ({
           </div>
         </div>
       </div>
-      <FontAwesomeIcon
-        icon={faTimes}
-        size="2x"
-        style={{
-          position: "absolute",
-          top: "-20px",
-          left: "-20px",
-          backgroundColor: "red",
-          color: "white",
-          borderRadius: "20%",
-          padding: "2px 5px",
-          lineHeight: "1",
-          border: "none",
-        }}
-        onClick={handleRemoveClick}
-      />
-      <SaveButton style={{ alignSelf: "flex-end" }} onClick={handleButtonClick}>
-        {isEditable ? "저장" : "수정"}
-      </SaveButton>
+      {(isEditable || alwaysShowEditAndRemove) && (
+        <>
+          <div onClick={handleRemoveClick}>버튼</div>
+          <SaveButton
+            style={{ alignSelf: "flex-end" }}
+            onClick={handleButtonClick}
+          >
+            {isEditable ? "저장" : "수정"}
+          </SaveButton>
+        </>
+      )}
+      {isEditable && (
+        <>
+          <MaleButton
+            selected={selectedGender === "male"}
+            onClick={() => handleGenderClick("male")}
+          >
+            <GenderImage
+              src={`${process.env.PUBLIC_URL}/male.png`}
+              alt="male"
+            />
+          </MaleButton>
+          <FemaleButton
+            selected={selectedGender === "female"}
+            onClick={() => handleGenderClick("female")}
+          >
+            <GenderImage
+              src={`${process.env.PUBLIC_URL}/female.png`}
+              alt="female"
+            />
+          </FemaleButton>
+        </>
+      )}
     </ChildBoxStyle>
   );
 };
@@ -267,7 +395,7 @@ export const ChildBox = ({
 const ChildBoxStyle = styled.div`
   position: relative;
   width: 100%;
-  height: 150px;
+  height: 140px;
   background-color: #ffffff;
   border: solid 1px #b2b2b2;
   border-radius: 20px;
@@ -282,27 +410,4 @@ const ChildBoxStyle = styled.div`
     max-width: 100px;
     margin-right: 10px;
   }
-`;
-const Space = styled.div`
-  margin-bottom: 20px;
-`;
-
-const Space2 = styled.div`
-  margin-bottom: 5px;
-`;
-
-const InputBox = styled.input`
-  width: 280px;
-  box-sizing: border-box;
-  font-weight: bold;
-  font-size: 24px;
-  padding: 2%;
-`;
-
-const Input2Box = styled.input`
-  width: 75px;
-  box-sizing: border-box;
-  font-weight: bold;
-  font-size: 11px;
-  padding: 2%;
 `;
