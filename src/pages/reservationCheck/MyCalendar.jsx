@@ -132,12 +132,12 @@ export const MyCalendar = () => {
 
   return (
     <>
-      <CardBox linkTo={"#"} bxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)">
+      <CardBox bxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)">
         <ShowDate>
           <h1>{activeDateString}</h1>
         </ShowDate>
       </CardBox>
-      <CardBox linkTo={"#"} bxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}>
+      <CardBox bxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}>
         <ShowCalendar>
           <ReCalendar
             locale="ko"
@@ -154,7 +154,6 @@ export const MyCalendar = () => {
         </ShowCalendar>
       </CardBox>
       <CardBox
-        linkTo={"#"}
         bxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
         style={{
           display: "flex",
@@ -167,20 +166,28 @@ export const MyCalendar = () => {
           <h2>{activeMonth}</h2>
         </DiaryHeader>
         <DiaryMain>
-          {extractedData.map((item, index) => (
-            <DiaryItemWrapper key={index}>
-              <DiaryItem>
-                <ReTime>
-                  <ReDate date={item.date} />
-                  <ReHour time={item.reservedTime} />
-                </ReTime>
-                <ReDetail hospitalName={item.dutyName} memo={item.memo} />
-                <DueDate>
-                  <h2>{calculateDday(activeDate, item.date)}</h2>
-                </DueDate>
-              </DiaryItem>
-            </DiaryItemWrapper>
-          ))}
+          {extractedData
+            .filter(
+              (item) =>
+                dayjs(item.date).isSame(activeDate, "day") ||
+                dayjs(item.date).isAfter(activeDate, "day")
+            )
+            .map((item, index) => (
+              <DiaryItemWrapper key={index}>
+                <DiaryItem>
+                  <ReTime>
+                    <ReDate date={item.date} />
+                    <ReHour time={item.reservedTime} />
+                  </ReTime>
+                  <ReDetail hospitalName={item.dutyName} memo={item.memo} />
+                  <DueDate
+                    isToday={calculateDday(activeDate, item.date) === "Today"}
+                  >
+                    <h2>{calculateDday(activeDate, item.date)}</h2>
+                  </DueDate>
+                </DiaryItem>
+              </DiaryItemWrapper>
+            ))}
         </DiaryMain>
       </CardBox>
     </>
@@ -386,7 +393,20 @@ const DueDate = styled.div`
     width: 100%;
     font-size: 20px;
     font-weight: bold;
-    color: #121212;
     margin-bottom: 10px;
+    color: ${(props) => (props.isToday ? "#00ad5c" : "#121212")};
+    animation: ${(props) => (props.isToday ? "bounce 1s infinite" : "none")};
+  }
+
+  @keyframes bounce {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+    100% {
+      transform: translateY(0);
+    }
   }
 `;
