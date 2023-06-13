@@ -166,7 +166,7 @@ function MyPage() {
         };
         setEditData(fetchedData);
 
-        const res2 = await axios.get("http://34.64.69.226:5000/api/kid/get", {
+        const res2 = await axios.get("/kid/get", {
           headers: {
             Authorization: `Bearer ${userToken}`,
           },
@@ -179,7 +179,7 @@ function MyPage() {
     fetchUserData();
 
     const getKids = async () => {
-      const axiosGet = await axios.get("http://34.64.69.226:5000/api/kid/get", {
+      const axiosGet = await axios.get("/kid/get", {
         headers: {
           Authorization: `Bearer ${userToken}`,
         },

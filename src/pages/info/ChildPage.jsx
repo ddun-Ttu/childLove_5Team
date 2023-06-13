@@ -70,7 +70,7 @@ function ChildPage() {
 
   useEffect(()=>{
     const getKids = async()=>{
-      const axiosGet = await axios.get('http://34.64.69.226:5000/api/kid/get', {
+      const axiosGet = await axios.get('/kid/get', {
         headers: {
           Authorization: `Bearer ${userToken}`
         }
@@ -82,7 +82,7 @@ function ChildPage() {
   },[])
 
   const handleClick = async() => {
-    const axiosPost = await axios.post('http://34.64.69.226:5000/api/kid/regist', {}, {
+    const axiosPost = await axios.post('/kid/regist', {}, {
       headers: {
         Authorization: `Bearer ${userToken}`
       }
@@ -92,7 +92,7 @@ function ChildPage() {
   };
 
   const handleRemove = async(id) => {
-    await axios.delete(`http://34.64.69.226:5000/api/kid/${id}`,{
+    await axios.delete(`/kid/${id}`,{
         headers: {
           Authorization: `Bearer ${userToken}`
         }
@@ -126,6 +126,7 @@ function ChildPage() {
       <CardBox>
         <MyButton onClick={handleClick}>추가하기</MyButton>
       </CardBox>
+      <Space />
       <BackButton as={Link} to="/MyPage">돌아가기</BackButton>
       <Space />
       <NavigationBar />
