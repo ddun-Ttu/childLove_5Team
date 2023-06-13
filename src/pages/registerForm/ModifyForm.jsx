@@ -27,6 +27,24 @@ export const ModifyForm = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   // 함수형 태로 자식 props를 보내서 Post의  주소 데이터를 받아온다
+  const hpid = localStorage.getItem("user");
+  const hpId = JSON.parse(hpid).hospitalId;
+
+  const [hpName, setHpName] = useState("");
+  const [hpPhone, setHpPhone] = useState("");
+  const [hpNotice, setHpNotice] = useState("");
+  const [hpInfo, setHpInfo] = useState("");
+  const [hpAddress, setAddress] = useState("");
+
+  instance.get(`/hospital/${hpId}`).then((res) => {
+    setHpName(res.data.data.dutyName);
+    setHpPhone(res.data.data.dutyTel1);
+    setHpNotice(res.data.data.notice);
+    setHpInfo(res.data.data.dutyEtc);
+    setAddress(res.data.data.dutyAddr);
+
+    console.log(res.data.data);
+  });
   const getAddrData = (addr1, addr2, lat, lng, fullAddress) => {
     setAddr1(addr1);
     setAddr2(addr2);
@@ -179,13 +197,15 @@ export const ModifyForm = () => {
     });
 
     console.log(formData);
-    // instance
-    //   .put(`hospital/${hospitalId}`, formData, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   })
-    //   .then((response) => {});
+    instance
+      .put(`hospital/A1100401`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        console.log(dutyName);
+      });
 
     setIsEditing(!isEditing);
   };
@@ -207,7 +227,7 @@ export const ModifyForm = () => {
               <>
                 <InputName>병원명</InputName>
                 <TextBox>
-                  <p>좋은 병원 </p>
+                  <p>{hpName}</p>
                 </TextBox>
               </>
             ) : (
@@ -222,7 +242,7 @@ export const ModifyForm = () => {
               <>
                 <InputName>병원 대표번호</InputName>
                 <TextBox>
-                  <p>010-2455-2213 </p>
+                  <p>{hpPhone}</p>
                 </TextBox>
               </>
             ) : (
@@ -244,7 +264,7 @@ export const ModifyForm = () => {
               <>
                 <InputName>공지사항</InputName>
                 <TextBox>
-                  <p>주사가 많이 아파요 </p>
+                  <p>{hpNotice}</p>
                 </TextBox>
               </>
             ) : (
@@ -259,7 +279,7 @@ export const ModifyForm = () => {
               <>
                 <InputName>병원 설명</InputName>
                 <TextBox>
-                  <p>주차 공간없어요 </p>
+                  <p>{hpInfo}</p>
                 </TextBox>
               </>
             ) : (
@@ -281,7 +301,7 @@ export const ModifyForm = () => {
               <InputBox>
                 <InputName>주소</InputName>
                 <TextBox>
-                  <p>성수낙낙 </p>
+                  <p>{hpAddress}</p>
                 </TextBox>
               </InputBox>
             </>

@@ -5,7 +5,7 @@ import { useQuery, useQueryClient } from "react-query";
 import { Button } from "../../components/Button";
 import colors from "../../constants/colors";
 
-import { instance } from "../../server/Fetcher";
+import { adminInstance } from "../../server/Fetcher";
 
 export const PersonalClient = () => {
   const [currentPage, setCurrentPage] = useState(0); // 페이지 숫자 상태
@@ -17,7 +17,7 @@ export const PersonalClient = () => {
 
   // 인스턴스 사용하는 함수
   const listQuery = useQuery("list", async () => {
-    const response = await instance.get("/admin/get/generelclient"); // "/"는 baseURL에 추가된 경로입니다
+    const response = await adminInstance.get("/admin/get/generelclient"); // "/"는 baseURL에 추가된 경로입니다
     return response.data;
   });
 
@@ -61,7 +61,7 @@ export const PersonalClient = () => {
 
   const arrayDelete = async () => {
     console.log("idArray", checkArray);
-    await instance.delete("/admin/deleteall", {
+    await adminInstance.delete("/admin/deleteall", {
       data: {
         userIds: checkArray,
       },
@@ -71,7 +71,7 @@ export const PersonalClient = () => {
   // 페이지네이션 데이터의 id와 체크된 열의 id 값 필터
   const handleDelete = async (item) => {
     console.log("삭제할 id:", item);
-    await instance.delete(`admin/delete/${item.id}`); //React Query에서 'invalidateQueries' 기능 사용해서 업데이트 된 목록 다시
+    await adminInstance.delete(`admin/delete/${item.id}`); //React Query에서 'invalidateQueries' 기능 사용해서 업데이트 된 목록 다시
     queryClient.invalidateQueries("list");
   };
 

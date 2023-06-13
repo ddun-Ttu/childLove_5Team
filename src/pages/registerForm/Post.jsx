@@ -91,13 +91,18 @@ export const Post = ({ getAddrData }) => {
           {isOpen && (
             <ModalContainer>
               <Modal width={"30%"}>
-                <PostCodeContainer>
-                  <DaumPostCode
-                    onComplete={handleComplete}
-                    className="post-code"
-                  />
-                </PostCodeContainer>
-                <button onClick={handleCloseModal}>닫기</button>
+                <DaumPostCode
+                  onComplete={handleComplete}
+                  className="post-code"
+                />
+                <Button
+                  label={"닫기"}
+                  onClick={handleCloseModal}
+                  bgcolor={colors.primary}
+                  btnColor={"#ffffff"}
+                  width={"100px"}
+                  btnFontSize={"18px"}
+                ></Button>
               </Modal>
             </ModalContainer>
           )}
@@ -108,14 +113,6 @@ export const Post = ({ getAddrData }) => {
     </>
   );
 };
-
-const PostCodeContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 800px;
-  height: 600px;
-`;
 
 const PostBox = styled.div`
   display: flex;
