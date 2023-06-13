@@ -168,17 +168,23 @@ const Reserve = () => {
     let transDay = function (nowdayNum) {
       if (nowdayNum === 0) {
         return "일";
-      } else if (nowdayNum === 1) {
+      }  
+      if (nowdayNum === 1) {
         return "월";
-      } else if (nowdayNum === 2) {
+      }  
+      if (nowdayNum === 2) {
         return "화";
-      } else if (nowdayNum === 3) {
+      }  
+      if (nowdayNum === 3) {
         return "수";
-      } else if (nowdayNum === 4) {
+      }  
+      if (nowdayNum === 4) {
         return "목";
-      } else if (nowdayNum === 5) {
+      }  
+      if (nowdayNum === 5) {
         return "금";
-      } else if (nowdayNum === 6) {
+      }  
+      if (nowdayNum === 6) {
         return "토";
       }
     };
