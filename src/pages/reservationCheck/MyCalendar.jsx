@@ -23,7 +23,7 @@ export const MyCalendar = () => {
   const [datesOnly, setDatesOnly] = useState([]); //날짜만 추출
   const [extractedData, setExtractedData] = useState([]); //예약 정보만 추출
 
-  const BE_URL = `http://34.64.69.226:3000/`;
+  const BE_URL = `http://34.64.69.226:5000/api/`;
   const userToken =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGUubWFpbCIsInN1YiI6MSwiaWF0IjoxNjg2MjM0NjUxLCJleHAiOjE3MTc3OTIyNTF9.QORp6FfVmnROH3A-OCvHzYKjzZVAXjADpKcwmCwGeAA";
   const endpoint_reserve = `reservation/user`;
