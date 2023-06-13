@@ -567,6 +567,7 @@ const SignUpForm = styled.form`
   border-radius: 5px;
   padding: 10%;
   text-align: center;
+  margin-bottom: 13%;
   box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.1);
 `;
 const SignUpInput = styled.input`
@@ -585,6 +586,8 @@ const SignUpInputDiv = styled.div``;
 
 const InputTitle = styled.p`
   font-size: 18px;
+  text-align: left;
+  padding-left: 5%;
 `;
 
 const ChangeButtonDiv = styled.div`

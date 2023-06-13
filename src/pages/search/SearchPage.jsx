@@ -4,7 +4,12 @@ import * as Style from "./styles/SearchPageStyle";
 import { IconDown } from "../../assets/index";
 
 // 공통 컴포넌트
-import { Header, NavigationBar, SearchBar } from "../../components/index";
+import {
+  Header,
+  NavigationBar,
+  SearchBar,
+  Container,
+} from "../../components/index";
 
 //import문
 import React, { useState } from "react";
@@ -141,70 +146,76 @@ export const SearchPage = () => {
 
   return (
     <>
-      <Header label={"병원 찾기"} />
-      <Style.Wrapper>
-        <SearchBar
-          onSearch={(search) => handleSearch(search)}
-          depth1={depth1}
-          depth2={depth2}
-          onLocationChange={handleDepthChange}
-        />
-        <Style.SearchHeader>
-          <span>총 {hospitalList.length} 개</span>
-          <Style.DropdownContainer>
-            <button onClick={handleOptionClick}>
-              {option.name}
-              <img alt="icon-down" src={IconDown}></img>
-            </button>
-            {isOpenOption && (
-              <div>
-                {SORT_OPTIONS.map((option) => (
-                  <option
-                    key={option.state}
-                    value={option.state}
-                    onClick={handleOptionChange}
-                  >
-                    {option.name}
-                  </option>
-                ))}
-              </div>
-            )}
-          </Style.DropdownContainer>
-        </Style.SearchHeader>
-        {hospitalList.length > 0 ? (
-          hospitalList.map((hospital) => {
-            //today가 0일 경우(일요일) 7번째 dutyTime값을 가져오도록 함
-            const dutyTimeStart =
-              today === 0 ? hospital.dutyTime7s : hospital[`dutyTime${today}s`]; // 오늘 요일에 해당하는 dutyTime 시작 시간
-            const dutyTimeClose =
-              today === 0 ? hospital.dutyTime7c : hospital[`dutyTime${today}c`]; // 오늘 요일에 해당하는 dutyTime 종료 시간
+      <Container>
+        <Header label={"병원 찾기"} />
+        <Style.Wrapper>
+          <SearchBar
+            onSearch={(search) => handleSearch(search)}
+            depth1={depth1}
+            depth2={depth2}
+            onLocationChange={handleDepthChange}
+          />
+          <Style.SearchHeader>
+            <span>총 {hospitalList.length} 개</span>
+            <Style.DropdownContainer>
+              <button onClick={handleOptionClick}>
+                {option.name}
+                <img alt="icon-down" src={IconDown}></img>
+              </button>
+              {isOpenOption && (
+                <div>
+                  {SORT_OPTIONS.map((option) => (
+                    <option
+                      key={option.state}
+                      value={option.state}
+                      onClick={handleOptionChange}
+                    >
+                      {option.name}
+                    </option>
+                  ))}
+                </div>
+              )}
+            </Style.DropdownContainer>
+          </Style.SearchHeader>
+          {hospitalList.length > 0 ? (
+            hospitalList.map((hospital) => {
+              //today가 0일 경우(일요일) 7번째 dutyTime값을 가져오도록 함
+              const dutyTimeStart =
+                today === 0
+                  ? hospital.dutyTime7s
+                  : hospital[`dutyTime${today}s`]; // 오늘 요일에 해당하는 dutyTime 시작 시간
+              const dutyTimeClose =
+                today === 0
+                  ? hospital.dutyTime7c
+                  : hospital[`dutyTime${today}c`]; // 오늘 요일에 해당하는 dutyTime 종료 시간
 
-            //즐겨찾기 해당여부 체크
-            const favorite = favoritesList.some(
-              (favoriteItem) =>
-                favoriteItem.userId === user_id &&
-                favoriteItem.hospitalId === hospital.id
-            );
+              //즐겨찾기 해당여부 체크
+              const favorite = favoritesList.some(
+                (favoriteItem) =>
+                  favoriteItem.userId === user_id &&
+                  favoriteItem.hospitalId === hospital.id
+              );
 
-            return (
-              <HospitalCard
-                key={hospital.id}
-                hpid={hospital.id}
-                hospitalName={hospital.dutyName}
-                hospitalAddress={`${hospital.dutyAddr1Depth} ${hospital.dutyAddr2Depth} ${hospital.dutyAddr3Depth}`}
-                today={today}
-                dutyTimeStart={dutyTimeStart}
-                dutyTimeClose={dutyTimeClose}
-                favorite={favorite}
-                handleFavorite={() => {}}
-              />
-            );
-          })
-        ) : (
-          <p>검색 결과가 없습니다.</p>
-        )}
-      </Style.Wrapper>
-      <NavigationBar />
+              return (
+                <HospitalCard
+                  key={hospital.id}
+                  hpid={hospital.id}
+                  hospitalName={hospital.dutyName}
+                  hospitalAddress={`${hospital.dutyAddr1Depth} ${hospital.dutyAddr2Depth} ${hospital.dutyAddr3Depth}`}
+                  today={today}
+                  dutyTimeStart={dutyTimeStart}
+                  dutyTimeClose={dutyTimeClose}
+                  favorite={favorite}
+                  handleFavorite={() => {}}
+                />
+              );
+            })
+          ) : (
+            <p>검색 결과가 없습니다.</p>
+          )}
+        </Style.Wrapper>
+        <NavigationBar />
+      </Container>
     </>
   );
 };
