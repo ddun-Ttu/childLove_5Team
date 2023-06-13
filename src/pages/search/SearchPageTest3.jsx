@@ -7,7 +7,7 @@ import { IconDown } from "../../assets/index";
 import { Header, NavigationBar, SearchBar } from "../../components/index";
 
 //import문
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { useInView } from "react-intersection-observer";
@@ -73,6 +73,25 @@ export const SearchPageTest3 = () => {
   //유저정보
   const userData = userQuery?.data ?? [];
   const user_id = userData.id;
+
+  // 병원리스트 받아오기 - 키 값: 위치정보/정렬옵션/키워드 변경 시 자동렌더링
+  // const { data: hospitalsQuery, hospitalListIsLoading } = useQuery(
+  //   ["hospitals", depth1, depth2, option, searchKeyword],
+  //   async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         // depth2가 전체면 depth1만 넣어서 요청보냄
+  //         depth2 === "전체"
+  //           ? `${BE_URL}hospital?depth1=${depth1}&size=10&page=1&sort=${option.state}&dutyName=${searchKeyword}`
+  //           : `${BE_URL}hospital?depth1=${depth1}&depth2=${depth2}&size=10&page=1&sort=${option.state}&dutyName=${searchKeyword}`
+  //       );
+  //       return response.data;
+  //     } catch (error) {
+  //       console.log(error);
+  //       throw error;
+  //     }
+  //   }
+  // );
 
   //무한스크롤
   // 서버에서 아이템을 가지고 오는 함수

@@ -35,6 +35,7 @@ import {
   ReservationChk,
   Favorite,
 } from "./pages/index";
+import { SearchPageTest3 } from "./pages/search/SearchPageTest3";
 
 const queryClient = new QueryClient();
 
@@ -68,6 +69,7 @@ function App() {
               <Route path="admin" element={<AdminHome />} />
               <Route path="/reserve" element={<ReservationChk />} />
               <Route path="/search" element={<SearchPage />} />
+              <Route path="/test" element={<SearchPageTest3 />} />
               <Route path="/detail/:hpid" element={<Detail />} />
               <Route path="/detail/reserve" element={<Reserve />} />
               <Route path="/detail/map" element={<MapHospital />} />
