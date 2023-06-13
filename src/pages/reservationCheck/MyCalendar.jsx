@@ -12,21 +12,20 @@ import Calendar from "react-calendar";
 import { ReDetail } from "./reDetail";
 // css
 import styled from "styled-components";
+//utils
+import { BE_URL, getUserToken, endpoint_reserve } from "../../utils.js";
 
 export const MyCalendar = () => {
   const curDate = new Date(); // 현재 날짜
   const [value, onChange] = useState(curDate); // 클릭한 날짜 - 초기값 현재 날짜
   const activeDate = dayjs(value); // 클릭한 날짜 (dayjs 객체로 변경)
   const activeDateString = activeDate.format("YY.MM.DD"); // 클릭한 날짜 (년-월-일)
-  const activeMonth = dayjs(value).get("month") + 1 + "월";
+  const activeMonth = dayjs(value).format("M월");
 
   const [datesOnly, setDatesOnly] = useState([]); //날짜만 추출
   const [extractedData, setExtractedData] = useState([]); //예약 정보만 추출
 
-  const BE_URL = `http://34.64.69.226:5000/api/`;
-  const userToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGUubWFpbCIsInN1YiI6MSwiaWF0IjoxNjg2MjM0NjUxLCJleHAiOjE3MTc3OTIyNTF9.QORp6FfVmnROH3A-OCvHzYKjzZVAXjADpKcwmCwGeAA";
-  const endpoint_reserve = `reservation/user`;
+  const userToken = getUserToken();
 
   useEffect(() => {
     axios
@@ -40,9 +39,9 @@ export const MyCalendar = () => {
 
         // 추출된 정보들을 저장할 배열
         const resData = res.data.data;
-        // createdAt의 날짜, hospital의 dutyName, reservedTime, memo만 추출한 배열
+        // hospital의 dutyName, reservedDate, reservedTime, memo만 추출한 배열
         const extractedData = resData.map((item) => ({
-          date: item.createdAt.split("T")[0], // createdAt에서 날짜만 추출
+          date: dayjs(item.reservedDate, "YYYYMMDD").format("YYYY-MM-DD"),
           dutyName: item.hospital.dutyName,
           reservedTime: item.reservedTime,
           memo: item.memo,
@@ -50,8 +49,18 @@ export const MyCalendar = () => {
 
         console.log(extractedData);
 
-        // 날짜를 기준으로 배열 정렬
-        extractedData.sort((a, b) => (a.date > b.date ? 1 : -1));
+        // 날짜와 시간에 따라 extractedData 배열 정렬
+        extractedData.sort((a, b) => {
+          // 날짜를 먼저 비교
+          if (a.date > b.date) return 1;
+          if (a.date < b.date) return -1;
+
+          // 날짜가 동일한 경우 시간을 비교
+          if (a.reservedTime > b.reservedTime) return 1;
+          if (a.reservedTime < b.reservedTime) return -1;
+
+          return 0;
+        });
 
         // 날짜만 추출
         const datesOnly = extractedData.map((item) => item.date);
@@ -98,12 +107,14 @@ export const MyCalendar = () => {
   };
 
   const ReHour = ({ time }) => {
+    const formattedTime = `${time.slice(0, 2)}:${time.slice(2)}`;
     return (
       <div>
-        <h3>{time}</h3>
+        <h3>{formattedTime}</h3>
       </div>
     );
   };
+
   // 디데이 계산하는 코드
   const calculateDday = (activeDate, targetDate) => {
     const diffInDays = dayjs(targetDate).diff(dayjs(activeDate), "day");
