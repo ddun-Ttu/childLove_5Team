@@ -709,7 +709,7 @@ const ReserveSubmit = styled.button`
   font-weight: 700;
   font-size: 30px;
   color: #FFFFFF;
-  margin: 45px 0;
+  margin: 45px 0 100px 0;
 `;
 
 export default Reserve;
