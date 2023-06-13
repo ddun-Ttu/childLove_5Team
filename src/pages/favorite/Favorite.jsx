@@ -11,6 +11,14 @@ import React, { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 import axios from "axios";
 
+//utils
+import {
+  BE_URL,
+  endpoint_user,
+  endpoint_hospital,
+  endpoint_favorite,
+} from "../../utils.js";
+
 //병원리스트 - 병원카드 컴포넌트
 import { HospitalCard } from "../search/HospitalCard";
 
@@ -19,13 +27,6 @@ const SORT_OPTIONS = [
   { name: "인기순", state: "byPopular" },
   { name: "이름순", state: "byName" },
 ];
-
-//URL
-const BE_URL = `http://34.64.69.226:3000/`;
-// const userToken ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGUubWFpbCIsInN1YiI6MSwiaWF0IjoxNjg2MjM0NjUxLCJleHAiOjE3MTc3OTIyNTF9.QORp6FfVmnROH3A-OCvHzYKjzZVAXjADpKcwmCwGeAA";
-const endpoint_user = `users`;
-const endpoint_favorite = `favorite/`;
-const endpoint_hospital = `hospital/`;
 
 export const Favorite = () => {
   //검색 필터 옵션
@@ -56,21 +57,6 @@ export const Favorite = () => {
     }
   );
 
-  //병원 정보 저장
-  // const [hospitalsData, setHospitalsData] = useState([]);
-  // useEffect(() => {
-  //   for (const favoriteHospital of favoriteList) {
-  //     const hospitalId = favoriteHospital.hospitalId;
-  //     const response = axios.get(`${BE_URL}${endpoint_hospital}${hospitalId}`);
-  //     setHospitalsData(response.data);
-  //     console.log("response:", response);
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log("hospital:", hospitalsData);
-  // }, [hospitalsData]);
-
   // 즐겨찾기 리스트 받아오기
   const [favoriteList, setFavoriteList] = useState([]);
   const { data: favoritesQuery, favoriteListIsLoading } = useQuery(
@@ -90,23 +76,6 @@ export const Favorite = () => {
       }
     }
   );
-  // //병원 아이디 리스트-은탁님
-  // const hospitalIds = favoriteList.map((hospital) => hospital.hospitalId);
-
-  // const [hosData, setHosData] = useState([]);
-
-  // useEffect(() => {
-  //   if (favoriteList.length !== 0) {
-  //     favoriteList.map(async (favoriteHospital) => {
-  //       const hospitalId = favoriteHospital.hospitalId;
-  //       const response = await axios.get(
-  //         `${BE_URL}${endpoint_hospital}${hospitalId}`
-  //       );
-  //       setHosData((prevValue) => [...prevValue, response.data.data]);
-  //       console.log("hosData", hosData);
-  //     });
-  //   }
-  // }, [favoriteList]);
 
   const [hosData, setHosData] = useState([]);
 
@@ -139,7 +108,7 @@ export const Favorite = () => {
       const dutyTimeStart = hosData[`dutyTime${today}s`]; // 오늘 요일에 해당하는 dutyTime 시작 시간
       const dutyTimeClose = hosData[`dutyTime${today}c`]; // 오늘 요일에 해당하는 dutyTime 종료 시간
 
-      hosData?.map(() => {
+      hosData.map(() => {
         return (
           <HospitalCard
             key={hosData.id}

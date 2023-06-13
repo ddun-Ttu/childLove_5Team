@@ -13,15 +13,11 @@ import {
 } from "../../assets/index";
 
 //utils
-import { formatTime } from "../../utils.js";
+import { formatTime, BE_URL, endpoint_favorite } from "../../utils.js";
 
 //요일 정보 지정을 위한 상수
 //일~월 : 0~6
 const WEEK = ["일", "월", "화", "수", "목", "금", "토"];
-
-//URL
-const BE_URL = `http://34.64.69.226:3000/`;
-const endpoint_favorite = `favorite`;
 
 export const HospitalCard = ({
   hpid,

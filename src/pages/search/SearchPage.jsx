@@ -11,6 +11,9 @@ import React, { useState } from "react";
 import { useQuery } from "react-query";
 import axios from "axios";
 
+//utils
+import { BE_URL, endpoint_user, endpoint_favorite } from "../../utils.js";
+
 //병원리스트 - 병원카드 컴포넌트
 import { HospitalCard } from "./HospitalCard";
 
@@ -19,11 +22,6 @@ const SORT_OPTIONS = [
   { name: "인기순", state: "review" },
   { name: "이름순", state: "name" },
 ];
-
-//URL
-const BE_URL = `http://34.64.69.226:3000/`;
-const endpoint_user = `users`;
-const endpoint_favorite = `favorite`;
 
 export const SearchPage = () => {
   // 위치정보 depth1, depth2

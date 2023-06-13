@@ -65,7 +65,7 @@ export const Login = () => {
   const getUserLoginInfo = async () => {
     // axios를 사용하여 post 요청
     axios
-      .post("/users/login", {
+      .post("http://34.64.69.226:5000/api/users/login", {
         email: email,
         password: pw,
       })
