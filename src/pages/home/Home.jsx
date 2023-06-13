@@ -97,12 +97,13 @@ export const Home = () => {
             );
             const data = await response.json();
 
-            const { suburb, city_district, city, province, quarter } =
+            const { suburb, city_district, city, province, quarter, borough } =
               data.address;
-            const formattedAddress = `${province} ${
+            const formattedAddress = `${
               suburb || city_district || city || ""
-            } ${quarter}`;
+            } ${borough}  ${quarter}`;
 
+            console.log(data.address);
             setAddress(formattedAddress);
           } catch (error) {
             console.error(error);
@@ -201,7 +202,7 @@ export const Home = () => {
               <Distance />
             </DistanceDiv>
           </MainSub>
-          <SimpleSlider />
+          <SimpleSlider latitude={latitude} longitude={longitude} />
         </SiliderMargin>
 
         <AutoplayYouTubeVideo videoId={"efzr12y8vUc"} />
@@ -225,7 +226,7 @@ const options = [
 const Distance = () => {
   const updatedOptions = options.map((option) => ({
     ...option,
-    label: `${option.label} `,
+    label: `${option.label} km`,
   }));
 
   return <Select options={updatedOptions} styles={customStyles} />;
@@ -368,7 +369,7 @@ const BannerSebH1 = styled.p`
 `;
 
 // 캐러셀 라이브러리
-const SimpleSlider = () => {
+const SimpleSlider = ({ latitude, longitude }) => {
   const settings = {
     dots: true,
     infinite: true,
@@ -412,8 +413,8 @@ const SimpleSlider = () => {
     try {
       const response = await axios.get("/hospital/near", {
         params: {
-          userLat: 37.5007795003494,
-          userLon: 127.1107520613008,
+          userLat: latitude,
+          userLon: longitude,
           r: 10,
         },
       });
