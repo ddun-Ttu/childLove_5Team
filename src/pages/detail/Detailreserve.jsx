@@ -120,10 +120,10 @@ const Reserve = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const hospitalID = searchParams.get("id")
-  // const token = localStorage.getItem("token") ? localStorage.getItem("token") : false;
+  const token = localStorage.getItem("token") ? localStorage.getItem("token") : false;
   const navigate = useNavigate();
 
-  const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vb250ZXN0QHRlc3QudGVzdCIsInN1YiI6MywiaWF0IjoxNjg2MjM2NTQzLCJleHAiOjE3MTc3OTQxNDN9.ToJBCRSygcxpdmMC-B0DyayfbdR7f6E4FEYhhEu5RhA";
+  // const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vb250ZXN0QHRlc3QudGVzdCIsInN1YiI6MywiaWF0IjoxNjg2MjM2NTQzLCJleHAiOjE3MTc3OTQxNDN9.ToJBCRSygcxpdmMC-B0DyayfbdR7f6E4FEYhhEu5RhA";
   // 임시 토큰
 
   const [hospitalData, setHospitalData] = useState({});
@@ -207,10 +207,6 @@ const Reserve = () => {
       return newDay
     });
   },[reserveday.date]);
-
-  useEffect(()=>{
-    reservedTime
-  },[])
   
   // 모달창 컨트롤
   const ModalReserveDays = ({year, month}) =>{
@@ -410,6 +406,7 @@ const Reserve = () => {
             ></NewButton>
           }
         ></NewCardBox>
+        <QueryReserveBtn onClick={openModal}><span>날짜선택</span></QueryReserveBtn>
         <div>
         <Modal
             isOpen={reserveModal}
@@ -588,6 +585,9 @@ const NewButtonStyle = styled.button`
 
   padding: 1% 3.5%;
 
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
   &:disabled {
     color: white;
     background-color: ${colors.InputBorderOut};
@@ -671,6 +671,12 @@ const ReserveTimes = styled.div`
   grid-gap: 10px;
   width: 100%;
   height: 450px;
+  justify-items: center;
+  align-items: center;
+  justify-content: space-evenly;
+  @media screen and (max-width: 700px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 `;
 
 const ReserveTime = styled.button`
@@ -679,7 +685,7 @@ const ReserveTime = styled.button`
       return "now-allowed"
     } else {return "pointer"}
   }};
-  width: 162px;
+  width: 100%;
   height: 55px;
   background-color: ${({ clicked, disabled }) => {
     if(disabled){ 
@@ -711,6 +717,25 @@ const ReserveSubmit = styled.button`
   font-size: 30px;
   color: #FFFFFF;
   margin: 45px 0 100px 0;
+`;
+
+const QueryReserveBtn = styled.button`
+  display: none;
+  cursor: pointer;
+  margin-bottom: 50px;
+  width: 100%;
+  height: 55px;
+  background-color: ${colors.primary};
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  border: 1px solid #00a758;
+  border-radius: 7px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+
+  @media screen and (max-width: 800px) {
+    display: inline-block;
+  };
 `;
 
 export default Reserve;

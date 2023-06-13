@@ -31,6 +31,7 @@ import {
   Footer,
   SearchBar,
 } from "../../components/index";
+import {formatTime} from "../../utils"
 
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import colors from "../../constants/colors";
@@ -62,10 +63,10 @@ const Detail = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const hospitalID = searchParams.get("id") 
-  // const token = localStorage.getItem("token") ? localStorage.getItem("token") : false;
+  const token = localStorage.getItem("token") ? localStorage.getItem("token") : false;
 
   // const hospitalID = "A1100401"; // 임시 하드코딩 아이디
-  const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vb250ZXN0QHRlc3QudGVzdCIsInN1YiI6MywiaWF0IjoxNjg2MjM2NTQzLCJleHAiOjE3MTc3OTQxNDN9.ToJBCRSygcxpdmMC-B0DyayfbdR7f6E4FEYhhEu5RhA"
+  // const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vb250ZXN0QHRlc3QudGVzdCIsInN1YiI6MywiaWF0IjoxNjg2MjM2NTQzLCJleHAiOjE3MTc3OTQxNDN9.ToJBCRSygcxpdmMC-B0DyayfbdR7f6E4FEYhhEu5RhA"
   // 임시 하드코딩 토큰
 
   const [hospitalData, setHospitalData] = useState({});
@@ -205,37 +206,37 @@ const Detail = () => {
             <HpInfoGrid>
               {hospitalData.dutyTime1c && hospitalData.dutyTime1s && (
                 <HpInfoCard>
-                  월 {hospitalData.dutyTime1s}-{hospitalData.dutyTime1c}
+                  월 {formatTime(hospitalData.dutyTime1s)}-{formatTime(hospitalData.dutyTime1c)}
                 </HpInfoCard>
               )}
               {hospitalData.dutyTime2c && hospitalData.dutyTime2s && (
                 <HpInfoCard>
-                  화 {hospitalData.dutyTime2s}-{hospitalData.dutyTime2c}
+                  화 {formatTime(hospitalData.dutyTime2s)}-{formatTime(hospitalData.dutyTime2c)}
                 </HpInfoCard>
               )}
               {hospitalData.dutyTime3c && hospitalData.dutyTime3s && (
                 <HpInfoCard>
-                  수 {hospitalData.dutyTime3s}-{hospitalData.dutyTime3c}
+                  수 {formatTime(hospitalData.dutyTime3s)}-{formatTime(hospitalData.dutyTime3c)}
                 </HpInfoCard>
               )}
               {hospitalData.dutyTime4c && hospitalData.dutyTime4s && (
                 <HpInfoCard>
-                  목 {hospitalData.dutyTime4s}-{hospitalData.dutyTime4c}
+                  목 {formatTime(hospitalData.dutyTime4s)}-{formatTime(hospitalData.dutyTime4c)}
                 </HpInfoCard>
               )}
               {hospitalData.dutyTime5c && hospitalData.dutyTime5s && (
                 <HpInfoCard>
-                  금 {hospitalData.dutyTime5s}-{hospitalData.dutyTime5c}
+                  금 {formatTime(hospitalData.dutyTime5s)}-{formatTime(hospitalData.dutyTime5c)}
                 </HpInfoCard>
               )}
               {hospitalData.dutyTime6c && hospitalData.dutyTime6s && (
                 <HpInfoCard>
-                  토 {hospitalData.dutyTime6s}-{hospitalData.dutyTime6c}
+                  토 {formatTime(hospitalData.dutyTime6s)}-{formatTime(hospitalData.dutyTime6c)}
                 </HpInfoCard>
               )}
               {hospitalData.dutyTime7c && hospitalData.dutyTime7s && (
                 <HpInfoCard>
-                  일 {hospitalData.dutyTime7s}-{hospitalData.dutyTime7c}
+                  일 {formatTime(hospitalData.dutyTime7s)}-{formatTime(hospitalData.dutyTime7c)}
                 </HpInfoCard>
               )}
             </HpInfoGrid>
@@ -253,37 +254,37 @@ const Detail = () => {
             <h1>이런 점이 좋았어요</h1>
           </HpInfo>
           <ReviewContainer>
-            <ReviewButton onClick={() => reviewClick(1)}>
+            <ReviewButton onClick={() => reviewClick("kindDoctor")}>
               친절한 의사 선생님
               {hospitalReviews && (
                 <span>{JSON.stringify(hospitalReviews[0])}</span>
               )}
             </ReviewButton>
-            <ReviewButton onClick={() => reviewClick(2)}>
+            <ReviewButton onClick={() => reviewClick("professional")}>
               전문적인 치료
               {hospitalReviews && (
                 <span>{JSON.stringify(hospitalReviews[1])}</span>
               )}
             </ReviewButton>
-            <ReviewButton onClick={() => reviewClick(3)}>
+            <ReviewButton onClick={() => reviewClick("kindEmployee")}>
               상냥한 간호사·직원
               {hospitalReviews && (
                 <span>{JSON.stringify(hospitalReviews[2])}</span>
               )}
             </ReviewButton>
-            <ReviewButton onClick={() => reviewClick(4)}>
+            <ReviewButton onClick={() => reviewClick("goodReceipt")}>
               편리한 접수·예약
               {hospitalReviews && (
                 <span>{JSON.stringify(hospitalReviews[3])}</span>
               )}
             </ReviewButton>
-            <ReviewButton onClick={() => reviewClick(5)}>
+            <ReviewButton onClick={() => reviewClick("cleanHospital")}>
               깨끗한 시설
               {hospitalReviews && (
                 <span>{JSON.stringify(hospitalReviews[4])}</span>
               )}
             </ReviewButton>
-            <ReviewButton onClick={() => reviewClick(6)}>
+            <ReviewButton onClick={() => reviewClick("goodTraffic")}>
               편한 교통·주차
               {hospitalReviews && (
                 <span>{JSON.stringify(hospitalReviews[5])}</span>
@@ -305,7 +306,6 @@ const Detail = () => {
         </BottomContentContainer>
         <NavigationBar></NavigationBar>
       </Container>
-      
     </>
   );
 };
@@ -449,6 +449,7 @@ const BottomContentContainer = styled.div`
   text-align: left;
   padding-left: 71px;
   padding-right: 71px;
+  margin-bottom: 130px;
   @media screen and (max-width: 600px) {
     padding-left: 30px;
     padding-right: 30px;
