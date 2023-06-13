@@ -25,7 +25,6 @@ import {
   Home,
   MyPage,
   Login,
-  Post,
   SearchPage,
   SignUp,
   Detail,
@@ -35,6 +34,7 @@ import {
   ReservationChk,
   ChildPage,
   Favorite,
+  ModifyForm,
 } from "./pages/index";
 
 // const queryClient = new QueryClient();
@@ -76,6 +76,7 @@ function App() {
         <Route path="/Mypage" element={<MyPage />} />
         <Route path="/Mypage/ChildPage" element={<ChildPage />} />
         <Route path="/favorite" element={<Favorite />} />
+        <Route path="/modify" element={<ModifyForm />} />
       </Routes>
     </Router>
   );
