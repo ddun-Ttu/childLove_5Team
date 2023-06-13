@@ -118,6 +118,11 @@ export const Home = () => {
       console.error("현재 브라우저는 위치를 지원하지 않습니다.");
     }
   }, []);
+  const [distance, setDistance] = useState("1");
+
+  const handleDistanceChange = (selectedDistance) => {
+    setDistance(selectedDistance);
+  };
 
   return (
     <>
@@ -200,10 +205,14 @@ export const Home = () => {
             <H1>내 주변 소아과</H1>
             {/* 백엔드 요청으로 반경 몇 Km내의 병원을 볼건지 선택할 수 있는 기능 추가 예정 */}
             <DistanceDiv>
-              <Distance />
+              <Distance distance={distance} setDistance={setDistance} />
             </DistanceDiv>
           </MainSub>
-          <SimpleSlider latitude={latitude} longitude={longitude} />
+          <SimpleSlider
+            latitude={latitude}
+            longitude={longitude}
+            distance={distance}
+          />
         </SiliderMargin>
 
         <AutoplayYouTubeVideo videoId={"efzr12y8vUc"} />
@@ -224,13 +233,24 @@ const options = [
   { value: "10", label: "10" },
 ];
 
-const Distance = () => {
+const Distance = ({ distance, setDistance }) => {
   const updatedOptions = options.map((option) => ({
     ...option,
-    label: `${option.label} km`,
+    label: `${option.value} km`,
   }));
 
-  return <Select options={updatedOptions} styles={customStyles} />;
+  const handleDistanceChange = (selectedOption) => {
+    setDistance(selectedOption.value);
+  };
+
+  return (
+    <Select
+      options={updatedOptions}
+      styles={customStyles}
+      value={{ value: distance, label: `${distance} km` }}
+      onChange={handleDistanceChange}
+    />
+  );
 };
 
 const customStyles = {
@@ -370,7 +390,7 @@ const BannerSebH1 = styled.p`
 `;
 
 // 캐러셀 라이브러리
-const SimpleSlider = ({ latitude, longitude }) => {
+const SimpleSlider = ({ latitude, longitude, distance }) => {
   const settings = {
     dots: true,
     infinite: true,
@@ -416,7 +436,7 @@ const SimpleSlider = ({ latitude, longitude }) => {
         params: {
           userLat: latitude,
           userLon: longitude,
-          r: 10,
+          r: distance,
         },
       });
       const responseData = response.data.data;
