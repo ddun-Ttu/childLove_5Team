@@ -5,9 +5,8 @@ import {
   Route,
   Link,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
 import { useQuery } from "react-query";
 
 // 아이콘
@@ -114,27 +113,24 @@ const NewButton = ({
 };
 
 // 백엔드 주소
-const BEdata = "http://34.64.69.226:3000";
+const BEdata = "http://34.64.69.226:5000/api";
 
 const Reserve = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const hospitalID = searchParams.get("id")
   // const token = localStorage.getItem("token") ? localStorage.getItem("token") : false;
+  const navigate = useNavigate();
 
   const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vb250ZXN0QHRlc3QudGVzdCIsInN1YiI6MywiaWF0IjoxNjg2MjM2NTQzLCJleHAiOjE3MTc3OTQxNDN9.ToJBCRSygcxpdmMC-B0DyayfbdR7f6E4FEYhhEu5RhA";
   // 임시 토큰
-
-  // if(token == false){
-  //     alert("로그인 후 예약할 수 있습니다")
-  // }
 
   const [hospitalData, setHospitalData] = useState({});
   const [reserveday, setReserveday] = useState({year:"", month:"", date:"", day:"", dayNum:0});
   const [reserveModal, setReserveModal] = useState(false);
   const [dayinput, setDayinput] = useState("");
-  const [dutyTimes, setDutyTimes] = useState({});
-  const [reserveTimeTable, setReserveTimeTable] = useState([]);
+  const [dutyTimes, setDutyTimes] = useState({}); 
+  const [reserveTimeTable, setReserveTimeTable] = useState([]); // 근무시간 오픈~종료 배열
   const [clickedBtn, setClickedBtn] = useState(null);
   const [clickedBtnTime, setClickedBtnTime] = useState(null);
   const [reservedTime, setReservedTime] = useState([]);
@@ -151,7 +147,7 @@ const Reserve = () => {
         setHospitalData(hospitalID.data);
       });
 
-    fetch(`/reservation/hospital/${hospitalID}`, {
+    fetch(`${BEdata}/reservation/hospital/${hospitalID}`, {
       headers: {
         Accept: "application / json",
       },
@@ -209,7 +205,11 @@ const Reserve = () => {
       const newDay = {...current, day: dayOfWeek}
       return newDay
     });
-  },[reserveday.date])
+  },[reserveday.date]);
+
+  useEffect(()=>{
+    reservedTime
+  },[])
   
   // 모달창 컨트롤
   const ModalReserveDays = ({year, month}) =>{
@@ -241,30 +241,52 @@ const Reserve = () => {
     return setReserveModal(true);
   }
   function closeModal(){
-    // 시간 배열 생성
-    setReserveTimeTable(()=>{
-      let result = [];
-      // start = [[10],[30]]
-      const start = [Number(dutyTimes[reserveday.day][0].split("").slice(0,2).join("")),Number(dutyTimes[reserveday.day][0].split("").slice(2,4).join(""))];
-      const close = [Number(dutyTimes[reserveday.day][1].split("").slice(0,2).join("")),Number(dutyTimes[reserveday.day][1].split("").slice(2,4).join(""))];
-      let minute = start[1];
+    if(dutyTimes[reserveday.day][0] !== null) {
+      // 근무시간이 있는 날일시 시간 배열 생성
+      setReserveTimeTable(()=>{
+        let result = [];
 
-      for(let i = start[0]; i < close[0]; i++){
-        let time = String(i)+String(minute);
-        if(time.length < 4){time = "0"+time};
-        result.push(time)
+        // start = [[10],[30]]
+        const start = [Number(dutyTimes[reserveday.day][0].split("").slice(0,2).join("")),Number(dutyTimes[reserveday.day][0].split("").slice(2,4).join(""))];
+        const close = [Number(dutyTimes[reserveday.day][1].split("").slice(0,2).join("")),Number(dutyTimes[reserveday.day][1].split("").slice(2,4).join(""))];
+        let minute = start[1];
 
-        if(minute == 0){
-          minute = 30; 
-          time = String(i)+String(minute);
+        for(let i = start[0]; i < close[0]; i++){
+          let time = String(i)+String(minute);
           if(time.length < 4){time = "0"+time};
           result.push(time)
+
+          if(minute == 0){
+            minute = 30; 
+            time = String(i)+String(minute);
+            if(time.length < 4){time = "0"+time};
+            result.push(time)
+          }
+          minute = "00";
         }
-        minute = "00";
-      }
-      return result;
-  })
+        return result;
+    });
     return setReserveModal(false);
+  } else {alert("예약이 불가능한 날입니다")}
+  }
+
+  function checkReserve(time, reserveday){
+    let result = false; 
+
+    function checkToday(data){
+      const whenYear = Number(data.reservedDate.slice(0, 4));
+      const whenMonth = Number(data.reservedDate.slice(4, 6));
+      const whenDay = Number(data.reservedDate.slice(6, 8));
+      return whenYear == reserveday.year && whenMonth == reserveday.month && whenDay == reserveday.date;
+    }
+    const todayReserve = reservedTime.filter(checkToday);
+    
+    todayReserve.forEach(day =>{
+      if(time == day.reservedTime){
+        result = true}
+    });
+
+    return result;
   }
 
   function hadleBtn(BtnIndex){
@@ -272,14 +294,24 @@ const Reserve = () => {
   }
 
   function handleSubmit(time){
+    // 제출시 로그인토큰 유무에 따른 동작 분류
     if (token) {
+      let transReserveday = {...reserveday}
+      if(String(transReserveday.month).length == 1){
+        transReserveday.month = "0" + String(transReserveday.month)
+      };
+      if(String(transReserveday.date).length == 1){
+        transReserveday.date = "0" + String(transReserveday.date)
+      };
+
       const data = {
         "hospitalId": `${hospitalID}`,
         "memo": "메모 내용입니다.",
-        "reservedTime": `${time}`
+        "reservedTime": `${time}`,
+        "reservedDate": `${transReserveday.year}${transReserveday.month}${transReserveday.date}`
       }
 
-      fetch(`/reservation`, {
+      fetch(`${BEdata}/reservation`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -288,36 +320,22 @@ const Reserve = () => {
         body: JSON.stringify(data),
       })
         .then((res) => res.json())
-        .then((submitData) => { 
+        .then((submitData) => {
           setReservedTime((current)=>{
             const newReservedTime = [...current]
             newReservedTime.push(submitData.data);
             return newReservedTime;
           })
         });
+      
+      alert("예약되었습니다, 예약확인 페이지로 연결합니다");
+      navigate("/reserve");
+
     } else {
       alert("로그인 후 예약가능합니다")
     }
   }
 
-  function checkReserve(time, reserveday){
-    let result = false;
-
-    function checkToday(data){
-      const whenYear = Number(data.createdAt.slice(0, 4));
-      const whenMonth = Number(data.createdAt.slice(5, 7));
-      const whenDay = Number(data.createdAt.slice(8, 10));
-      return whenYear == reserveday.year && whenMonth == reserveday.month && whenDay == reserveday.date;
-    }
-    const todayReserve = reservedTime.filter(checkToday);
-
-    todayReserve.forEach(day =>{
-      if(time == day.reservedTime){console.log(day) 
-        result = true}
-    });
-
-    return result;
-  }
 
   return (
     <Container>
@@ -409,11 +427,11 @@ const Reserve = () => {
         </Modal>
         <ReserveTimes>
           {reserveTimeTable.map((time, index) => (
-            <ReserveTime key={index} clicked={index == clickedBtn} onClick={()=>{
-              if(checkReserve(time, reserveday)){return alert("이미 예약된 날짜입니다")}else{hadleBtn(index); setClickedBtnTime(time);}
-            }} when={time} disabled={checkReserve(time, reserveday)}>
-              <span>{time}</span>
-            </ReserveTime>
+              <ReserveTime key={index} clicked={index == clickedBtn} onClick={()=>{
+                if(checkReserve(time, reserveday)){return alert("이미 예약된 날짜입니다")}else{hadleBtn(index); setClickedBtnTime(time);}
+              }} when={time} disabled={checkReserve(time, reserveday)}>
+                <span>{time}</span>
+              </ReserveTime>
           ))}
         </ReserveTimes>
         </div>
@@ -422,6 +440,9 @@ const Reserve = () => {
     </Container>
   );
 };
+
+
+
 
 //스타일 - 헤더
 const HeaderContainer = styled.div`

@@ -56,7 +56,7 @@ const NewHeader = ({ label, onClick }) => {
 };
 
 // 백엔드 주소
-const BEdata = "http://34.64.69.226:3000";
+const BEdata = "http://34.64.69.226:5000/api";
 
 const Detail = () => {
   const location = useLocation();
