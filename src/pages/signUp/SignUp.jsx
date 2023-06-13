@@ -54,30 +54,32 @@ export const SignUp = () => {
 
   return (
     <>
-      <div>
-        <SignUpDiv>
-          <SignUpImg src={mainLogo}></SignUpImg>
-          <H1>회원가입</H1>
-        </SignUpDiv>
-        <SignUpFormDiv>
-          <ChangeButtonDiv>
-            <ButtonUser
-              className={tabView === "user" ? "" : "active"}
-              onClick={() => handleChangeTab("user")}
-            >
-              일반 회원
-            </ButtonUser>
-            <ButtonHospital
-              className={tabView === "hospital" ? "active" : ""}
-              onClick={() => handleChangeTab("hospital")}
-            >
-              병원 클라이언트
-            </ButtonHospital>
-          </ChangeButtonDiv>
-          {tabView === "hospital" ? <HospitalView /> : <UserView />}
-        </SignUpFormDiv>
-      </div>
-      <NavigationBar />
+      <Container>
+        <div>
+          <SignUpDiv>
+            <SignUpImg src={mainLogo}></SignUpImg>
+            <H1>회원가입</H1>
+          </SignUpDiv>
+          <SignUpFormDiv>
+            <ChangeButtonDiv>
+              <ButtonUser
+                className={tabView === "user" ? "" : "active"}
+                onClick={() => handleChangeTab("user")}
+              >
+                일반 회원
+              </ButtonUser>
+              <ButtonHospital
+                className={tabView === "hospital" ? "active" : ""}
+                onClick={() => handleChangeTab("hospital")}
+              >
+                병원 클라이언트
+              </ButtonHospital>
+            </ChangeButtonDiv>
+            {tabView === "hospital" ? <HospitalView /> : <UserView />}
+          </SignUpFormDiv>
+        </div>
+        <NavigationBar />
+      </Container>
     </>
   );
 };
