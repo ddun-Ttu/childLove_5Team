@@ -1,5 +1,6 @@
 import * as Style from "../../components/styles/SearchBarStyle";
 import React, { useState, useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
 
 //아이콘 & 행정구역데이터 - assets
 import {
@@ -9,35 +10,32 @@ import {
   IconAlarm,
 } from "../../assets/index";
 
-// 공통 컴포넌트
-import { Modal } from "../../components/index";
-
-export const SearchInput = ({ onSearch }) => {
+export const SearchInput = ({
+  // onSearch,
+  onChange,
+  value,
+  linkTo,
+  onSubmit,
+}) => {
   //--------------------검색부분
   //검색어
-  const [search, setSearch] = useState("");
-  const onChange = (e) => {
-    setSearch(e.target.value);
-  };
-  // 폼 전송 처리 함수
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSearch(search);
-  };
 
   return (
     <Style.Wrapper>
       <Style.InputBox>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit}>
           <input
             type="text"
-            value={search}
+            // onSearch={onSearch}
+            value={value}
             onChange={onChange}
             placeholder="병원 이름을 검색해보세요"
           />
-          <button type="submit" style={{ cursor: "pointer" }}>
-            <img alt="search-button" src={IconSearch} />
-          </button>
+          <Link to={linkTo}>
+            <button type="submit" style={{ cursor: "pointer" }}>
+              <img alt="search-button" src={IconSearch} />
+            </button>
+          </Link>
         </form>
       </Style.InputBox>
     </Style.Wrapper>
