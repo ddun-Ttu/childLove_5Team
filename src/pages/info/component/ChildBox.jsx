@@ -12,15 +12,15 @@ import { instance } from 'axios';
 
 const userToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1bkBlbWFpbC5jb20iLCJzdWIiOjIwMDA0LCJpYXQiOjE2ODY2Mzk3MjMsImV4cCI6MTcxODE5NzMyM30.owESvX7FLjD-WjxESrMnEoR4glhF1AEBiedQ3WRo0Ok";
-
-  const Space = styled.div`
+// 빈공간
+const Space = styled.div`
   margin-bottom: 20px;
 `;
-
+// 빈공간
 const Space2 = styled.div`
   margin-bottom: 5px;
 `;
-
+// 아이 이름 입력을 위한 inputbox
 const InputBox = styled.input`
   width: 280px;
   box-sizing: border-box;
@@ -28,7 +28,7 @@ const InputBox = styled.input`
   font-size: 24px;
   padding: 2%;
 `;
-
+// 아이 생년월일 입력을 위한 inputbox
 const Input2Box = styled.input`
   width: 75px;
   box-sizing: border-box;
@@ -36,7 +36,6 @@ const Input2Box = styled.input`
   font-size: 11px;
   padding: 2%;
 `;
-
 // ChildBox의 저장버튼 구현
 const SaveButton = styled.button`
   position: absolute;
@@ -50,7 +49,7 @@ const SaveButton = styled.button`
   cursor: pointer;
   padding: 0% 2.5%;
 `;
-
+// 아이 성별 선택을 위한 버튼
 const GenderButton = styled.button`
   position: absolute;
   top: 15px;
@@ -61,16 +60,16 @@ const GenderButton = styled.button`
   cursor: pointer;
   padding: 5px;
 `;
-
+//GenderButton에 성별 이미지를 넣기위해 만듬
 const GenderImage = styled.img`
   width: 17px;
   height: 27px;
 `;
-
+// GenderButton중 남성
 const MaleButton = styled(GenderButton)`
   right: 50px;
 `;
-
+//GenderButton중 여성
 const FemaleButton = styled(GenderButton)`
   right: 10px;
 `;
@@ -120,14 +119,14 @@ export const ChildBox = ({
 
   //사용자가 선택한 이미지 파일에 대한 참조(URL)를 selectedImage 상태에 저장
   const handleImagePlus = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files[0]; // 첫 번째 파일을 선택합니다.
     setSelectedImageFile(file);
-    
-    // const reader = new FileReader();
-    // reader.onloadend = () => {
-    //   setSelectedImage(reader.result);
-    // };
-    // reader.readAsDataURL(file);
+  
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setSelectedImage(reader.result);
+    };
+    reader.readAsDataURL(file); // 첫 번째 파일을 readAsDataURL에 전달합니다.
   };
 
   //사용자가 이름을 입력하면 그 값을 상태에 저장하는 역할
