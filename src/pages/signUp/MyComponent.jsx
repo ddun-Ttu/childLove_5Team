@@ -1,16 +1,47 @@
 import React, { useState, useEffect } from "react";
 import VirtualScroll from "./VirtualScroll";
 import { instance } from "../../server/Fetcher";
-export const MyComponent = ({ hospitalNameInput }) => {
+import styled from "styled-components";
+
+export const MyComponent = ({ hospitalNameInput, hpId, setHpId }) => {
   const [scrollData, setScrollData] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-  const [page, setPage] = useState(1);
 
   const Elem = ({ i, style }) => {
+    //div를 button 같은 것으로 바꾸어 줍니다.
+    //onClick 함수를 만들어줍니다.
+    const buttonOnClick = (e) => {
+      e.preventDefault();
+      setHpId(scrollData[i].id);
+    };
+
     return (
       <>
-        <div>{i}</div>
-        <div>{scrollData[i].dutyName}</div>
+        <button
+          onClick={buttonOnClick}
+          style={{
+            ...style,
+
+            backgroundColor: "#fff",
+
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "90%",
+            margin: "10px 0",
+            marginLeft: "6%",
+            height: "50px",
+            fontSize: "15px",
+
+            border: "0px",
+            borderBottom: "1px solid green",
+          }}
+        >
+          <div>
+            <div>{scrollData[i].dutyAddr2Depth}</div>
+            <div style={{ padding: "12% 0" }}> {scrollData[i].dutyName}</div>
+          </div>
+        </button>
       </>
     );
   };
@@ -19,9 +50,8 @@ export const MyComponent = ({ hospitalNameInput }) => {
     const fetchData = async () => {
       try {
         if (hospitalNameInput) {
-          console.log("default");
           const response = await instance.get(
-            `/hospital/hp10/${hospitalNameInput}?size=10&page=${page}`
+            `/hospital/hp10/${hospitalNameInput}?size=10&page=1`
           );
 
           if (response.data.success) {
@@ -34,25 +64,31 @@ export const MyComponent = ({ hospitalNameInput }) => {
     fetchData();
   }, [hospitalNameInput]);
 
+  useEffect(() => {
+    if (!hospitalNameInput) {
+      setScrollData([]);
+    }
+  }, [hospitalNameInput]);
+
   const fetchMoreData = async () => {
-    setPage((prev) => prev + 1);
-
+    let page = 0;
     if (hospitalNameInput) {
-      console.log("more");
+      try {
+        page = Math.ceil(scrollData.length / 10) + 1;
+        const newScrollData = await instance.get(
+          `/hospital/hp10/${hospitalNameInput}?size=10&page=${page}`
+        );
 
-      const newScrollData = await instance.get(
-        `/hospital/hp10/${hospitalNameInput}?size=10&page=${page}`
-      );
-
-      console.log("뉴스크롤", newScrollData.data.data);
-      console.log("ㅇㅇ", scrollData);
-      if (newScrollData.data.success) {
-        const nextScrollData = [...scrollData, ...newScrollData.data.data];
-        setScrollData(nextScrollData);
+        if (newScrollData.data.success) {
+          const nextScrollData = scrollData.concat(newScrollData.data.data);
+          setScrollData(nextScrollData);
+        }
+      } catch (error) {
+        // 에러 처리
       }
     }
   };
-  console.log("밖의 스크롤데이터", scrollData);
+
   // 데이터 리미트
   useEffect(() => {
     if (scrollData.length >= 100) {
@@ -64,6 +100,9 @@ export const MyComponent = ({ hospitalNameInput }) => {
     <Elem key={key} i={index} style={style} />
   );
 
+  /*지정된 병원을 div 같은 것으로 심어주면 될 것 같습니다.
+  여기서 div 같은 걸로 심는 것 보다는 가입 페이지에
+  인풋 태그나 그런걸 하나 만들어서 거기에 담아주는 편이 좋을 것 같네요.*/
   return (
     <>
       <VirtualScroll
@@ -81,7 +120,7 @@ export const MyComponent = ({ hospitalNameInput }) => {
             loading...
           </div>
         }
-        height={400}
+        height={300}
         elementHeight={70} // 새로 추가
         rowRenderer={rowRenderer}
         children={scrollData}
@@ -89,5 +128,9 @@ export const MyComponent = ({ hospitalNameInput }) => {
     </>
   );
 };
+
+/*이런 식으로 심어둔 selectedHospital을 로그인 페이지에 담아서
+AJAX 통신으로 보내주면 우리가 원하던 병원의 id를 같이
+보내 줄 수 있을거라 생각됩니다.*/
 
 export default MyComponent;

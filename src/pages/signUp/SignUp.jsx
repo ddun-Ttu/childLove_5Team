@@ -302,6 +302,9 @@ const HospitalView = () => {
   // 병원 이름
   const [hospitalNameInput, setHospitalNameInput] = useState("");
 
+  // 병원 ID
+  const [hpId, setHpId] = useState("");
+
   // 이메일 유효성 검사
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -364,7 +367,7 @@ const HospitalView = () => {
     // axios를 사용하여 POST 요청 만들기
     axios
       .post("/users/managersignup", {
-        hospitalId: name,
+        hospitalId: hpId,
         name: name,
         email: email,
         password: pw,
@@ -410,8 +413,17 @@ const HospitalView = () => {
             onChange={hpName}
           ></SignUpInput>
 
-          <MyComponent hospitalNameInput={hospitalNameInput} />
-
+          <MyComponent
+            hospitalNameInput={hospitalNameInput}
+            hpId={hpId}
+            setHpId={setHpId}
+          />
+          <SignUpInput
+            placeholder="선택된 병원 ID"
+            type="text"
+            disabled={true}
+            value={hpId}
+          ></SignUpInput>
           <P>
             *찾으시는 병원이 없으실 경우 하단에 신규 병원 등록 신청하기를
             눌러주세요.
