@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import {
@@ -513,9 +512,12 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
           {hospitalData.length > 0 ? (
             hospitalData.map((data) => (
               <Card key={data.id}>
-                <Link to={`/detail/${data.id}`}>
+                <Link
+                  to={`/detail?id=${data.id}
+`}
+                >
                   <CardTop>
-                    {data.image !== null ? (
+                    {data.image.length > 0 ? (
                       <CardImg
                         key={data.id}
                         src={data.image}
