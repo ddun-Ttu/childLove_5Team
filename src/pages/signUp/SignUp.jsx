@@ -36,8 +36,6 @@ import { MyComponent } from "./MyComponent";
 import colors from "../../constants/colors";
 import fontSize from "../../constants/fontSize";
 
-// const navigate = useNavigate();
-
 // tab을 true/false로 하는 것 보다 하나의 state로 관리하는게 좀 더 가독성이 나을 것 같아서 리팩토링.
 export const SignUp = () => {
   const location = useLocation();
@@ -176,7 +174,6 @@ const UserView = () => {
       .then((response) => {
         // 회원가입 성공
         // 홈으로 이동
-        navigate("/");
         console.log("등록 성공", response.data);
       })
       .catch((error) => {
@@ -370,7 +367,7 @@ const HospitalView = () => {
       .then((response) => {
         // 성공적인 응답 처리
         //홈으로 이동
-        navigate("/");
+
         console.log("등록 성공", response.data);
       })
       .catch((error) => {
