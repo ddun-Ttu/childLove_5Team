@@ -3,7 +3,11 @@ import VirtualScroll from "./VirtualScroll";
 import { instance } from "../../server/Fetcher";
 import styled from "styled-components";
 
-export const MyComponent = ({ hospitalNameInput, hpId, setHpId }) => {
+export const MyComponent = ({
+  hospitalNameInput,
+  setHpId,
+  setHospitalNameInput,
+}) => {
   const [scrollData, setScrollData] = useState([]);
   const [hasMore, setHasMore] = useState(true);
 
@@ -13,6 +17,7 @@ export const MyComponent = ({ hospitalNameInput, hpId, setHpId }) => {
     const buttonOnClick = (e) => {
       e.preventDefault();
       setHpId(scrollData[i].id);
+      setHospitalNameInput(scrollData[i].dutyName);
     };
 
     return (
@@ -39,7 +44,7 @@ export const MyComponent = ({ hospitalNameInput, hpId, setHpId }) => {
         >
           <div>
             <div>{scrollData[i].dutyAddr2Depth}</div>
-            <div style={{ padding: "12% 0" }}> {scrollData[i].dutyName}</div>
+            <div style={{ padding: "6% 0" }}> {scrollData[i].dutyName}</div>
           </div>
         </button>
       </>

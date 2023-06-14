@@ -415,6 +415,7 @@ const HospitalView = () => {
 
           <MyComponent
             hospitalNameInput={hospitalNameInput}
+            setHospitalNameInput={setHospitalNameInput}
             hpId={hpId}
             setHpId={setHpId}
           />
