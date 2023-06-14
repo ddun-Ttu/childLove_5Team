@@ -120,7 +120,7 @@ export const Home = () => {
       console.error("현재 브라우저는 위치를 지원하지 않습니다.");
     }
   }, []);
-  const [distance, setDistance] = useState("10");
+  const [distance, setDistance] = useState(10);
 
   const handleDistanceChange = (selectedDistance) => {
     setDistance(selectedDistance);
@@ -455,7 +455,8 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
       const responseData = response.data.data;
       setHospitalData(responseData);
       setLoading(false);
-      // console.log("데이터 성공", responseData);
+      console.log("거리 수정:", distance, latitude, longitude);
+      console.log("데이터 성공", responseData);
     } catch (error) {
       console.error("병원 데이터를 가져오는 중에 오류가 발생했습니다.:", error);
     }
