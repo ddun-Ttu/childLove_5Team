@@ -283,7 +283,7 @@ const Reserve = () => {
     return (
       <>
         <HeaderWrap>
-          <BtnBack onClick={()=>navigate(`/map?id=${hospitalID}`)}>
+          <BtnBack onClick={()=>navigate(`/detail?id=${hospitalID}`)}>
             <img alt="icon-left" src={IconLeft}></img>
           </BtnBack>
           <div>

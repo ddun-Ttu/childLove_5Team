@@ -14,7 +14,6 @@ import {
 
 //utils
 import { formatTime, BE_URL, endpoint_favorite } from "../../utils.js";
-
 //요일 정보 지정을 위한 상수
 //일~월 : 0~6
 const WEEK = ["일", "월", "화", "수", "목", "금", "토"];
@@ -69,16 +68,15 @@ export const HospitalCard = ({
 
     try {
       handleFavorite();
-      console.log("Favorite post 요청 성공");
-      // 필요한 추가 작업 수행
+      // 페이지 새로고침
+      window.location.reload();
     } catch (error) {
-      console.error("Favorite post 요청 실패", error);
-      // 필요한 에러 처리 작업 수행
+      console.error(error);
     }
   };
   return (
     <>
-      <Link to={`/detail/${hpid}`}>
+      <Link to={`/detail?id=${hpid}`}>
         <Style.HospitalCardBox>
           <div>{hospitalName}</div>
           {INFO_PROPS.map((prop) => (
