@@ -67,7 +67,7 @@ const BackButton = styled(Button)`
 
 function ChildPage() {
   const [boxCreators, setBoxCreators] = useState([]);
-
+  console.log(boxCreators)
   useEffect(()=>{
     const getKids = async()=>{
       const axiosGet = await axios.get('/kid/get', {
@@ -99,7 +99,6 @@ function ChildPage() {
     })
     setBoxCreators((prevCreators) => prevCreators.filter(creator => creator.id !== id));
   };
-
   return (
     <Container>
       <Header
@@ -109,8 +108,9 @@ function ChildPage() {
         }}
       />
       <Space />
-      {boxCreators.map(({ id, name, gender, birth, memo, image }) => (
-        <ChildBox 
+      {boxCreators.map(({ id, name, gender, birth, memo, image }) => {
+        console.log(image)
+        return <ChildBox 
           key={id} 
           id={id} 
           name={name} 
@@ -122,7 +122,7 @@ function ChildPage() {
           defaultEditable={true}
           alwaysShowEditAndRemove={true}
         />
-      ))}
+      })}
       <CardBox>
         <MyButton onClick={handleClick}>추가하기</MyButton>
       </CardBox>

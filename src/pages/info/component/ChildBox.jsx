@@ -96,6 +96,7 @@ export const ChildBox = ({
   const [birthMonth, setBirthMonth] = useState('');
   const [birthDay, setBirthDay] = useState('');
   const [isEditable, setIsEditable] = useState(defaultEditable);
+  const [selectedImageFile, setSelectedImageFile] = useState(null);
 
   useEffect(()=>{
     setIsEditable(defaultEditable);
@@ -108,11 +109,25 @@ export const ChildBox = ({
     } else if(birth === null){
     }
   },[defaultEditable]);
-    
+
+  useEffect(()=>{
+    if(image) {
+      if (image.length) {
+        setSelectedImage(image[0]);
+      }
+    }
+  }, [image]);
+
   //사용자가 선택한 이미지 파일에 대한 참조(URL)를 selectedImage 상태에 저장
-  const handleImageChange = (e) => {
-    setSelectedImage(URL.createObjectURL(e.target.files[0]));
-    console.log(URL.createObjectURL(e.target.files[0]))
+  const handleImagePlus = (e) => {
+    const file = e.target.files[0];
+    setSelectedImageFile(file);
+    
+    // const reader = new FileReader();
+    // reader.onloadend = () => {
+    //   setSelectedImage(reader.result);
+    // };
+    // reader.readAsDataURL(file);
   };
 
   //사용자가 이름을 입력하면 그 값을 상태에 저장하는 역할
@@ -172,6 +187,24 @@ export const ChildBox = ({
     if (!selectedGender) {
       alert("성별을 선택해주세요");
       return;
+    }
+
+    if (selectedImage) {
+      const formData = new FormData();
+      formData.append("files", selectedImageFile);
+      formData.append("kidId", id);
+
+      try {
+        const response = await axios.post('http://34.64.69.226:5000/api/image', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+  
+        console.log(response.data);  // check the response
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
     }
 
     const originalBirth = `${birthYear}-${birthMonth}-${birthDay}`
@@ -263,7 +296,7 @@ export const ChildBox = ({
               <input 
                 type="file" 
                 accept="image/*" 
-                onChange={handleImageChange} 
+                onChange={handleImagePlus} 
               />
             </>
           ) : (
