@@ -11,6 +11,7 @@ import { useQuery } from "react-query";
 
 // 아이콘
 import star from "../../assets/star.svg";
+import yellowStar from "../../assets/yellowStar.svg";
 import clockGreen from "../../assets/clockGreen.svg";
 import IconLeft from "../../assets/iconLeft.svg";
 
@@ -32,89 +33,8 @@ import colors from "../../constants/colors";
 import fontSize from "../../constants/fontSize";
 import { ModalContainer } from "../registerForm/Post";
 
-// 공통 컴포넌트 수정활용 *즐겨찾기,뒤로가기 클릭 이벤트 추가해야함
-const NewHeader = ({ label, onClick }) => {
-  return (
-    <>
-      <HeaderWrap>
-        <BtnBack onClick={onClick}>
-          <img alt="icon-left" src={IconLeft}></img>
-        </BtnBack>
-        <div>
-          <h2>{label}</h2>
-        </div>
-        <HeaderStar>
-          <img alt="star" src={star}></img>
-        </HeaderStar>
-      </HeaderWrap>
-    </>
-  );
-};
-
-const NewCardBox = ({
-  bgcolor,
-  fontSize,
-  color,
-  width,
-  height,
-  label,
-  onClick,
-  disabled,
-  borderRad,
-  button,
-  margin,
-}) => {
-  return (
-    <NewCardBoxStyle
-      onClick={onClick}
-      fontSize={fontSize}
-      color={color}
-      bgcolor={bgcolor}
-      width={width}
-      height={height}
-      disabled={disabled}
-      borderRad={borderRad}
-      margin={margin}
-    >
-      {label}
-      {button}
-    </NewCardBoxStyle>
-  );
-};
-
-const NewButton = ({
-  btnColor,
-  btnFontSize,
-  bgcolor,
-  borderOutLine,
-  width,
-  height,
-  label,
-  onClick,
-  disabled
-}) => {
-  return (
-    <>
-      <div>
-        <NewButtonStyle
-          onClick={onClick}
-          fontSize={btnFontSize}
-          color={btnColor}
-          bgcolor={bgcolor}
-          borderOutLine={borderOutLine}
-          width={width}
-          height={height}
-          disabled={disabled}
-        >
-          {label}
-        </NewButtonStyle>
-      </div>
-    </>
-  );
-};
-
 // 백엔드 주소
-const BEdata = "http://34.64.69.226:5000/api";
+const BEdata = "http://34.64.69.226:5000/api/";
 
 const Reserve = () => {
   const location = useLocation();
@@ -135,9 +55,10 @@ const Reserve = () => {
   const [clickedBtn, setClickedBtn] = useState(null);
   const [clickedBtnTime, setClickedBtnTime] = useState(null);
   const [reservedTime, setReservedTime] = useState([]);
+  const [likeState, setLikeState] = useState(false);
 
   useEffect(() => {
-    fetch(`${BEdata}/hospital/${hospitalID}`, {
+    fetch(`${BEdata}hospital/${hospitalID}`, {
       headers: {
         Accept: "application / json",
       },
@@ -148,7 +69,7 @@ const Reserve = () => {
         setHospitalData(hospitalID.data);
       });
 
-    fetch(`${BEdata}/reservation/hospital/${hospitalID}`, {
+    fetch(`${BEdata}reservation/hospital/${hospitalID}`, {
       headers: {
         Accept: "application / json",
       },
@@ -159,7 +80,24 @@ const Reserve = () => {
         setReservedTime(hospitalReserve.data);
       });
   
-      
+    if(token){
+      fetch(`${BEdata}favorite`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((res)=>{
+          res.data.forEach((like)=>{
+            if(like.hospitalId == hospitalID){
+              setLikeState(true)
+            }
+          })
+        });
+      };
+
     const today = new Date();
     let nowyear = today.getFullYear(); // 년도
     let nowmonth = today.getMonth() + 1; // 월
@@ -189,6 +127,7 @@ const Reserve = () => {
       }
     };
     setReserveday({year: nowyear, month: nowmonth, date: nowdate, day: transDay(nowdayNum), dayNum: nowdayNum});
+
   }, []);
   
   useEffect(()=>{
@@ -314,11 +253,11 @@ const Reserve = () => {
         "reservedDate": `${transReserveday.year}${transReserveday.month}${transReserveday.date}`
       }
 
-      fetch(`${BEdata}/reservation`, {
+      fetch(`${BEdata}reservation`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: token,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(data),
       })
@@ -339,6 +278,114 @@ const Reserve = () => {
     }
   }
 
+    // 공통 컴포넌트 수정활용 *즐겨찾기,뒤로가기 클릭 이벤트 추가해야함
+  const NewHeader = ({ label, onClick }) => {
+    return (
+      <>
+        <HeaderWrap>
+          <BtnBack onClick={()=>navigate(`/map?id=${hospitalID}`)}>
+            <img alt="icon-left" src={IconLeft}></img>
+          </BtnBack>
+          <div>
+            <h2>{label}</h2>
+          </div>
+          <HeaderStar onClick={handleFavoriteClick}>
+              {likeState ? <img alt="like" src={yellowStar}></img> : <img alt="notlike" src={star}></img>}
+            </HeaderStar>
+        </HeaderWrap>
+      </>
+    );
+  };
+
+  const NewCardBox = ({
+    bgcolor,
+    fontSize,
+    color,
+    width,
+    height,
+    label,
+    onClick,
+    disabled,
+    borderRad,
+    button,
+    margin,
+  }) => {
+    return (
+      <NewCardBoxStyle
+        onClick={onClick}
+        fontSize={fontSize}
+        color={color}
+        bgcolor={bgcolor}
+        width={width}
+        height={height}
+        disabled={disabled}
+        borderRad={borderRad}
+        margin={margin}
+      >
+        {label}
+        {button}
+      </NewCardBoxStyle>
+    );
+  };
+
+  const NewButton = ({
+    btnColor,
+    btnFontSize,
+    bgcolor,
+    borderOutLine,
+    width,
+    height,
+    label,
+    onClick,
+    disabled
+  }) => {
+    return (
+      <>
+        <div>
+          <NewButtonStyle
+            onClick={onClick}
+            fontSize={btnFontSize}
+            color={btnColor}
+            bgcolor={bgcolor}
+            borderOutLine={borderOutLine}
+            width={width}
+            height={height}
+            disabled={disabled}
+          >
+            {label}
+          </NewButtonStyle>
+        </div>
+      </>
+    );
+  };
+
+
+  function handleFavorite(data) {
+    fetch(`${BEdata}favorite`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((res)=>{
+        if(res.data.id){setLikeState(true)}else{setLikeState(false)}
+      });
+    };
+
+  const handleFavoriteClick = (event) => {
+    //즐겨찾기 클릭 시 Link로 넘어가는 것을 막음
+    event.preventDefault();
+    if(token){
+    try {
+      handleFavorite({"hospitalId" : hospitalID});
+    } catch (error) {
+      console.error("Favorite post 요청 실패", error);
+      // 필요한 에러 처리 작업 수행
+    }} else {alert("로그인 후 즐겨찾기가 가능합니다")}
+  };
 
   return (<>
     <Container>
@@ -466,6 +513,7 @@ const HeaderStar = styled.div`
   width: 29px;
   height: 28px;
   margin-right: 10px;
+  cursor: pointer;
   @media screen and (max-width: 600px) {
     width: 21px;
     height: 21px;
@@ -491,6 +539,7 @@ const BtnBack = styled.button`
   background: none;
   border: none;
   float: left;
+  cursor: pointer;
 `;
 
 //스타일 - 메인컨텐츠
