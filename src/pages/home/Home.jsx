@@ -34,6 +34,8 @@ import {
   SearchBar,
 } from "../../components/index";
 
+import { SearchInput } from "./SearchInput";
+
 import { AutoplayYouTubeVideo } from "./Youtube";
 
 // 상수로 뽑아둔 color, fontSize 연결 링크
@@ -75,21 +77,14 @@ export const Home = () => {
     navigate("/");
   };
 
-  // 위치정보 depth1, depth2
-  const [depth1, setDepth1] = useState("");
-  const [depth2, setDepth2] = useState("");
-  // 위치정보만 받았을 때의 전체 병원리스트
-  const [hospitalList, setHospitalList] = useState([]);
   // 키워드 검색어
   const [searchKeyword, setSearchKeyword] = useState("");
+
+  // 옵션창 펼쳐졌는지
+  const [isOpenOption, setIsOpenOption] = useState(false);
+
   //키워드 검색 후 필터링 된 병원 리스트
   const [keywordFilteredHospitals, setKeywordFilteredHospitals] = useState([]);
-
-  // 검색바
-  const handleDepthChange = (first, second) => {
-    setDepth1(first);
-    setDepth2(second);
-  };
 
   const handleSearch = (keyword) => {
     setSearchKeyword(keyword);
@@ -188,12 +183,7 @@ export const Home = () => {
           </MenuSeb>
         </TopMenuBar>
 
-        <SearchBar
-          onSearch={handleSearch}
-          depth1={depth1}
-          depth2={depth2}
-          onLocationChange={handleDepthChange}
-        />
+        <SearchInput onSearch={handleSearch} />
 
         <Banner>
           <Img src={MainBanner} alt="star"></Img>
@@ -258,6 +248,7 @@ export const Home = () => {
 };
 export default Home;
 
+// 거리 설정
 const options = [
   { value: "1", label: "1" },
   { value: "3", label: "3" },
