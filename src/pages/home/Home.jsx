@@ -94,62 +94,19 @@ export const Home = () => {
     setSearchKeyword(keyword);
   };
 
-  // 사용자의 현재 위치 찾기 Geolocation API & OpenStreetMap Nominatim API
+  // 사용자의 현재 위치  담기
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [address, setAddress] = useState(null);
-
-  useEffect(() => {
-    // Function to get the user's current location
-    const getUserLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            setLatitude(position.coords.latitude);
-            setLongitude(position.coords.longitude);
-
-            try {
-              const response = await fetch(
-                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`
-              );
-              const data = await response.json();
-
-              const {
-                suburb,
-                city_district,
-                city,
-                province,
-                quarter,
-                borough,
-              } = data.address;
-              const formattedAddress = `${
-                suburb || city_district || province || ""
-              } ${city}  ${quarter}`;
-
-              setAddress(formattedAddress);
-            } catch (error) {
-              console.error(error);
-            }
-          },
-          (error) => {
-            console.error(error);
-          }
-        );
-      } else {
-        console.error("현재 브라우저는 위치를 지원하지 않습니다.");
-      }
-    };
-
-    getUserLocation();
-  }, []);
 
   // 유저 내정보에 있는 주소 값 가져오기
   useEffect(() => {
     const userAddress = async () => {
       try {
         const response = await instance.get("users/get");
-        console.log(response);
-        //  console.log(response.data.data[0].address;);
+        setLatitude(response.data.data[0].userLat);
+        setLongitude(response.data.data[0].userLon);
+        setAddress(response.data.data[0].address);
       } catch (error) {
         console.error("유저정보 실패: ", error);
       }
@@ -316,7 +273,6 @@ const Distance = ({ distance, setDistance }) => {
 
   const handleDistanceChange = (selectedOption) => {
     setDistance(selectedOption.value);
-    console.log("선택값", selectedOption.value);
   };
 
   return (
@@ -483,7 +439,7 @@ const BannerSebH1 = styled.p`
 const SimpleSlider = ({ latitude, longitude, distance }) => {
   const settings = {
     dots: true,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 4,
@@ -494,7 +450,7 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          infinite: true,
+          infinite: false,
           dots: true,
         },
       },
@@ -503,7 +459,7 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          initialSlide: 2,
+          initialSlide: 1,
         },
       },
       {
@@ -514,11 +470,6 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
         },
       },
     ],
-  };
-
-  // 랜덤 이미지
-  const getRandomNumber = () => {
-    return Math.floor(Math.random() * 10);
   };
 
   // 병원 데이터 get
@@ -539,7 +490,8 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
         });
         const responseData = response.data.data;
         setHospitalData(responseData);
-        // console.log(latitude, longitude, distance);
+        console.log(latitude, longitude, distance);
+        console.log("병원 정보 수", hospitalData);
         setLoading(false);
       } catch (error) {
         console.error(
@@ -573,32 +525,25 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
                         alt={data.image}
                       />
                     ) : (
-                      // <CardImg
-                      //   key={data.id}
-                      //   src={`https://loremflickr.com/340/340?random=${getRandomNumber()}`}
-                      //   alt={data.image}
-                      // />
                       <>
                         <CardTitle>{data.dutyName}</CardTitle>
                         <CardImg key={data.id} src={Loding} alt={data.image} />
                       </>
                     )}
                   </CardTop>
-                  {/* <CardBottom>
-                    <CardTitle>{data.dutyName}</CardTitle>
-                    <CardAddress>{data.dutyAddr}</CardAddress>
-                  </CardBottom> */}
                 </Link>
               </Card>
             ))
           ) : (
-            <div>사용 가능한 병원 데이터가 없습니다</div>
+            <Guide>{distance} km내에 병원이 없습니다</Guide>
           )}
         </Slider>
       )}
     </>
   );
 };
+
+// console.log("병원 정보 수", hospitalData);
 
 const Card = styled.div`
   position: relative;
@@ -650,19 +595,6 @@ const CardTitle = styled.p`
   }
 `;
 
-const CardAddress = styled.p`
-  margin-top: 40%;
-  font-size: 18px;
-  font-weight: 500;
-  transition: opacity 0.3s ease;
-  opacity: 0.3;
-
-  ${CardTop}:hover & {
-    opacity: 1;
-    color: white;
-  }
-`;
-
 const CardImg = styled.img`
   width: 100%;
   height: 100%;
@@ -670,10 +602,10 @@ const CardImg = styled.img`
   border-radius: 20px;
 `;
 
-const CardImgBak = styled.div`
-  width: 266px;
-  height: 266px;
-  border-radius: 20px;
-  background: rgba(0, 131, 60, 0.2);
-  //
+const Guide = styled.p`
+  font-size: 22px;
+  font-weight: 700;
+  margin: 10% 0 10% 0;
+  color: #b2b2b2;
+  // text-align: center;
 `;
