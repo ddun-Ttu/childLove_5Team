@@ -39,7 +39,7 @@ export const ReDetail = ({ hospitalName, memo, onSaved }) => {
               onChange={handleMemoChange}
             />
             <ButtonWrapper onClick={openModal}>
-              <img alt="icon-pen" src={IconPen} />
+              <img alt="icon-pen" src={IconPen} style={{ cursor: "pointer" }} />
             </ButtonWrapper>
           </InputWrapper>
           <Modal
