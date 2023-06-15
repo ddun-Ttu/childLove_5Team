@@ -483,7 +483,7 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
     ],
   };
 
-  // 랜던
+  // 랜덤 이미지
   const getRandomNumber = () => {
     return Math.floor(Math.random() * 10);
   };
@@ -545,13 +545,16 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
                       //   src={`https://loremflickr.com/340/340?random=${getRandomNumber()}`}
                       //   alt={data.image}
                       // />
-                      <CardImg key={data.id} src={Loding} alt={data.image} />
+                      <>
+                        <CardTitle>{data.dutyName}</CardTitle>
+                        <CardImg key={data.id} src={Loding} alt={data.image} />
+                      </>
                     )}
                   </CardTop>
-                  <CardBottom>
+                  {/* <CardBottom>
                     <CardTitle>{data.dutyName}</CardTitle>
                     <CardAddress>{data.dutyAddr}</CardAddress>
-                  </CardBottom>
+                  </CardBottom> */}
                 </Link>
               </Card>
             ))
@@ -570,6 +573,21 @@ const Card = styled.div`
 
 const CardTop = styled.div`
   margin: 0 2% 0 2%;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    &::after {
+      width: 97%;
+      height: 99%;
+      background: rgba(0, 0, 0, 0.5);
+      content: "";
+      position: absolute;
+      border-radius: 20px;
+      top: 0;
+      left: 5px;
+      z-index: 1;
+    }
+  }
 `;
 
 const CardBottom = styled.div`
@@ -580,33 +598,36 @@ const CardBottom = styled.div`
   z-index: 1;
   transform: translate(-50%, -50%);
   color: #fff;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-
-  &:hover {
-    &::after {
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
-    opacity: 1;
-  }
 `;
 
 const CardTitle = styled.p`
   font-size: 22px;
   font-weight: 700;
   margin-bottom: 8%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  transition: opacity 0.3s ease;
+
+  ${CardTop}:hover & {
+    color: white;
+    z-index: 2;
+  }
 `;
 
 const CardAddress = styled.p`
+  margin-top: 40%;
   font-size: 18px;
   font-weight: 500;
+  transition: opacity 0.3s ease;
+  opacity: 0.3;
+
+  ${CardTop}:hover & {
+    opacity: 1;
+    color: white;
+  }
 `;
 
 const CardImg = styled.img`
