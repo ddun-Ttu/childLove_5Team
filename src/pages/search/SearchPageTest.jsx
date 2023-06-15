@@ -53,6 +53,8 @@ export const SearchPageTest = () => {
     keywordParams !== null ? keywordParams : ""
   );
 
+  //검색결과 총 데이터 개수
+  const [totalCount, setTotalCount] = useState(0);
   //검색 필터 옵션
   const [option, setOption] = useState(SORT_OPTIONS[0]);
 
@@ -69,16 +71,21 @@ export const SearchPageTest = () => {
   // 유저 정보
   const userToken = getUserToken();
   const { data: userQuery, userIsLoading } = useQuery(["user"], async () => {
-    try {
-      const response = await axios.get(`${BE_URL}${endpoint_user}`, {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      });
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      throw error;
+    //유저 토큰이 있는 경우에만 요청
+    if (userToken) {
+      try {
+        const response = await axios.get(`${BE_URL}${endpoint_user}`, {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        });
+        return response.data;
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    } else {
+      return null;
     }
   });
 
@@ -113,7 +120,7 @@ export const SearchPageTest = () => {
       await axios.get(url).then((res) => {
         // 중복 제거
         const uniqueHospitals = removeDuplicates(
-          [...hospitalList, ...res.data.data],
+          [...hospitalList, ...res.data.data[0][0]],
           "id"
         );
         setHospitalList(uniqueHospitals);
@@ -145,7 +152,8 @@ export const SearchPageTest = () => {
         url = `${BE_URL}hospital?depth1=${depth1}&depth2=${depth2}&size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`;
       }
       await axios.get(url).then((res) => {
-        setHospitalList(res.data.data);
+        setHospitalList(res.data.data[0][0]);
+        setTotalCount(res.data.data[1]);
       });
       setLoading(false);
     };
@@ -157,12 +165,19 @@ export const SearchPageTest = () => {
   const { data: favoritesQuery, favoriteIsLoading } = useQuery(
     ["favorites"],
     // instance를 사용해 중복되는 옵션 제거
-    () =>
-      axios.get(`${BE_URL}${endpoint_favorite}`, {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      }),
+    () => {
+      // userToken이 있는 경우에만 API 호출 수행
+      if (userToken) {
+        return axios.get(`${BE_URL}${endpoint_favorite}`, {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        });
+      } else {
+        // 로그인되지 않은 경우, 빈 배열이나 기본값 반환
+        return null;
+      }
+    },
     {
       //백엔드에서 주는 데이터를 내가 원하는 가공해서 받을 수 있습니다.
       select: (response) => {
@@ -248,7 +263,7 @@ export const SearchPageTest = () => {
           onLocationChange={handleDepthChange}
         />
         <Style.SearchHeader>
-          <span>총 {hospitalList.length} 개</span>
+          <span>총 {totalCount} 개</span>
           <Style.DropdownContainer>
             <button onClick={handleOptionClick}>
               {option.name}
