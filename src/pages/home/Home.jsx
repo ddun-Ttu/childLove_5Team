@@ -25,6 +25,7 @@ import iconPeople from "../../assets/iconPeople.svg";
 import arrowRight from "../../assets/arrowRight.svg";
 import pinwheel from "../../assets/Pinwheel.gif";
 import Loding from "../../assets/ImgLoding.jpg";
+import newLogo from "../../assets/newLogo.jpg";
 
 // 공통 컴포넌트 연결 링크
 import {
@@ -193,11 +194,11 @@ export const Home = () => {
           autoClose={4000}
           hideProgressBar
         />
-        <MainLogoImg src={mainLogo} alt="mainLogo"></MainLogoImg>
+        {/* <MainLogoImg src={mainLogo} alt="mainLogo"></MainLogoImg> */}
 
         <TopMenuBar>
           <MenuLogo>
-            <LogoP>아이사랑</LogoP>
+            <NewLogoImg src={newLogo} alt="아이사랑"></NewLogoImg>
           </MenuLogo>
           <FlexGrow></FlexGrow>
 
@@ -384,17 +385,17 @@ const SiliderMargin = styled.div`
 const MainLogoImg = styled.img`
   margin-top: 4%;
   margin-top: 4%;
-  transition: opacity 0.3s ease-in-out;
+  width: 30%;
+`;
 
-  &:hover {
-    opacity: 0.3;
-  }
+const NewLogoImg = styled.img`
+  width: 100%;
 `;
 
 const TopMenuBar = styled.div`
+  margin-top: 5%;
   width: 100%;
-  //   background-color: bisque;
-  border-bottom: solid 1px ${colors.InputBorderOut};
+  // border-bottom: solid 2px ${colors.primary};
   display: flex;
 `;
 
@@ -404,6 +405,7 @@ const FlexGrow = styled.div`
 
 const MenuLogo = styled.div`
   padding: 2% 0% 1% 3%;
+  width: 20%;
 `;
 
 const MenuSeb = styled.div`
@@ -417,12 +419,6 @@ const MenuSeb = styled.div`
 const SebP = styled.p``;
 
 const LogoutBut = styled.p``;
-
-const LogoP = styled.p`
-  color: ${colors.primary};
-  font-weight: 700;
-  font-size: ${fontSize.h3};
-`;
 
 const Banner = styled.div`
   position: relative;
