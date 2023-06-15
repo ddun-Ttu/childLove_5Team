@@ -29,7 +29,7 @@ export const NavigationBar = () => {
     reservationLink = "/reserve";
   } else {
     favoriteLink = "/login";
-    searchLink = "/login";
+
     reservationLink = "/login";
   }
 
