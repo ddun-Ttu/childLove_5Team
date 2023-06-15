@@ -37,8 +37,8 @@ const SORT_OPTIONS = [
 
 export const SearchPageTest = () => {
   // 위치정보 depth1, depth2
-  const [depth1, setDepth1] = useState("서울특별시");
-  const [depth2, setDepth2] = useState("전체");
+  const [depth1, setDepth1] = useState("전국");
+  const [depth2, setDepth2] = useState("");
   const handleDepthChange = (first, second) => {
     setDepth1(first);
     setDepth2(second);
@@ -91,16 +91,18 @@ export const SearchPageTest = () => {
   useEffect(() => {
     const getHospital = async () => {
       setLoading(true);
-      await axios
-        .get(
-          // depth2가 전체면 depth1만 넣어서 요청보냄
-          depth2 === "전체"
-            ? `${BE_URL}hospital?depth1=${depth1}&size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`
-            : `${BE_URL}hospital?depth1=${depth1}&depth2=${depth2}&size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`
-        )
-        .then((res) => {
-          setHospitalList((prevState) => [...prevState, ...res.data.data]);
-        });
+      let url;
+      if (depth1 === "전국") {
+        console.log("전국 조회합니다");
+        url = `${BE_URL}hospital?size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`;
+      } else if (depth2 === "전체") {
+        url = `${BE_URL}hospital?depth1=${depth1}&size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`;
+      } else {
+        url = `${BE_URL}hospital?depth1=${depth1}&depth2=${depth2}&size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`;
+      }
+      await axios.get(url).then((res) => {
+        setHospitalList((prevState) => [...prevState, ...res.data.data]);
+      });
       setLoading(false);
     };
     getHospital();
@@ -122,16 +124,18 @@ export const SearchPageTest = () => {
     const resetHospitalList = async () => {
       setLoading(true);
       setHospitalList([]);
-      await axios
-        .get(
-          // depth2가 전체면 depth1만 넣어서 요청보냄
-          depth2 === "전체"
-            ? `${BE_URL}hospital?depth1=${depth1}&size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`
-            : `${BE_URL}hospital?depth1=${depth1}&depth2=${depth2}&size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`
-        )
-        .then((res) => {
-          setHospitalList(res.data.data);
-        });
+      let url;
+      if (depth1 === "전국") {
+        console.log("전국 조회합니다");
+        url = `${BE_URL}hospital?size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`;
+      } else if (depth2 === "전체") {
+        url = `${BE_URL}hospital?depth1=${depth1}&size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`;
+      } else {
+        url = `${BE_URL}hospital?depth1=${depth1}&depth2=${depth2}&size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`;
+      }
+      await axios.get(url).then((res) => {
+        setHospitalList(res.data.data);
+      });
       setLoading(false);
     };
 
