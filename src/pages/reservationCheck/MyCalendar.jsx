@@ -99,7 +99,7 @@ export const MyCalendar = () => {
   };
 
   const viewDate = ({ date }) => {
-    const formattedDate = dayjs(date).format("MM월DD일");
+    const formattedDate = dayjs(date).format("MM/DD");
     return `${formattedDate}`;
   };
 
@@ -210,7 +210,7 @@ export const MyCalendar = () => {
         }}
       >
         <DiaryHeader>
-          <h2>{activeMonth}</h2>
+          <h2>예약 상세</h2>
         </DiaryHeader>
         <DiaryMain>
           {extractedData
@@ -224,8 +224,8 @@ export const MyCalendar = () => {
               <DiaryItemWrapper key={index}>
                 <DiaryItem>
                   <ReTime>
-                    <h2>{viewDate({ date: item.date })}</h2>
-                    <h2>{viewHour({ time: item.reservedTime })}</h2>
+                    <h3>{viewDate({ date: item.date })}</h3>
+                    <p>{viewHour({ time: item.reservedTime })}</p>
                   </ReTime>
                   <ReDetail
                     hospitalName={item.dutyName}
@@ -392,7 +392,7 @@ const DiaryHeader = styled.div`
     width: 100%;
     font-size: 20px;
     font-weight: bold;
-    color: #121212;
+    color: #00ad5c;
     margin-bottom: 10px;
   }
 `;
@@ -435,10 +435,21 @@ const ReTime = styled.div`
   width: 30%;
   margin-right: 20px;
 
-  & > h2 {
+  & > h3 {
     width: 100%;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
+  }
+
+  & > p {
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    border: 1px solid #00ad5c;
+    border-radius: 40px;
+    background-color: #00ad5c;
+    padding: 5px 0 5px;
   }
 `;
 
