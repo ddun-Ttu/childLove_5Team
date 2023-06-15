@@ -11,6 +11,8 @@ import axios from "axios";
 
 import Select from "react-select";
 
+import { instance } from "../../server/Fetcher";
+
 // 알림창 라이브러리
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
@@ -139,6 +141,22 @@ export const Home = () => {
 
     getUserLocation();
   }, []);
+
+  // 유저 내정보에 있는 주소 값 가져오기
+  useEffect(() => {
+    const userAddress = async () => {
+      try {
+        const response = await instance.get("users/get");
+        console.log(response);
+        //  console.log(response.data.data[0].address;);
+      } catch (error) {
+        console.error("유저정보 실패: ", error);
+      }
+    };
+
+    userAddress();
+  }, []);
+
   const [distance, setDistance] = useState(10);
 
   const handleDistanceChange = (selectedDistance) => {
@@ -157,6 +175,13 @@ export const Home = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
   };
+
+  // 고정값 김포 경도위도
+  const defaultLatitude = 37.64245641626587;
+  const defaultLongitude = 126.64398423537274;
+  // 고정값 광명 경도위도
+  // const defaultLatitude = 37.472215621869594;
+  // const defaultLongitude = 126.8751105269487;
 
   return (
     <>
@@ -214,12 +239,14 @@ export const Home = () => {
         <SiliderMargin>
           <MainSub>
             {address ? (
-              <H2>현재 내 위치 : {address}</H2>
+              <H2>{address}</H2>
             ) : (
-              <H2>위치찾는중...</H2>
+              <H2Seb>
+                내정보에서 주소를 등록해주세요
+                <br /> 위치 : 김포 마산동
+              </H2Seb>
             )}
             <H1>내 주변 소아과</H1>
-            {/* 백엔드 요청으로 반경 몇 Km내의 병원을 볼건지 선택할 수 있는 기능 추가 예정 */}
             <DistanceDiv>
               <Distance
                 distance={distance}
@@ -230,8 +257,8 @@ export const Home = () => {
           </MainSub>
 
           <SimpleSlider
-            latitude={latitude}
-            longitude={longitude}
+            latitude={latitude || defaultLatitude}
+            longitude={longitude || defaultLongitude}
             distance={distance}
           />
         </SiliderMargin>
@@ -273,11 +300,11 @@ export default Home;
 
 // 거리 설정
 const options = [
-  { value: "1", label: "1" },
-  { value: "3", label: "3" },
-  { value: "5", label: "5" },
-  { value: "8", label: "8" },
-  { value: "10", label: "10" },
+  { value: 1, label: 1 },
+  { value: 3, label: 3 },
+  { value: 5, label: 5 },
+  { value: 8, label: 8 },
+  { value: 10, label: 10 },
 ];
 
 const Distance = ({ distance, setDistance }) => {
@@ -288,6 +315,7 @@ const Distance = ({ distance, setDistance }) => {
 
   const handleDistanceChange = (selectedOption) => {
     setDistance(selectedOption.value);
+    console.log("선택값", selectedOption.value);
   };
 
   return (
@@ -320,6 +348,15 @@ const H2 = styled.p`
   font-size: 18px;
   font-weight: 600;
   color: #121212;
+  padding: 1%;
+  margin-bottom: 3%;
+  width: 33.33%;
+`;
+
+const H2Seb = styled.p`
+  font-size: 16px;
+  font-weight: 600;
+  color: #b2b2b2;
   padding: 1%;
   margin-bottom: 3%;
   width: 33.33%;
@@ -506,6 +543,7 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
         });
         const responseData = response.data.data;
         setHospitalData(responseData);
+        // console.log(latitude, longitude, distance);
         setLoading(false);
       } catch (error) {
         console.error(
@@ -515,7 +553,7 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
       }
     };
 
-    // Only call the API if latitude and longitude have valid values
+    //위도와 경도에 유효한 값이 있는 경우에만 API를 호출합니다.
     if (latitude !== null && longitude !== null) {
       hospitalApi();
     }
@@ -539,7 +577,6 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
                         alt={data.image}
                       />
                     ) : (
-                      // <CardImgBak></CardImgBak>
                       // <CardImg
                       //   key={data.id}
                       //   src={`https://loremflickr.com/340/340?random=${getRandomNumber()}`}
