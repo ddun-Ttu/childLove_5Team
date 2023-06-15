@@ -29,7 +29,6 @@ export const AlarmHome = () => {
   useEffect(() => {
     instance.get("/reservation/alarm").then((res) => {
       setListLength(res.data.data.length);
-      console.log(listLength);
     });
   }, []);
 

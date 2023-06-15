@@ -123,7 +123,6 @@ export const Home = () => {
                 suburb || city_district || province || ""
               } ${city}  ${quarter}`;
 
-              // console.log(data.address);
               setAddress(formattedAddress);
             } catch (error) {
               console.error(error);
@@ -154,7 +153,6 @@ export const Home = () => {
   const [search, setSearch] = useState("");
   const onChange = (e) => {
     setSearch(e.target.value);
-    console.log("검색 입력창", search);
   };
   // 폼 전송 처리 함수
   const handleSubmit = (e) => {
@@ -510,8 +508,6 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
         const responseData = response.data.data;
         setHospitalData(responseData);
         setLoading(false);
-        console.log("거리 수정:", distance, latitude, longitude);
-        console.log("데이터 성공", responseData);
       } catch (error) {
         console.error(
           "병원 데이터를 가져오는 중에 오류가 발생했습니다.:",
@@ -525,9 +521,6 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
       hospitalApi();
     }
   }, [latitude, longitude, distance]);
-
-  console.log("Hospital Data:", hospitalData);
-  // console.log("거리 수정:", distance, latitude, longitude);
 
   return (
     <>
