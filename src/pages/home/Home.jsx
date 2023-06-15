@@ -139,7 +139,6 @@ export const Home = () => {
 
     getUserLocation();
   }, []);
-
   const [distance, setDistance] = useState(10);
 
   const handleDistanceChange = (selectedDistance) => {
@@ -195,8 +194,8 @@ export const Home = () => {
             </Link>
           </MenuSeb>
 
-          <MenuSeb>
-            <AlarmHome style={{ display: hideTab }} />
+          <MenuSeb style={{ display: hideTab }}>
+            <AlarmHome />
           </MenuSeb>
         </TopMenuBar>
 
