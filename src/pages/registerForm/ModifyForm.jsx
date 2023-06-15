@@ -117,30 +117,12 @@ export const ModifyForm = () => {
   });
 
   // 오픈 시간 담을 변수
-  const [
-    dutyTime1s,
-    dutyTime2s,
-    dutyTime3s,
-    dutyTime4s,
-    dutyTime5s,
-    dutyTime6s,
-    dutyTime7s,
-    dutyTime8s,
-    dutyTime9s,
-  ] = openDutyTimes;
+  const [dutyTime1s, dutyTime2s, dutyTime3s, dutyTime4s, dutyTime5s, dutyTime6s, dutyTime7s, dutyTime8s, dutyTime9s] =
+    openDutyTimes;
 
   // 마감 시간 담을 변수
-  const [
-    dutyTime1c,
-    dutyTime2c,
-    dutyTime3c,
-    dutyTime4c,
-    dutyTime5c,
-    dutyTime6c,
-    dutyTime7c,
-    dutyTime8c,
-    dutyTime9c,
-  ] = closeDutyTimes;
+  const [dutyTime1c, dutyTime2c, dutyTime3c, dutyTime4c, dutyTime5c, dutyTime6c, dutyTime7c, dutyTime8c, dutyTime9c] =
+    closeDutyTimes;
 
   const data = {
     dutyAddr: fullAddress,
@@ -247,14 +229,8 @@ export const ModifyForm = () => {
             ) : (
               <>
                 <InputName>병원 대표번호</InputName>
-                <InputContent
-                  type="text"
-                  value={phone}
-                  onChange={handlePhone}
-                />
-                {!phoneValid && phone.length > 0 && (
-                  <ErrorMessage>-을 붙여서 입력해주세요</ErrorMessage>
-                )}
+                <InputContent type="text" value={phone} onChange={handlePhone} />
+                {!phoneValid && phone.length > 0 && <ErrorMessage>-을 붙여서 입력해주세요</ErrorMessage>}
               </>
             )}
           </InputBox>
@@ -290,10 +266,7 @@ export const ModifyForm = () => {
           </InputBox>
           <InputBox>
             <InputName>영업시간 및 점심시간</InputName>
-            <SelectBox
-              getOpenTimeData={getOpenTimeData}
-              getCloseTimeData={getCloseTimeData}
-            />
+            <SelectBox getOpenTimeData={getOpenTimeData} getCloseTimeData={getCloseTimeData} />
           </InputBox>
           {!isEditing ? (
             <>
@@ -322,12 +295,7 @@ export const ModifyForm = () => {
                 width={"100px"}
               ></Button>
             </ImageBox>
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleChange}
-              style={{ display: "none" }}
-            />
+            <input type="file" ref={fileInputRef} onChange={handleChange} style={{ display: "none" }} />
             {images.map((image, argI) => {
               return (
                 <div key={argI}>
