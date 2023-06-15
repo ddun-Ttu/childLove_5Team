@@ -37,8 +37,8 @@ export const MapHospital = () => {
   };
   //병원 데이터
   const [hospitalData, setHospitalData] = useState([]);
-  const [hosLat, setHosLat] = useState(0);
-  const [hosLon, setHosLon] = useState(0);
+  const [hosLat, setHosLat] = useState(33.450701);
+  const [hosLon, setHosLon] = useState(126.570667);
   //지도 위치를 현재 위치로 이동시킴
   const [mapState, setMapState] = useState({
     // 지도의 초기 위치
@@ -117,8 +117,6 @@ export const MapHospital = () => {
           .get(`${BE_URL}${endpoint_hospital}${hospital_id}`)
           .then((response) => {
             setHospitalData(response.data.data);
-            setHosLat(hospitalData.wgs84Lat);
-            setHosLon(hospitalData.wgs84Lon);
           });
       } catch (error) {
         console.log(error);
@@ -138,10 +136,12 @@ export const MapHospital = () => {
   const dutyTimeClose =
     today === 0 ? hospitalData.dutyTime7c : hospitalData[`dutyTime${today}c`]; // 오늘 요일에 해당하는 dutyTime 종료 시간
 
+  console.log("병원데이터:", hospitalData);
   return (
     <Style.Wrapper>
       <Header label={hospitalData.dutyName} />
       <Style.MapContainer>
+        {console.log("출력", mapState.center.lat, "병원위치:", hosLat, hosLon)}
         <Map
           style={{
             width: "100%",

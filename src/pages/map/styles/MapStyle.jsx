@@ -30,6 +30,8 @@ export const CardBoxHeader = styled.div`
   font-size: 25px;
   font-weight: 700;
   margin: 3% 0 5% 0;
+  white-space: pre-line;
+  text-align: left;
 
   & > div {
     margin-left: 2%;
