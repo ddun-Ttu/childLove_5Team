@@ -30,24 +30,28 @@ let now = new Date();
 const today = now.getDay();
 
 export const MapHospital = () => {
-  // const hospital_id = "A1100401";
   const [isOpen, setIsOpen] = useState(true);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
-
+  //병원 데이터
+  const [hospitalData, setHospitalData] = useState([]);
+  const [hosLat, setHosLat] = useState(0);
+  const [hosLon, setHosLon] = useState(0);
   //지도 위치를 현재 위치로 이동시킴
-  const [MapState, setMapState] = useState({
+  const [mapState, setMapState] = useState({
     // 지도의 초기 위치
-    center: { lat: 33.452613, lng: 126.570888 },
+    center: { lat: hosLat, lng: hosLon },
     // 지도 위치 변경시 panto를 이용할지에 대해서 정의
     isPanto: false,
   });
 
   const moveMaptoCurrent = () => {
+    const myLat = myLocation.center.lat;
+    const myLon = myLocation.center.lon;
     setMapState({
-      center: { lat: 33.45058, lng: 126.574942 },
+      center: { lat: myLat, lng: myLon },
       isPanto: true,
     });
   };
@@ -66,6 +70,7 @@ export const MapHospital = () => {
     isLoading: true,
   });
 
+  //유저의 현재위치 받아오기
   useEffect(() => {
     if (navigator.geolocation) {
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
@@ -98,44 +103,32 @@ export const MapHospital = () => {
     }
   }, []);
 
-  //url에서 id 추출
+  //url에서 병원id 추출
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const hospital_id = searchParams.get("id");
 
-  if (hospital_id) {
-    console.log("추출된 id:", hospital_id);
-    // id를 사용하여 추가 작업 수행
-  } else {
-    console.log("id를 찾을 수 없습니다.");
-    // id가 없을 경우에 대한 처리 작업 수행
-  }
   // 해당 병원 데이터 받아오기
   const { data: hospitalQuery, isLoading: hospitalIsLoading } = useQuery(
     ["hospital"],
     async () => {
       try {
-        const response = await axios.get(
-          `${BE_URL}${endpoint_hospital}${hospital_id}`
-        );
-        return response.data;
+        const response = await axios
+          .get(`${BE_URL}${endpoint_hospital}${hospital_id}`)
+          .then((response) => {
+            setHospitalData(response.data.data);
+            setHosLat(hospitalData.wgs84Lat);
+            setHosLon(hospitalData.wgs84Lon);
+          });
       } catch (error) {
         console.log(error);
-        throw error;
       }
     }
   );
-
   //로딩중일 경우 null값 반환
   if (hospitalIsLoading) {
     return null;
   }
-
-  //병원 데이터
-  const hospitalData = hospitalQuery?.data ?? [];
-  //위도&경도
-  const hospitalLat = hospitalData.wgs84Lat;
-  const hospitalLon = hospitalData.wgs84Lon;
 
   //요일 정보 변환
   const todayText = WEEK[today];
@@ -157,11 +150,11 @@ export const MapHospital = () => {
             top: 0,
             left: 0,
           }}
-          center={{ lat: `${hospitalLat}`, lng: `${hospitalLon}` }}
+          center={{ lat: mapState.center.lat, lng: mapState.center.lon }}
           level={3}
         >
           <MapMarker
-            position={{ lat: `${hospitalLat}`, lng: `${hospitalLon}` }}
+            position={{ lat: hosLat, lng: hosLon }}
             image={{
               src: IconMapG,
               size: {
@@ -206,6 +199,10 @@ export const MapHospital = () => {
               </Style.CardBoxHeader>
               <Style.CardBoxContent>
                 <div>
+                  <img alt={"icon-location"} src={IconMapGray} />
+                  <span>{hospitalData.dutyAddr}</span>
+                </div>
+                <div>
                   <img alt={"icon-clock"} src={IconClockMap} />
                   <span>
                     {dutyTimeStart
@@ -217,10 +214,6 @@ export const MapHospital = () => {
                   </span>
                 </div>
                 <div>
-                  <img alt={"icon-location"} src={IconMapGray} />
-                  <span>{hospitalData.dutyAddr}</span>
-                </div>
-                <div>
                   <img alt={"icon-telephone"} src={IconTel} />
                   <span>{hospitalData.dutyTel1}</span>
                 </div>
@@ -228,7 +221,7 @@ export const MapHospital = () => {
             </div>
           </CardBox>
         </Style.CardBoxWrap>
-        <Style.MoveMyLocation onClick={() => {}}>
+        <Style.MoveMyLocation onClick={moveMaptoCurrent}>
           <img alt={"icon-here"} src={IconMyLocationW}></img>
           <span>현위치</span>
         </Style.MoveMyLocation>
