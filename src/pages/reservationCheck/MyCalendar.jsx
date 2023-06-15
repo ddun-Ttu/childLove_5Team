@@ -103,13 +103,9 @@ export const MyCalendar = () => {
     return `${formattedDate}`;
   };
 
-  const ReHour = ({ time }) => {
+  const viewHour = ({ time }) => {
     const formattedTime = `${time.slice(0, 2)}:${time.slice(2)}`;
-    return (
-      <div>
-        <h3>{formattedTime}</h3>
-      </div>
-    );
+    return `${formattedTime}`;
   };
 
   // 날짜 범위 계산하는 코드
@@ -229,7 +225,7 @@ export const MyCalendar = () => {
                 <DiaryItem>
                   <ReTime>
                     <h2>{viewDate({ date: item.date })}</h2>
-                    <ReHour time={item.reservedTime} />
+                    <h2>{viewHour({ time: item.reservedTime })}</h2>
                   </ReTime>
                   <ReDetail
                     hospitalName={item.dutyName}
