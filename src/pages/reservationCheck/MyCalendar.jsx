@@ -121,6 +121,18 @@ export const MyCalendar = () => {
     );
   };
 
+  // 날짜 범위 계산하는 코드
+  const calculateCal = (activeDate, targetDate) => {
+    const diffInDays = dayjs(targetDate).diff(dayjs(activeDate), "day");
+    const isSameMonth = dayjs(activeDate).isSame(targetDate, "month");
+
+    if (isSameMonth || diffInDays <= 7) {
+      return true; // 일치하는 조건인 경우 true 반환
+    }
+
+    return false; // 일치하지 않는 경우 false 반환
+  };
+
   // 디데이 계산하는 코드
   const calculateDday = (activeDate, targetDate) => {
     const diffInDays = dayjs(targetDate).diff(dayjs(activeDate), "day");
@@ -217,8 +229,9 @@ export const MyCalendar = () => {
           {extractedData
             .filter(
               (item) =>
-                dayjs(item.date).isSame(activeDate, "day") ||
-                dayjs(item.date).isAfter(activeDate, "day")
+                (dayjs(item.date).isSame(activeDate, "day") ||
+                  dayjs(item.date).isAfter(activeDate, "day")) &&
+                calculateCal(activeDate, item.date)
             )
             .map((item, index) => (
               <DiaryItemWrapper key={index}>
