@@ -15,7 +15,7 @@ export const ModalContainer = styled.div`
 
 export const ModalBackdrop = styled.div`
   // Modal이 떴을 때의 배경을 깔아주는 CSS를 구현
-  z-index: 1; //위치지정 요소
+  z-index: 100; //위치지정 요소
   position: fixed;
   display: flex;
   justify-content: center;
