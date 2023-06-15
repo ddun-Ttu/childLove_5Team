@@ -12,10 +12,16 @@ import {
 // 공통 컴포넌트
 import { Modal, Alarm } from "../components/index";
 
-export const SearchBar = ({ onSearch, depth1, depth2, onLocationChange }) => {
+export const SearchBar = ({
+  onSearch,
+  depth1,
+  depth2,
+  onLocationChange,
+  keyword,
+}) => {
   //--------------------검색부분
   //검색어
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(keyword ? keyword : "");
   const onChange = (e) => {
     setSearch(e.target.value);
   };
