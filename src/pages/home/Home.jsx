@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import {
@@ -23,6 +22,7 @@ import MainBanner from "../../assets/mainBanner.png";
 import iconPeople from "../../assets/iconPeople.svg";
 import arrowRight from "../../assets/arrowRight.svg";
 import pinwheel from "../../assets/Pinwheel.gif";
+import Loding from "../../assets/ImgLoding.jpg";
 
 // 공통 컴포넌트 연결 링크
 import {
@@ -35,7 +35,12 @@ import {
   SearchBar,
 } from "../../components/index";
 
+// 검색창
+import { SearchInput } from "./SearchInput";
+// 유튜브
 import { AutoplayYouTubeVideo } from "./Youtube";
+// 알림
+import { AlarmHome } from "./AlarmHome";
 
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import colors from "../../constants/colors";
@@ -76,21 +81,11 @@ export const Home = () => {
     navigate("/");
   };
 
-  // 위치정보 depth1, depth2
-  const [depth1, setDepth1] = useState("");
-  const [depth2, setDepth2] = useState("");
-  // 위치정보만 받았을 때의 전체 병원리스트
-  const [hospitalList, setHospitalList] = useState([]);
   // 키워드 검색어
-  const [searchKeyword, setSearchKeyword] = useState("");
-  //키워드 검색 후 필터링 된 병원 리스트
-  const [keywordFilteredHospitals, setKeywordFilteredHospitals] = useState([]);
+  // const [searchKeyword, setSearchKeyword] = useState("");
 
-  // 검색바
-  const handleDepthChange = (first, second) => {
-    setDepth1(first);
-    setDepth2(second);
-  };
+  //키워드 검색 후 필터링 된 병원 리스트
+  // const [keywordFilteredHospitals, setKeywordFilteredHospitals] = useState([]);
 
   const handleSearch = (keyword) => {
     setSearchKeyword(keyword);
@@ -128,7 +123,6 @@ export const Home = () => {
                 suburb || city_district || province || ""
               } ${city}  ${quarter}`;
 
-              // console.log(data.address);
               setAddress(formattedAddress);
             } catch (error) {
               console.error(error);
@@ -145,11 +139,23 @@ export const Home = () => {
 
     getUserLocation();
   }, []);
-
   const [distance, setDistance] = useState(10);
 
   const handleDistanceChange = (selectedDistance) => {
     setDistance(selectedDistance);
+  };
+
+  // 검색창
+  // 키워드 검색어
+  const [searchKeyword, setSearchKeyword] = useState("");
+
+  const [search, setSearch] = useState("");
+  const onChange = (e) => {
+    setSearch(e.target.value);
+  };
+  // 폼 전송 처리 함수
+  const handleSubmit = (e) => {
+    e.preventDefault();
   };
 
   return (
@@ -184,21 +190,53 @@ export const Home = () => {
 
           <MenuSeb>
             <Link to="SignUp">
-              <SebP>회원가입</SebP>
+              <SebP style={{ display: showTab }}>회원가입</SebP>
             </Link>
+          </MenuSeb>
+
+          <MenuSeb style={{ display: hideTab }}>
+            <AlarmHome />
           </MenuSeb>
         </TopMenuBar>
 
-        <SearchBar
+        <SearchInput
           onSearch={handleSearch}
-          depth1={depth1}
-          depth2={depth2}
-          onLocationChange={handleDepthChange}
+          value={search}
+          onChange={onChange}
+          onSubmit={handleSubmit}
+          linkTo={`/search?query=${encodeURIComponent(search)}`}
         />
 
         <Banner>
           <Img src={MainBanner} alt="star"></Img>
         </Banner>
+
+        <SiliderMargin>
+          <MainSub>
+            {address ? (
+              <H2>현재 내 위치 : {address}</H2>
+            ) : (
+              <H2>위치찾는중...</H2>
+            )}
+            <H1>내 주변 소아과</H1>
+            {/* 백엔드 요청으로 반경 몇 Km내의 병원을 볼건지 선택할 수 있는 기능 추가 예정 */}
+            <DistanceDiv>
+              <Distance
+                distance={distance}
+                setDistance={setDistance}
+                onChange={handleDistanceChange}
+              />
+            </DistanceDiv>
+          </MainSub>
+
+          <SimpleSlider
+            latitude={latitude}
+            longitude={longitude}
+            distance={distance}
+          />
+        </SiliderMargin>
+
+        <AutoplayYouTubeVideo videoId={"efzr12y8vUc"} />
 
         <BannerSeb>
           <Link to="/SignUp?tab=hospital">
@@ -225,32 +263,6 @@ export const Home = () => {
           </Link>
         </BannerSeb>
 
-        <SiliderMargin>
-          <MainSub>
-            {address ? (
-              <H2>현재 내 위치 : {address}</H2>
-            ) : (
-              <H2>위치찾는중...</H2>
-            )}
-            <H1>내 주변 소아과</H1>
-            {/* 백엔드 요청으로 반경 몇 Km내의 병원을 볼건지 선택할 수 있는 기능 추가 예정 */}
-            <DistanceDiv>
-              <Distance
-                distance={distance}
-                setDistance={setDistance}
-                onChange={handleDistanceChange}
-              />
-            </DistanceDiv>
-          </MainSub>
-          <SimpleSlider
-            latitude={latitude}
-            longitude={longitude}
-            distance={distance}
-          />
-        </SiliderMargin>
-
-        <AutoplayYouTubeVideo videoId={"efzr12y8vUc"} />
-
         <Footer />
         <NavigationBar />
       </Container>
@@ -259,6 +271,7 @@ export const Home = () => {
 };
 export default Home;
 
+// 거리 설정
 const options = [
   { value: "1", label: "1" },
   { value: "3", label: "3" },
@@ -357,7 +370,11 @@ const MenuLogo = styled.div`
 `;
 
 const MenuSeb = styled.div`
-  padding: 2% 3% 1% 0%;
+  padding: 2% 2% 1% 0%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const SebP = styled.p``;
@@ -375,7 +392,6 @@ const Banner = styled.div`
   width: 100%;
   border-radius: 20px;
   margin: 4% 0;
-  padding: 0 2.5%;
 `;
 
 const Img = styled.img`
@@ -387,12 +403,13 @@ const Img = styled.img`
 const BannerSeb = styled.div`
   position: relative;
   width: 100%;
-  padding: 2%;
+  margin-bottom: 5%;
 `;
 
 const BanContainer = styled.div`
   display: flex;
-  border: 1px solid ${colors.primary};
+  border: 1px solid #dbecdf;
+  // background: #eaf9ed;
   border-radius: 10px;
   padding: 3%;
 `;
@@ -466,13 +483,18 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
     ],
   };
 
+  // 랜덤 이미지
+  const getRandomNumber = () => {
+    return Math.floor(Math.random() * 10);
+  };
+
   // 병원 데이터 get
   const [hospitalData, setHospitalData] = useState([]);
   // 로딩 화면
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Function to fetch hospital data using latitude and longitude
+    // 위도와 경도를 이용하여 병원 데이터를 가져오는 기능
     const hospitalApi = async () => {
       try {
         const response = await axios.get("/hospital/near", {
@@ -485,8 +507,6 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
         const responseData = response.data.data;
         setHospitalData(responseData);
         setLoading(false);
-        console.log("거리 수정:", distance, latitude, longitude);
-        console.log("데이터 성공", responseData);
       } catch (error) {
         console.error(
           "병원 데이터를 가져오는 중에 오류가 발생했습니다.:",
@@ -501,9 +521,6 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
     }
   }, [latitude, longitude, distance]);
 
-  console.log("Hospital Data:", hospitalData);
-  // console.log("거리 수정:", distance, latitude, longitude);
-
   return (
     <>
       {loading ? (
@@ -513,22 +530,31 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
           {hospitalData.length > 0 ? (
             hospitalData.map((data) => (
               <Card key={data.id}>
-                <Link to={`/detail/${data.id}`}>
+                <Link to={`/detail?id=${data.id}`}>
                   <CardTop>
-                    {data.image !== null ? (
+                    {data.image.length > 0 ? (
                       <CardImg
                         key={data.id}
                         src={data.image}
                         alt={data.image}
                       />
                     ) : (
-                      <CardImgBak></CardImgBak>
+                      // <CardImgBak></CardImgBak>
+                      // <CardImg
+                      //   key={data.id}
+                      //   src={`https://loremflickr.com/340/340?random=${getRandomNumber()}`}
+                      //   alt={data.image}
+                      // />
+                      <>
+                        <CardTitle>{data.dutyName}</CardTitle>
+                        <CardImg key={data.id} src={Loding} alt={data.image} />
+                      </>
                     )}
                   </CardTop>
-                  <CardBottom>
+                  {/* <CardBottom>
                     <CardTitle>{data.dutyName}</CardTitle>
                     <CardAddress>{data.dutyAddr}</CardAddress>
-                  </CardBottom>
+                  </CardBottom> */}
                 </Link>
               </Card>
             ))
@@ -547,6 +573,21 @@ const Card = styled.div`
 
 const CardTop = styled.div`
   margin: 0 2% 0 2%;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    &::after {
+      width: 97%;
+      height: 99%;
+      background: rgba(0, 0, 0, 0.5);
+      content: "";
+      position: absolute;
+      border-radius: 20px;
+      top: 0;
+      left: 5px;
+      z-index: 1;
+    }
+  }
 `;
 
 const CardBottom = styled.div`
@@ -557,33 +598,36 @@ const CardBottom = styled.div`
   z-index: 1;
   transform: translate(-50%, -50%);
   color: #fff;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-
-  &:hover {
-    &::after {
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
-    opacity: 1;
-  }
 `;
 
 const CardTitle = styled.p`
   font-size: 22px;
   font-weight: 700;
   margin-bottom: 8%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  transition: opacity 0.3s ease;
+
+  ${CardTop}:hover & {
+    color: white;
+    z-index: 2;
+  }
 `;
 
 const CardAddress = styled.p`
+  margin-top: 40%;
   font-size: 18px;
   font-weight: 500;
+  transition: opacity 0.3s ease;
+  opacity: 0.3;
+
+  ${CardTop}:hover & {
+    opacity: 1;
+    color: white;
+  }
 `;
 
 const CardImg = styled.img`

@@ -16,6 +16,11 @@ export const Wrapper = styled.div`
   & button {
     background: none;
     border: none;
+    cursor: pointer;
+  }
+
+  & img:hover {
+    filter: invert(30%);
   }
 `;
 
@@ -25,7 +30,7 @@ export const InputBox = styled.div`
   margin-top: 2%;
   padding: 2% 2.5%;
   box-sizing: border-box;
-  border-radius: 28px;
+  border-radius: 100px;
   text-align: center;
 
   & form {
