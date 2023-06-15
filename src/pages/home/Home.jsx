@@ -35,9 +35,12 @@ import {
   SearchBar,
 } from "../../components/index";
 
+// 검색창
 import { SearchInput } from "./SearchInput";
-
+// 유튜브
 import { AutoplayYouTubeVideo } from "./Youtube";
+// 알림
+import { AlarmHome } from "./AlarmHome";
 
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import colors from "../../constants/colors";
@@ -190,8 +193,12 @@ export const Home = () => {
 
           <MenuSeb>
             <Link to="SignUp">
-              <SebP>회원가입</SebP>
+              <SebP style={{ display: showTab }}>회원가입</SebP>
             </Link>
+          </MenuSeb>
+
+          <MenuSeb>
+            <AlarmHome style={{ display: hideTab }} />
           </MenuSeb>
         </TopMenuBar>
 
@@ -366,7 +373,11 @@ const MenuLogo = styled.div`
 `;
 
 const MenuSeb = styled.div`
-  padding: 2% 3% 1% 0%;
+  padding: 2% 2% 1% 0%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const SebP = styled.p``;
