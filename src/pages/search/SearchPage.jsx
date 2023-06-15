@@ -80,7 +80,18 @@ export const SearchPage = () => {
   const user_id = userData.id;
 
   //무한스크롤
-  // 서버에서 아이템을 가지고 오는 함수
+  //병원리스트 추가 시 중복제거
+  function removeDuplicates(array, key) {
+    const uniqueKeys = new Set();
+    return array.filter((item) => {
+      if (uniqueKeys.has(item[key])) {
+        return false;
+      }
+      uniqueKeys.add(item[key]);
+      return true;
+    });
+  }
+  // 서버에서 병원데이터를 가지고 오는 함수
   useEffect(() => {
     const getHospital = async () => {
       setLoading(true);
@@ -92,7 +103,12 @@ export const SearchPage = () => {
             : `${BE_URL}hospital?depth1=${depth1}&depth2=${depth2}&size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`
         )
         .then((res) => {
-          setHospitalList((prevState) => [...prevState, ...res.data.data]);
+          // 중복 제거
+          const uniqueHospitals = removeDuplicates(
+            [...hospitalList, ...res.data.data],
+            "id"
+          );
+          setHospitalList(uniqueHospitals);
         });
       setLoading(false);
     };

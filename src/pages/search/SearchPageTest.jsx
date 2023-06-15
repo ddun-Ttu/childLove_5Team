@@ -87,13 +87,23 @@ export const SearchPageTest = () => {
   const user_id = userData.id;
 
   //무한스크롤
-  // 서버에서 아이템을 가지고 오는 함수
+  //병원리스트 추가 시 중복제거
+  function removeDuplicates(array, key) {
+    const uniqueKeys = new Set();
+    return array.filter((item) => {
+      if (uniqueKeys.has(item[key])) {
+        return false;
+      }
+      uniqueKeys.add(item[key]);
+      return true;
+    });
+  }
+  // 서버에서 병원데이터를 가지고 오는 함수
   useEffect(() => {
     const getHospital = async () => {
       setLoading(true);
       let url;
       if (depth1 === "전국") {
-        console.log("전국 조회합니다");
         url = `${BE_URL}hospital?size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`;
       } else if (depth2 === "전체") {
         url = `${BE_URL}hospital?depth1=${depth1}&size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`;
@@ -101,7 +111,12 @@ export const SearchPageTest = () => {
         url = `${BE_URL}hospital?depth1=${depth1}&depth2=${depth2}&size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`;
       }
       await axios.get(url).then((res) => {
-        setHospitalList((prevState) => [...prevState, ...res.data.data]);
+        // 중복 제거
+        const uniqueHospitals = removeDuplicates(
+          [...hospitalList, ...res.data.data],
+          "id"
+        );
+        setHospitalList(uniqueHospitals);
       });
       setLoading(false);
     };
@@ -116,17 +131,13 @@ export const SearchPageTest = () => {
   }, [inView]);
 
   useEffect(() => {
-    const resetPage = () => {
-      setPage(1);
-      console.log("페이지 초기화됨", page);
-    };
     // depth1, depth2, searchKeyword가 바뀔 때는 병원 데이터를 초기화
     const resetHospitalList = async () => {
       setLoading(true);
+      setPage(1);
       setHospitalList([]);
       let url;
       if (depth1 === "전국") {
-        console.log("전국 조회합니다");
         url = `${BE_URL}hospital?size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`;
       } else if (depth2 === "전체") {
         url = `${BE_URL}hospital?depth1=${depth1}&size=10&page=${page}&sort=${option.state}&dutyName=${searchKeyword}`;
@@ -139,19 +150,7 @@ export const SearchPageTest = () => {
       setLoading(false);
     };
 
-    resetPage();
     resetHospitalList();
-    console.log(
-      "지역:",
-      depth1,
-      depth2,
-      "검색어:",
-      searchKeyword,
-      "정렬:",
-      option.state,
-      "페이지:",
-      page
-    );
   }, [depth1, depth2, searchKeyword, option.state]);
 
   // 즐겨찾기 리스트 받아오기
