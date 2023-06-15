@@ -151,24 +151,16 @@ export const ChildBox = ({
 
   //이미지가 선택되었을 때 그 이미지를 제거하는 역할 
   //이미지 참조(selectedImage)를 null로 설정함으로써 이미지를 제거
-  const removeImage = async() => {
+  const removeImage = () => {
     // 이미지가 선택되었는지 확인
-    if (!selectedImage || !image || !image.id) {
+    if (!selectedImage) {
       alert("삭제할 이미지가 선택되지 않았습니다.");
       return;
     }
-    
-    try {
-      // 이미지 삭제 요청
-      const response = await instance.delete(`http://34.64.69.226:5000/api/image/${image.id}`);
-      console.log(response);  // check the response
   
-      // 이미지 상태 업데이트
-      setSelectedImage(null);
-      setSelectedImageFile(null);
-    } catch (error) {
-      console.error('Error removing image:', error);
-    }
+    // 이미지 상태 업데이트 (백엔드에 요청하지 않고 이미지 상태만 변경)
+    setSelectedImage(null);
+    setSelectedImageFile(null);
   };
   //버튼이 클릭되었을 때, 현재 입력 상태를 확정 편집을 불가능하게 만드는 역할
   //isEditable 상태를 false로 설정함으로써 이를 달성, 반대도 가능
@@ -200,6 +192,16 @@ export const ChildBox = ({
     if (!selectedGender) {
       alert("성별을 선택해주세요");
       return;
+    }
+
+    if (!selectedImage && image && image.id) {
+      try {
+        // 이미지 삭제 요청
+        const response = await axios.delete(`image/${image.id}`);
+        console.log(response);  // check the response
+      } catch (error) {
+        console.error('Error removing image:', error);
+      }
     }
 
     if (selectedImage) {
