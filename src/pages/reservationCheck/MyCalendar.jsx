@@ -103,15 +103,6 @@ export const MyCalendar = () => {
     return `${formattedDate}`;
   };
 
-  const ReDate = ({ date }) => {
-    const formattedDate = dayjs(date).format("MM월DD일");
-    return (
-      <div>
-        <h2>{formattedDate}</h2>
-      </div>
-    );
-  };
-
   const ReHour = ({ time }) => {
     const formattedTime = `${time.slice(0, 2)}:${time.slice(2)}`;
     return (
@@ -237,9 +228,7 @@ export const MyCalendar = () => {
               <DiaryItemWrapper key={index}>
                 <DiaryItem>
                   <ReTime>
-                    <ReDate date={item.date}>
-                      <h2>{viewDate}</h2>
-                    </ReDate>
+                    <h2>{viewDate({ date: item.date })}</h2>
                     <ReHour time={item.reservedTime} />
                   </ReTime>
                   <ReDetail
@@ -449,6 +438,12 @@ const ReTime = styled.div`
   justify-content: space-between;
   width: 30%;
   margin-right: 20px;
+
+  & > h2 {
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+  }
 `;
 
 const DueDate = styled.div`
