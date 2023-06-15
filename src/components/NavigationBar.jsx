@@ -53,7 +53,7 @@ export const NavigationBar = () => {
           </NavLi>
 
           <NavLi>
-            <NavA to={searchLink} disabled={userRole === "manager"}>
+            <NavA to={"/search"} disabled={userRole === "manager"}>
               <NavImg src={map} alt="star"></NavImg>
               <NavP>병원찾기</NavP>
             </NavA>
