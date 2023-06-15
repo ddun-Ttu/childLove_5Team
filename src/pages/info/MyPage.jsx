@@ -1,6 +1,8 @@
+/* eslint-disable */
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { instance } from "../../server/Fetcher";
 
 // 공통 컴포넌트 연결해서 테스트함
 import { NavigationBar } from "../../components/NavigationBar";
@@ -12,9 +14,9 @@ import { ChildBox } from "./component/ChildBox";
 import styled from "styled-components";
 import colors from "../../constants/colors";
 
-const token = localStorage.getItem("token")
-  ? localStorage.getItem("token")
-  : false;
+// const token = localStorage.getItem("token")
+//   ? localStorage.getItem("token")
+//   : false;
 //주소, 번호, 이메일 칸 앞에 로고넣기 위해 사용
 const Logo = styled.img`
   margin-right: 10px;
@@ -152,12 +154,8 @@ function MyPage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const res1 = await axios.get("users/get", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log(res1.data.data[0]);
+        const res1 = await instance.get("users/get");
+        console.log(res1);
         setUser(res1.data.data[0]);
         const fetchedData = {
           name: res1.data.data[0].name,
@@ -172,11 +170,7 @@ function MyPage() {
     fetchUserData();
 
     const getKids = async () => {
-      const axiosGet = await axios.get("/kid/get", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const axiosGet = await instance.get("/kid/get");
       const kidsData = axiosGet.data.data;
       setBoxCreators(kidsData);
     };
@@ -210,17 +204,12 @@ function MyPage() {
 
   const updateUser = async () => {
     try {
-      const response = await axios.patch(
-        "users/update",
+      const response = await instance.patch(
+        "users/update", 
         {
           name: editData.name,
           phoneNumber: editData.phoneNumber,
           address: editData.address,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         }
       );
       if (response.status === 200) {
