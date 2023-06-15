@@ -12,9 +12,7 @@ import {
   IconClockMap,
   IconMapGray,
   IconTel,
-  IconMyLocationW,
   IconMapG,
-  IconMyLocationG,
 } from "../../assets/index";
 
 // 공통 컴포넌트
@@ -35,98 +33,42 @@ export const MapHospital = () => {
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
-  //병원 데이터
-  const [hospitalData, setHospitalData] = useState([]);
-  const [hosLat, setHosLat] = useState(33.450701);
-  const [hosLon, setHosLon] = useState(126.570667);
-  //지도 위치를 현재 위치로 이동시킴
-  const [mapState, setMapState] = useState({
-    // 지도의 초기 위치
-    center: { lat: hosLat, lng: hosLon },
-    // 지도 위치 변경시 panto를 이용할지에 대해서 정의
-    isPanto: false,
-  });
-
-  const moveMaptoCurrent = () => {
-    const myLat = myLocation.center.lat;
-    const myLon = myLocation.center.lon;
-    setMapState({
-      center: { lat: myLat, lng: myLon },
-      isPanto: true,
-    });
-  };
 
   useEffect(() => {
     const mapElement = document.getElementById("map");
     mapElement.style.display = "block"; // display를 block으로 변경하여 보이도록 설정
   }, []);
 
-  const [myLocation, setMyLocation] = useState({
-    center: {
-      lat: 33.450701,
-      lng: 126.570667,
-    },
-    errMsg: null,
-    isLoading: true,
-  });
-
-  //유저의 현재위치 받아오기
-  useEffect(() => {
-    if (navigator.geolocation) {
-      // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setMyLocation((prev) => ({
-            ...prev,
-            center: {
-              lat: position.coords.latitude, // 위도
-              lng: position.coords.longitude, // 경도
-            },
-            isLoading: false,
-          }));
-        },
-        (err) => {
-          setMyLocation((prev) => ({
-            ...prev,
-            errMsg: err.message,
-            isLoading: false,
-          }));
-        }
-      );
-    } else {
-      // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-      setMyLocation((prev) => ({
-        ...prev,
-        errMsg: "geolocation을 사용할수 없어요..",
-        isLoading: false,
-      }));
-    }
-  }, []);
-
   //url에서 병원id 추출
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const hospital_id = searchParams.get("id");
-
   // 해당 병원 데이터 받아오기
   const { data: hospitalQuery, isLoading: hospitalIsLoading } = useQuery(
     ["hospital"],
     async () => {
       try {
-        const response = await axios
-          .get(`${BE_URL}${endpoint_hospital}${hospital_id}`)
-          .then((response) => {
-            setHospitalData(response.data.data);
-          });
+        const response = await axios.get(
+          `${BE_URL}${endpoint_hospital}${hospital_id}`
+        );
+        return response.data;
       } catch (error) {
         console.log(error);
+        throw error;
       }
     }
   );
+
   //로딩중일 경우 null값 반환
   if (hospitalIsLoading) {
     return null;
   }
+
+  //병원 데이터
+  const hospitalData = hospitalQuery?.data ?? [];
+  //위도&경도
+  const hospitalLat = hospitalData.wgs84Lat;
+  const hospitalLon = hospitalData.wgs84Lon;
 
   //요일 정보 변환
   const todayText = WEEK[today];
@@ -141,7 +83,6 @@ export const MapHospital = () => {
     <Style.Wrapper>
       <Header label={hospitalData.dutyName} />
       <Style.MapContainer>
-        {console.log("출력", mapState.center.lat, "병원위치:", hosLat, hosLon)}
         <Map
           style={{
             width: "100%",
@@ -150,11 +91,11 @@ export const MapHospital = () => {
             top: 0,
             left: 0,
           }}
-          center={{ lat: mapState.center.lat, lng: mapState.center.lon }}
+          center={{ lat: `${hospitalLat}`, lng: `${hospitalLon}` }}
           level={3}
         >
           <MapMarker
-            position={{ lat: hosLat, lng: hosLon }}
+            position={{ lat: `${hospitalLat}`, lng: `${hospitalLon}` }}
             image={{
               src: IconMapG,
               size: {
@@ -169,24 +110,6 @@ export const MapHospital = () => {
               },
             }}
           />
-          {!myLocation.isLoading && (
-            <MapMarker
-              position={myLocation.center}
-              image={{
-                src: IconMyLocationG,
-                size: {
-                  width: 64,
-                  height: 69,
-                }, // 마커이미지의 크기입니다
-                options: {
-                  offset: {
-                    x: 27,
-                    y: 69,
-                  }, // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-                },
-              }}
-            />
-          )}
         </Map>
         <Style.CardBoxWrap isOpen={isOpen}>
           <CardBox linkTo={"#"}>
@@ -221,10 +144,6 @@ export const MapHospital = () => {
             </div>
           </CardBox>
         </Style.CardBoxWrap>
-        <Style.MoveMyLocation onClick={moveMaptoCurrent}>
-          <img alt={"icon-here"} src={IconMyLocationW}></img>
-          <span>현위치</span>
-        </Style.MoveMyLocation>
       </Style.MapContainer>
       <NavigationBar />
     </Style.Wrapper>
