@@ -6,6 +6,9 @@ import { calculateDday, formatDay, formatTime } from "../utils";
 import { Link } from "react-router-dom";
 
 export const Alarm = ({ onListChange }) => {
+  // 현재 날짜
+  const activeDate = new Date();
+
   const [list, setList] = useState([]);
 
   useEffect(() => {
@@ -21,7 +24,6 @@ export const Alarm = ({ onListChange }) => {
     });
   };
 
-  const activeDate = new Date();
   return (
     <Box>
       {list.map((item) => {
@@ -38,9 +40,15 @@ export const Alarm = ({ onListChange }) => {
           >
             <h2>{calculateDday(activeDate, item.reservedDate)}</h2>
 
-            <ReservationList>{item.hospital.dutyName}</ReservationList>
-            <ReservationList>{formatDay(item.reservedDate)}</ReservationList>
-            <ReservationList>{formatTime(item.reservedTime)}</ReservationList>
+            <ReservationList className="hosName">
+              {item.hospital.dutyName}
+            </ReservationList>
+            <ReservationList className="resDate">
+              {formatDay(item.reservedDate)}
+            </ReservationList>
+            <ReservationList className="resTime">
+              {formatTime(item.reservedTime)}
+            </ReservationList>
           </ReservationBox>
         );
       })}
@@ -51,15 +59,42 @@ export const Alarm = ({ onListChange }) => {
 const ReservationBox = styled(Link)`
   display: flex;
   justify-content: space-around;
+  text-align: left;
+
   width: 80%;
+
   margin: 3% auto;
   padding: 4%;
+
   border: 1px solid #d9d9d9;
   border-radius: 20px;
+
+  & > h2 {
+    font-size: 20px;
+    font-weight: bold;
+    width: 20%;
+  }
 `;
 
 const ReservationList = styled.span`
   font-size: 18px;
+  text-align: left;
+
+  &.hosName {
+    width: 40%;
+
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  &.resDate {
+    width: 10%;
+    margin-right: 5%;
+  }
+
+  &.resTime {
+    width: 10%;
+  }
 `;
 
 const Box = styled.div`
