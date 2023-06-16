@@ -22,19 +22,23 @@ const Space2 = styled.div`
 `;
 // 아이 이름 입력을 위한 inputbox
 const InputBox = styled.input`
-  width: 280px;
+  width: 270px;
   box-sizing: border-box;
   font-weight: bold;
   font-size: 24px;
   padding: 2%;
+  border: solid 1.5px #d9d9d9;
+  border-radius: 10px;
 `;
 // 아이 생년월일 입력을 위한 inputbox
 const Input2Box = styled.input`
-  width: 75px;
+  width: 65px;
   box-sizing: border-box;
   font-weight: bold;
   font-size: 11px;
   padding: 2%;
+  border: solid 1.5px #d9d9d9;
+  border-radius: 10px;
 `;
 // ChildBox의 저장버튼 구현
 const SaveButton = styled.button`
@@ -154,7 +158,6 @@ export const ChildBox = ({
   //버튼이 클릭되었을 때, 현재 입력 상태를 확정 편집을 불가능하게 만드는 역할
   //isEditable 상태를 false로 설정함으로써 이를 달성, 반대도 가능
   const handleButtonClick = async () => {
-    setIsEditable(!isEditable);
     if (!isEditable) {
       return;
     }
@@ -171,6 +174,9 @@ export const ChildBox = ({
     // 생년, 월, 일이 숫자로 입력되었는지 확인
     if (isNaN(birthYear) || isNaN(birthMonth) || isNaN(birthDay)) {
       alert("생년월일은 숫자로 입력해야 합니다");
+      setBirthYear("");
+      setBirthMonth("");
+      setBirthDay("");
       return;
     }
     // 생년은 네 자리, 월과 일은 두 자리여야 함
@@ -180,10 +186,35 @@ export const ChildBox = ({
       birthDay.length !== 2
     ) {
       alert("생년은 네 자리, 월과 일은 두 자리 숫자로 입력해야 합니다");
+      setBirthYear("");
+      setBirthMonth("");
+      setBirthDay("");
       return;
     }
+    if (
+      Number(birthMonth) > 12
+    ) {
+      alert("생월은 12월을 넘을 수 없습니다.");
+      setBirthMonth("");
+    }
+
+    if (
+      Number(birthDay) > 31
+    ) {
+      alert("생일은 31일을 넘을 수 없습니다.");
+      setBirthDay("");
+    }
+
     if (!selectedGender) {
       alert("성별을 선택해주세요");
+      return;
+    }
+
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    if (birthYear > currentYear) {
+      alert("생년을 정확히 입력해 주세요.");
+      setBirthYear("");
       return;
     }
 
@@ -203,7 +234,6 @@ export const ChildBox = ({
       formData.append("files", selectedImageFile);
       formData.append("kidId", id);
       formData.append("imageName", "kid");
-      
       try {
         const response = await instance.post("image", formData, {
           headers: {
@@ -218,11 +248,21 @@ export const ChildBox = ({
     }
 
     const originalBirth = `${birthYear}-${birthMonth}-${birthDay}`;
-    await instance.patch(`kid/${id}`, {
-      name: kidName,
-      birth: originalBirth,
-      gender: selectedGender,
-    });
+
+    if (
+      selectedGender &&
+      birthYear <= currentYear &&
+      Number(birthMonth) <= 12 &&
+      Number(birthDay) <= 31 &&
+      kidName.length >= 2
+    ) {
+      await instance.patch(`kid/${id}`, {
+        name: kidName,
+        birth: originalBirth,
+        gender: selectedGender,
+      });
+      setIsEditable(!isEditable);
+    }
   };
 
   //"삭제" 버튼이 클릭되었을 때 해당 항목을 삭제하는 역할 onRemove 함수를 호출하며,
@@ -271,7 +311,7 @@ export const ChildBox = ({
 
   const FemaleImageAfterSave = styled.img`
     width: 17px;
-    height: 27px;
+    height: 25px;
     margin-left: 5px;
   `;
 
@@ -304,15 +344,13 @@ export const ChildBox = ({
           <div>
             {isEditable ? (
               <>
-                <label htmlFor="kidNameInput" style={{ fontWeight: "bold" }}>
-                  이름
-                </label>
                 <InputBox
                   id="kidNameInput"
                   type="text"
                   value={kidName}
                   onChange={handleKidNameChange}
                   style={{ fontWeight: "bold" }}
+                  placeholder="이름을 입력해주세요"
                 />
               </>
             ) : (
@@ -343,7 +381,6 @@ export const ChildBox = ({
           <div>
             {isEditable ? (
               <>
-                <label htmlFor="birthYearInput">생년 </label>
                 <Input2Box
                   id="birthYearInput"
                   type="text"
@@ -351,10 +388,7 @@ export const ChildBox = ({
                   onChange={handleBirthYearChange}
                   style={{ fontWeight: "bold" }}
                 />
-                <label htmlFor="birthMonthInput" style={{ fontWeight: "bold" }}>
-                  {" "}
-                  월일{" "}
-                </label>
+                <label htmlFor="birthYearInput">년도</label>
                 <Input2Box
                   id="birthMonthInput"
                   type="text"
@@ -362,6 +396,9 @@ export const ChildBox = ({
                   onChange={handleBirthMonthChange}
                   style={{ fontWeight: "bold" }}
                 />
+                <label htmlFor="birthMonthInput" style={{ fontWeight: "bold" }}>
+                  월
+                </label>
                 <Input2Box
                   id="birthDayInput"
                   type="text"
@@ -369,6 +406,9 @@ export const ChildBox = ({
                   onChange={handleBirthDayChange}
                   style={{ fontWeight: "bold", marginLeft: "10px" }}
                 />
+                <label htmlFor="birthDayInput" style={{ fontWeight: "bold" }}>
+                  일
+                </label>
               </>
             ) : (
               <>
