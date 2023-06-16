@@ -1,8 +1,13 @@
-/* eslint-disable */
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { instance } from "../../server/Fetcher";
+
+//아이콘
+import {
+  IconMypageLocation,
+  IconMypageTel,
+  IconEmail,
+} from "../../assets/index";
 
 // 공통 컴포넌트 연결해서 테스트함
 import { NavigationBar } from "../../components/NavigationBar";
@@ -10,29 +15,49 @@ import { Container } from "../../components/Container";
 import { Header } from "../../components/Header";
 import { ChildBox } from "./component/ChildBox";
 import { Post } from "../registerForm/Post";
+
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import styled from "styled-components";
 import colors from "../../constants/colors";
 
-// const token = localStorage.getItem("token")
-//   ? localStorage.getItem("token")
-//   : false;
 //주소, 번호, 이메일 칸 앞에 로고넣기 위해 사용
-const Logo = styled.img`
-  margin-right: 10px;
-`;
-
-const Space = styled.div`
-  margin-bottom: 20px;
-`;
 
 const MyContainer = styled.div`
   display: flex;
+  position: relative;
   justify-content: center;
   align-items: center;
   padding: 10px 0;
   margin-bottom: 20px;
-  position: relative;
+
+  & > div:first-child {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: solid 2px ${colors.primary};
+    padding: 1.5% 2%;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  & > div:nth-child(2) {
+    width: 20%;
+    display: flex;
+    position: absolute;
+    left: 90%;
+    transform: translate(-50%, 0);
+  }
+
+  & input {
+    border: none;
+    font-size: 16px;
+    text-align: center;
+  }
+
+  & input:focus {
+    outline: none;
+  }
 `;
 
 const KidContainer = styled.div`
@@ -45,99 +70,44 @@ const KidContainer = styled.div`
   position: relative;
 `;
 
-const MyContainerLeftAlign = styled.div`
+const InfoList = styled.div`
+  width: 100%;
   display: flex;
+  position: relative;
   justify-content: flex-start;
   align-items: center;
-  padding: 10px 0;
-  margin-bottom: 20px;
-  position: relative;
-  padding-left: 50px;
-`;
+  padding: 1%;
 
-const MyContainerLeftAlignWithLogo = ({ logo, children }) => (
-  <MyContainerLeftAlign>
-    <Logo src={`${process.env.PUBLIC_URL}/${logo}`} alt="logo" />
-    {children}
-  </MyContainerLeftAlign>
-);
+  & img {
+    margin: 1%;
+  }
 
-const TextContainer = styled.div`
-  width: 30%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
+  & span {
+    margin: 1%;
+  }
 
-const AddressBox = styled.input`
-  width: 380px;
-  box-sizing: border-box;
-  font-weight: bold;
-  font-size: 16px;
-`;
+  & input {
+    border: none;
+    font-size: 16px;
+    text-align: left;
+  }
 
-const NameBox = styled.input`
-  width: 90px;
-  box-sizing: border-box;
-  font-weight: bold;
-  font-size: 20px;
-  text-align: center;
-`;
-
-const PhonedBox = styled.input`
-  width: 130px;
-  font-weight: bold;
-  font-size: 16px;
-`;
-
-const MyText = styled.h2`
-  color: black;
-  font-size: 16px;
-  font-weight: bold;
-`;
-
-const NameText = styled(MyText)`
-  font-size: 24px;
-  font-weight: bold;
-`;
-
-const KidText = styled(MyText)`
-  color: #00ad5c;
-  font-size: 25px;
-  font-weight: bold;
-`;
-
-const Underline = styled.div`
-  position: absolute;
-  bottom: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 2px;
-  background-color: green;
+  & input:focus {
+    outline: none;
+  }
 `;
 
 const MyButton = styled.button`
   font-size: 15px;
   font-weight: 700;
+  width: 100%;
+  margin: 3%;
+  padding: 5%;
   color: white;
   border: 1px solid ${colors.BtnborderOut};
   border-radius: 5px;
   background-color: ${colors.primary};
   cursor: pointer;
-  padding: 1% 1.5%;
-  position: absolute;
-  right: 0;
-`;
-
-const SaveButton = styled(MyButton)`
-  right: 50px;
-`;
-
-const CancelButton = styled(MyButton)`
-  right: 0;
-  background-color: #ff0000; // Cancel button with red color for better UI.
 `;
 
 function MyPage() {
@@ -221,7 +191,7 @@ function MyPage() {
       if (response.status === 200) {
         setEditData(response.data.data);
       } else {
-        console.error(error);
+        console.error();
       }
     } catch (error) {
       console.error(error);
@@ -238,87 +208,81 @@ function MyPage() {
 
   return (
     <Container>
-      <Header label={"내정보"} onClick={() => {}} />
-      <Space />
-      <Container>
-        <MyContainer>
+      <Header label={"내정보"} />
+      <MyContainer>
+        <div>
           {isEditing ? (
-            <TextContainer>
-              <NameBox
-                type="text"
-                name="name"
-                value={editData.name}
-                onChange={handleInputChange}
-              />
-              <Underline />
-            </TextContainer>
+            <input
+              type="text"
+              name="name"
+              value={editData.name}
+              onChange={handleInputChange}
+              placeholder="이름을 입력해주세요"
+            />
           ) : (
-            <TextContainer>
-              <NameText>{editData.name}</NameText>
-              <Underline />
-            </TextContainer>
+            <span>{editData.name}</span>
           )}
+        </div>
+        <div>
           {isEditing ? (
-            <div>
-              <SaveButton onClick={handleEditClick}>저장</SaveButton>
-              <CancelButton onClick={handleCancleClick}>취소</CancelButton>
-            </div>
+            <>
+              <MyButton onClick={handleEditClick}>저장</MyButton>
+              <MyButton onClick={handleCancleClick}>취소</MyButton>
+            </>
           ) : (
             <MyButton onClick={handleEditClick}>회원정보 수정</MyButton>
           )}
-        </MyContainer>
-        <MyContainerLeftAlignWithLogo logo="address.png">
-          <TextContainer>
-            {isEditing ? (
-              <Post getAddrData={getAddrData} />
-            ) : (
-              <MyText>{editData.address}</MyText>
-            )}
-          </TextContainer>
-        </MyContainerLeftAlignWithLogo>
-        <MyContainerLeftAlignWithLogo logo="phonenumber.png">
-          <TextContainer>
-            {isEditing ? (
-              <PhonedBox
-                type="text"
-                name="phoneNumber"
-                value={editData.phoneNumber}
-                onChange={handleInputChange}
-              />
-            ) : (
-              <MyText>{editData.phoneNumber}</MyText>
-            )}
-          </TextContainer>
-        </MyContainerLeftAlignWithLogo>
-        <MyContainerLeftAlignWithLogo logo="email.png">
-          <TextContainer>
-            <MyText>{user ? user.email : "Loading..."}</MyText>
-          </TextContainer>
-        </MyContainerLeftAlignWithLogo>
-        <MyContainer>
-          <TextContainer>
-            <KidText>우리 아이 관리</KidText>
-            <Underline />
-          </TextContainer>
+        </div>
+      </MyContainer>
+      <InfoList>
+        <img alt={"icon-email"} src={IconEmail} />
+        <span>{user ? user.email : "Loading..."}</span>
+      </InfoList>
+      <InfoList>
+        <img alt={"icon-tel"} src={IconMypageTel} />
+        {isEditing ? (
+          <input
+            type="text"
+            name="phoneNumber"
+            value={editData.phoneNumber}
+            onChange={handleInputChange}
+          />
+        ) : (
+          <span>{editData.phoneNumber}</span>
+        )}
+      </InfoList>
+      <InfoList>
+        <img alt={"icon-address"} src={IconMypageLocation} />
+        {isEditing ? (
+          <Post getAddrData={getAddrData} />
+        ) : (
+          <span>{editData.address}</span>
+        )}
+      </InfoList>
+      <MyContainer>
+        <div>
+          <span>우리 아이 관리</span>
+        </div>
+        <div>
           <MyButton onClick={handleClick}>아이정보 관리</MyButton>
-        </MyContainer>
-        <KidContainer>
-          {boxCreators.map(({ id, name, gender, birth, memo, image }) => (
-            <ChildBox
-              alwaysShowEditAndRemove={false}
-              defaultEditable={false}
-              key={id}
-              id={id}
-              name={name}
-              gender={gender}
-              birth={birth}
-              memo={memo}
-              image={image}
-            />
-          ))}
-        </KidContainer>
-        <NavigationBar />
-      </Container>
+        </div>
+      </MyContainer>
+      <KidContainer>
+        {boxCreators.map(({ id, name, gender, birth, memo, image }) => (
+          <ChildBox
+            alwaysShowEditAndRemove={false}
+            defaultEditable={false}
+            key={id}
+            id={id}
+            name={name}
+            gender={gender}
+            birth={birth}
+            memo={memo}
+            image={image}
+          />
+        ))}
+      </KidContainer>
+      <NavigationBar />
     </Container>
   );
 }
