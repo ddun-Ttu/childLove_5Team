@@ -1,20 +1,22 @@
+/* eslint-disable */
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { instance } from "../../server/Fetcher";
 
 // 공통 컴포넌트 연결해서 테스트함
 import { NavigationBar } from "../../components/NavigationBar";
 import { Container } from "../../components/Container";
 import { Header } from "../../components/Header";
 import { ChildBox } from "./component/ChildBox";
-
+import { Post } from "../registerForm/Post";
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import styled from "styled-components";
 import colors from "../../constants/colors";
 
-const userToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1bkBlbWFpbC5jb20iLCJzdWIiOjIwMDA0LCJpYXQiOjE2ODY2Mzk3MjMsImV4cCI6MTcxODE5NzMyM30.owESvX7FLjD-WjxESrMnEoR4glhF1AEBiedQ3WRo0Ok";
-
+// const token = localStorage.getItem("token")
+//   ? localStorage.getItem("token")
+//   : false;
 //주소, 번호, 이메일 칸 앞에 로고넣기 위해 사용
 const Logo = styled.img`
   margin-right: 10px;
@@ -61,6 +63,7 @@ const MyContainerLeftAlignWithLogo = ({ logo, children }) => (
 );
 
 const TextContainer = styled.div`
+  width: 30%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -141,23 +144,24 @@ function MyPage() {
   let navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [user, setUser] = useState(null);
-  const [editData, setEditData] = useState({
-    name: "",
-    address: "",
-    phoneNumber: "",
-  });
+  const [editData, setEditData] = useState({});
   const [boxCreators, setBoxCreators] = useState([]);
   const [savedData, setSavedData] = useState(null);
+  const [fullAddress, setFullAddress] = useState("");
+  const [lat, setLat] = useState(0);
+  const [lng, setLng] = useState(0);
 
+  const getAddrData = (addr1, addr2, lat, lng, fullAddress) => {
+    setFullAddress(fullAddress);
+    setLng(lng);
+    setLat(lat);
+  };
+  console.log(editData);
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const res1 = await axios.get("users/get", {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-          },
-        });
-        console.log(res1.data.data[0]);
+        const res1 = await instance.get("users/get");
+
         setUser(res1.data.data[0]);
         const fetchedData = {
           name: res1.data.data[0].name,
@@ -165,13 +169,6 @@ function MyPage() {
           phoneNumber: res1.data.data[0].phoneNumber,
         };
         setEditData(fetchedData);
-
-        const res2 = await axios.get("/kid/get", {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-          },
-        });
-        setBoxCreators(res2.data.data);
       } catch (err) {
         console.error(err);
       }
@@ -179,11 +176,7 @@ function MyPage() {
     fetchUserData();
 
     const getKids = async () => {
-      const axiosGet = await axios.get("/kid/get", {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      });
+      const axiosGet = await instance.get("/kid/get");
       const kidsData = axiosGet.data.data;
       setBoxCreators(kidsData);
     };
@@ -217,21 +210,18 @@ function MyPage() {
 
   const updateUser = async () => {
     try {
-      const response = await axios.patch(
-        "users/update",
-        {
-          name: editData.name,
-          phoneNumber: editData.phoneNumber,
-          address: editData.address,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-          },
-        }
-      );
+      console.log(lat);
+      console.log(lng);
+      const response = await instance.patch("users/update", {
+        name: editData.name,
+        phoneNumber: editData.phoneNumber,
+        address: fullAddress,
+        userLat: lat,
+        userLon: lng,
+      });
       if (response.status === 200) {
-        console.log("Success");
+        console.log("hi");
+        setEditData(response.data.data);
       } else {
         console.error("Faile");
       }
@@ -287,12 +277,7 @@ function MyPage() {
         <MyContainerLeftAlignWithLogo logo="address.png">
           <TextContainer>
             {isEditing ? (
-              <AddressBox
-                type="text"
-                name="address"
-                value={editData.address}
-                onChange={handleInputChange}
-              />
+              <Post getAddrData={getAddrData} />
             ) : (
               <MyText>{editData.address}</MyText>
             )}

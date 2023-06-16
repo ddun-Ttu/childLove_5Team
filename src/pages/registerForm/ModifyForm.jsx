@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Post } from "./Post";
-import { Button, Container } from "../../components";
+import { Button, Container, NavigationBar } from "../../components";
 import colors from "../../constants/colors";
 import mainLogo from "../../assets/mainLogo.svg";
 import { SelectBox } from "./SelectBox";
@@ -27,24 +27,60 @@ export const ModifyForm = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   // 함수형 태로 자식 props를 보내서 Post의  주소 데이터를 받아온다
+
   const hpid = localStorage.getItem("user");
-  const hpId = JSON.parse(hpid).hospitalId;
 
-  const [hpName, setHpName] = useState("");
-  const [hpPhone, setHpPhone] = useState("");
-  const [hpNotice, setHpNotice] = useState("");
-  const [hpInfo, setHpInfo] = useState("");
-  const [hpAddress, setAddress] = useState("");
+  const [hpName, setHpName] = useState(""); //병원이름
+  const [hpPhone, setHpPhone] = useState(""); // 병원 번호
+  const [hpNotice, setHpNotice] = useState(""); // 병원 공지사항
+  const [hpInfo, setHpInfo] = useState(""); // 병원 정보
+  const [hpAddress, setAddress] = useState(""); // 병원 주소
+  const [openTimes, setOpenTimes] = useState([]); // 오픈시간
+  const [closeTimes, setCloseTimes] = useState([]); // 마감시간
+  const [existingImage, setExistingImage] = useState([]); // 기존 등록 이미지
+  const [dutyTimesFetched, setDutyTimesFetched] = useState(false); // 시간 요청을 한번만 하기위한 boolean
+  const [deleteImageId, setDeleteImageId] = useState(""); // 삭제할 이미지 Id
 
-  instance.get(`/hospital/${hpId}`).then((res) => {
-    setHpName(res.data.data.dutyName);
-    setHpPhone(res.data.data.dutyTel1);
-    setHpNotice(res.data.data.notice);
-    setHpInfo(res.data.data.dutyEtc);
-    setAddress(res.data.data.dutyAddr);
+  // 최초 통신 시 값이 undefined 가 나와서 if 문으로 통신
 
-    console.log(res.data.data);
-  });
+  if (hpid === undefined || null) {
+  } else if (hpid) {
+    instance.get(`/hospital/${hpid}`).then((res) => {
+      setHpName(res.data.data.dutyName);
+      setHpPhone(res.data.data.dutyTel1);
+      setHpNotice(res.data.data.notice);
+      setHpInfo(res.data.data.dutyEtc);
+      setAddress(res.data.data.dutyAddr);
+
+      // 위와 같은 이유로 오픈시간,마감시간을 값이 존재할 때 배열에 담는 부분
+      if (!dutyTimesFetched) {
+        const dutyOpensArray = [];
+        for (let i = 0; i <= 8; i++) {
+          const dutyOpenTimeKey = `dutyTime${i + 1}s`;
+          if (res.data.data.hasOwnProperty(dutyOpenTimeKey)) {
+            dutyOpensArray.push(res.data.data[dutyOpenTimeKey]);
+          }
+        }
+        setOpenTimes(dutyOpensArray);
+
+        const dutyCloseArray = [];
+        for (let i = 0; i <= 8; i++) {
+          const dutyCloseTime = `dutyTime${i + 1}c`;
+          if (res.data.data.hasOwnProperty(dutyCloseTime)) {
+            dutyCloseArray.push(res.data.data[dutyCloseTime]);
+          }
+        }
+        setCloseTimes(dutyCloseArray);
+        setExistingImage(res.data.data.image);
+
+        console.log(res.data.data.image[0]);
+      }
+
+      setDutyTimesFetched(true);
+      console.log(res.data.data.image);
+    });
+  }
+
   const getAddrData = (addr1, addr2, lat, lng, fullAddress) => {
     setAddr1(addr1);
     setAddr2(addr2);
@@ -108,12 +144,16 @@ export const ModifyForm = () => {
 
   // SelectBox 에서 받아온 openTime 배열을 돌면서 dutyTimes에 저장
   openTime.forEach((option, index) => {
-    openDutyTimes[index] = option.value;
+    if (option && option.value !== "") {
+      openDutyTimes[index] = option.value;
+    }
   });
 
-  // 마감 시간 저장
+  // save deadline
   closeTime.forEach((option, index) => {
-    closeDutyTimes[index] = option.value;
+    if (option && option.value !== "") {
+      closeDutyTimes[index] = option.value;
+    }
   });
 
   // 오픈 시간 담을 변수
@@ -175,7 +215,7 @@ export const ModifyForm = () => {
 
   // 3가지 부분의 값이 존재하면 button 활성화
   useEffect(() => {
-    if (dutyName && fullAddress && images.length > 0) {
+    if (dutyName && fullAddress) {
       setNotAllow(false);
     } else {
       setNotAllow(true);
@@ -197,14 +237,12 @@ export const ModifyForm = () => {
     });
 
     instance
-      .put(`hospital/A1100401`, formData, {
+      .put(`hospital/${hpid}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
-      .then((response) => {
-        console.log(dutyName);
-      });
+      .then((response) => {});
 
     setIsEditing(!isEditing);
   };
@@ -290,7 +328,10 @@ export const ModifyForm = () => {
           </InputBox>
           <InputBox>
             <InputName>영업시간 및 점심시간</InputName>
+
             <SelectBox
+              openTimes={openTimes}
+              closeTimes={closeTimes}
               getOpenTimeData={getOpenTimeData}
               getCloseTimeData={getCloseTimeData}
             />
@@ -309,51 +350,119 @@ export const ModifyForm = () => {
               <Post addr1={addr1} getAddrData={getAddrData} />
             </>
           )}
-
           <InputBox>
-            <ImageBox>
-              <InputName>병원 사진</InputName>
-              <Button
-                label={"사진 등록"}
-                btnColor={"#ffffff"}
-                bgcolor={colors.primary}
-                btnFontSize={"18px"}
-                onClick={handleClick}
-                width={"100px"}
-              ></Button>
-            </ImageBox>
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleChange}
-              style={{ display: "none" }}
-            />
-            {images.map((image, argI) => {
-              return (
-                <div key={argI}>
-                  <ImageBox>
-                    <div>{image.name}</div>
-                    <div>
-                      <Button
-                        btnColor={"#ffffff"}
-                        bgcolor={colors.primary}
-                        label={"취소"}
-                        width={"100px"}
-                        btnFontSize={"18px"}
-                        onClick={() => {
-                          setImages(
-                            images.filter((image, i) => {
-                              return argI !== i;
-                            })
-                          );
-                        }}
-                      ></Button>
+            {!isEditing ? (
+              <>
+                <ImageBox>
+                  <InputName>병원 사진</InputName>
+                  <Button
+                    label={"사진 등록"}
+                    btnColor={"#ffffff"}
+                    bgcolor={colors.primary}
+                    btnFontSize={"18px"}
+                    onClick={handleClick}
+                    width={"100px"}
+                    disabled={true}
+                  ></Button>
+                </ImageBox>
+              </>
+            ) : (
+              <>
+                <ImageBox>
+                  <InputName>병원 사진</InputName>
+                  <Button
+                    label={"사진 등록"}
+                    btnColor={"#ffffff"}
+                    bgcolor={colors.primary}
+                    btnFontSize={"18px"}
+                    onClick={handleClick}
+                    width={"100px"}
+                  ></Button>
+                </ImageBox>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleChange}
+                  style={{ display: "none" }}
+                />
+
+                {existingImage.map((image, argI) => {
+                  console.log(image);
+                  return (
+                    <div key={argI}>
+                      <ImageBox>
+                        <div>
+                          {decodeURIComponent(
+                            image.imageName.replace(/\.png$/, "")
+                          )}
+                        </div>
+                        <div>
+                          <Button
+                            btnColor={"#ffffff"}
+                            bgcolor={colors.primary}
+                            label={"취소"}
+                            width={"100px"}
+                            btnFontSize={"18px"}
+                            onClick={() => {
+                              existingImage.map((item, i) => {
+                                if (item === existingImage[argI]) {
+                                  const deleteId = item.id;
+
+                                  console.log(deleteId.id);
+
+                                  instance.delete(`/image/${deleteId}`);
+                                }
+                              });
+
+                              setExistingImage(
+                                existingImage.filter((image, i) => {
+                                  return argI !== i;
+                                })
+                              );
+                            }}
+                          ></Button>
+                        </div>
+                      </ImageBox>
                     </div>
-                  </ImageBox>
-                </div>
-              );
-            })}
-            <P>사진, 주소, 병원명을 반드시 등록해주세요</P>
+                  );
+                })}
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleChange}
+                  style={{ display: "none" }}
+                />
+
+                {images.map((image, argI) => {
+                  console.log(image);
+                  return (
+                    <div key={argI}>
+                      <ImageBox>
+                        <div>{image.name}</div>
+                        <div>
+                          <Button
+                            btnColor={"#ffffff"}
+                            bgcolor={colors.primary}
+                            label={"취소"}
+                            width={"100px"}
+                            btnFontSize={"18px"}
+                            onClick={() => {
+                              setImages(
+                                images.filter((image, i) => {
+                                  return argI !== i;
+                                })
+                              );
+                            }}
+                          ></Button>
+                        </div>
+                      </ImageBox>
+                    </div>
+                  );
+                })}
+
+                <P> 주소, 병원명을 반드시 등록해주세요</P>
+              </>
+            )}
           </InputBox>
 
           {!isEditing ? (
@@ -381,15 +490,14 @@ export const ModifyForm = () => {
             </>
           )}
         </FormBox>
+        <NavigationBar />
       </Container>
     </>
   );
 };
 
 const MainLogoDiv = styled.div``;
-const MainLogoImg = styled.img`
-  padding: 3% 3% 0 3%;
-`;
+const MainLogoImg = styled.img``;
 const H1 = styled.p`
   font-size: 38px;
   padding: 2%;
@@ -406,6 +514,7 @@ const FormBox = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 2%;
+  margin-bottom: 8%;
 `;
 
 export const InputBox = styled.div`

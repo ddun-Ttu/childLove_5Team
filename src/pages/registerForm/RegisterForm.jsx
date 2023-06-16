@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Post } from "./Post";
-import { Button, Container } from "../../components";
+import { Button, Container, NavigationBar } from "../../components";
 import colors from "../../constants/colors";
 import mainLogo from "../../assets/mainLogo.svg";
 import { SelectBox } from "./SelectBox";
@@ -87,12 +87,16 @@ export const RegisterForm = () => {
 
   // SelectBox 에서 받아온 openTime 배열을 돌면서 dutyTimes에 저장
   openTime.forEach((option, index) => {
-    openDutyTimes[index] = option.value;
+    if (option && option.value !== "") {
+      openDutyTimes[index] = option.value;
+    }
   });
 
-  // 마감 시간 저장
+  // save deadline
   closeTime.forEach((option, index) => {
-    closeDutyTimes[index] = option.value;
+    if (option && option.value !== "") {
+      closeDutyTimes[index] = option.value;
+    }
   });
 
   // 오픈 시간 담을 변수
@@ -280,6 +284,7 @@ export const RegisterForm = () => {
             btnFontSize={"18px"}
           ></Button>
         </FormBox>
+        <NavigationBar />
       </Container>
     </>
   );
@@ -305,6 +310,7 @@ const FormBox = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 2%;
+  margin-bottom: 6%;
 `;
 
 export const InputBox = styled.div`
