@@ -438,11 +438,12 @@ const BannerSebH1 = styled.p`
 const SimpleSlider = ({ latitude, longitude, distance }) => {
   const settings = {
     dots: true,
-    infinite: false,
+    infinite: true,
     speed: 500,
     slidesToShow: 3,
-    slidesToScroll: 4,
+    slidesToScroll: 3,
     initialSlide: 0,
+    arrows: true,
     responsive: [
       {
         breakpoint: 1024,
@@ -477,7 +478,6 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 위도와 경도를 이용하여 병원 데이터를 가져오는 기능
     const hospitalApi = async () => {
       try {
         const response = await axios.get("/hospital/near", {
@@ -489,45 +489,67 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
         });
         const responseData = response.data.data;
         setHospitalData(responseData);
+        // console.log("병원 수", responseData);
+        console.log(
+          "longitude latitude kilonum",
+          latitude,
+          longitude,
+          distance
+        );
         setLoading(false);
       } catch (error) {
         console.error(error);
       }
     };
-
     //위도와 경도에 유효한 값이 있는 경우에만 API를 호출합니다.
     if (latitude !== null && longitude !== null) {
       hospitalApi();
     }
-  }, [latitude, longitude, distance]);
+  }, [latitude, longitude, distance, setHospitalData]);
+
+  // 병원 데이터의 존재 여부에 따라 설정 개체 수정
+  const updatedSettings = { ...settings };
+  if (hospitalData.length === 0) {
+    // 병원 데이터가 없을 때 무한대를 false로 설정
+    updatedSettings.infinite = false;
+  }
 
   return (
     <>
       {loading ? (
         <img src={pinwheel} alt="Loading..." />
       ) : (
-        <Slider {...settings}>
+        <Slider {...updatedSettings}>
           {hospitalData.length > 0 ? (
-            hospitalData.map((data) => (
-              <Card key={data.id}>
-                <Link to={`/detail?id=${data.id}`}>
-                  <CardTop>
-                    {data.image.length > 0 ? (
-                      <CardImg
-                        key={data.id}
-                        src={data.image}
-                        alt={data.image}
-                      />
-                    ) : (
-                      <>
-                        <CardTitle>{data.dutyName}</CardTitle>
-                        <CardImg key={data.id} src={Loding} alt={data.image} />
-                      </>
-                    )}
-                  </CardTop>
-                </Link>
-              </Card>
-            ))
+            hospitalData.map(
+              (data) => (
+                console.log("Rendering data:", data),
+                (
+                  <Card key={data.id}>
+                    <Link to={`/detail?id=${data.id}`}>
+                      <CardTop>
+                        {data.image.length > 0 ? (
+                          <CardImg
+                            key={data.id}
+                            src={data.image}
+                            alt={data.image}
+                          />
+                        ) : (
+                          <>
+                            <CardTitle>{data.dutyName}</CardTitle>
+                            <CardImg
+                              key={data.id}
+                              src={Loding}
+                              alt={data.image}
+                            />
+                          </>
+                        )}
+                      </CardTop>
+                    </Link>
+                  </Card>
+                )
+              )
+            )
           ) : (
             <Guide>{distance} km내에 병원이 없습니다</Guide>
           )}
@@ -536,7 +558,6 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
     </>
   );
 };
-
 const Card = styled.div`
   position: relative;
 `;
@@ -558,16 +579,6 @@ const CardTop = styled.div`
       z-index: 1;
     }
   }
-`;
-
-const CardBottom = styled.div`
-  position: absolute;
-  width: 80%;
-  top: 50%;
-  left: 50%;
-  z-index: 1;
-  transform: translate(-50%, -50%);
-  color: #fff;
 `;
 
 const CardTitle = styled.p`
