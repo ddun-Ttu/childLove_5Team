@@ -224,7 +224,7 @@ const LoginBtn = styled.div`
   margin: 5%;
 `;
 const Div = styled.div`
-  padding-bottom: 3%;
+  padding-bottom: 15%;
 `;
 const LoginUl = styled.div`
   display: flex;
