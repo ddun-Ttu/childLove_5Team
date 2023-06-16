@@ -7,6 +7,12 @@ import {
   Link,
   useNavigate,
 } from "react-router-dom";
+
+// 라이브러리
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+
 import axios from "axios";
 
 import Select from "react-select";
@@ -45,6 +51,9 @@ import { AutoplayYouTubeVideo } from "./Youtube";
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import colors from "../../constants/colors";
 import fontSize from "../../constants/fontSize";
+
+// swiper
+import { SwiperBanner } from "./Swiper";
 
 // react-slick 라이브러리
 import Slider from "react-slick";
@@ -189,9 +198,11 @@ export const Home = () => {
           linkTo={`/search?query=${encodeURIComponent(search)}`}
         />
 
-        <Banner>
+        {/* <Banner>
           <Img src={MainBanner} alt="star"></Img>
-        </Banner>
+        </Banner> */}
+
+        <SwiperBanner />
 
         <SiliderMargin>
           <MainSub>
@@ -292,7 +303,7 @@ const customStyles = {
 };
 
 const H1 = styled.p`
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 900;
   color: #121212;
   padding: 1%;
@@ -301,7 +312,7 @@ const H1 = styled.p`
 `;
 
 const H2 = styled.p`
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: #121212;
   padding: 1%;
@@ -489,13 +500,6 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
         });
         const responseData = response.data.data;
         setHospitalData(responseData);
-        // console.log("병원 수", responseData);
-        console.log(
-          "longitude latitude kilonum",
-          latitude,
-          longitude,
-          distance
-        );
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -521,35 +525,26 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
       ) : (
         <Slider {...updatedSettings}>
           {hospitalData.length > 0 ? (
-            hospitalData.map(
-              (data) => (
-                console.log("Rendering data:", data),
-                (
-                  <Card key={data.id}>
-                    <Link to={`/detail?id=${data.id}`}>
-                      <CardTop>
-                        {data.image.length > 0 ? (
-                          <CardImg
-                            key={data.id}
-                            src={data.image}
-                            alt={data.image}
-                          />
-                        ) : (
-                          <>
-                            <CardTitle>{data.dutyName}</CardTitle>
-                            <CardImg
-                              key={data.id}
-                              src={Loding}
-                              alt={data.image}
-                            />
-                          </>
-                        )}
-                      </CardTop>
-                    </Link>
-                  </Card>
-                )
-              )
-            )
+            hospitalData.map((data) => (
+              <Card key={data.id}>
+                <Link to={`/detail?id=${data.id}`}>
+                  <CardTop>
+                    {data.image.length > 0 ? (
+                      <CardImg
+                        key={data.id}
+                        src={data.image}
+                        alt={data.image}
+                      />
+                    ) : (
+                      <>
+                        <CardTitle>{data.dutyName}</CardTitle>
+                        <CardImg key={data.id} src={Loding} alt={data.image} />
+                      </>
+                    )}
+                  </CardTop>
+                </Link>
+              </Card>
+            ))
           ) : (
             <Guide>{distance} km내에 병원이 없습니다</Guide>
           )}
@@ -564,7 +559,7 @@ const Card = styled.div`
 
 const CardTop = styled.div`
   margin: 0 2% 0 2%;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.6s ease;
 
   &:hover {
     &::after {
@@ -590,7 +585,7 @@ const CardTitle = styled.p`
   top: 50%;
   left: 50%;
   width: 80%;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.6s ease;
 
   ${CardTop}:hover & {
     color: white;
