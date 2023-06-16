@@ -6,12 +6,10 @@ import {
   addressList as locationData,
   IconSearch,
   IconDown,
-  IconAlarm,
 } from "../assets/index";
 
 // 공통 컴포넌트
-import { Modal, Alarm } from "../components/index";
-import { AlarmHome } from "../pages/home/AlarmHome";
+import { Modal, AlarmButton, SearchInput } from "../components/index";
 
 export const SearchBar = ({
   onSearch,
@@ -22,14 +20,17 @@ export const SearchBar = ({
 }) => {
   //--------------------검색부분
   //검색어
-  const [search, setSearch] = useState(keyword ? keyword : "");
+  const [searchKeyword, setSearchKeyword] = useState(keyword ? keyword : "");
   const onChange = (e) => {
-    setSearch(e.target.value);
+    setSearchKeyword(e.target.value);
+  };
+  const handleSearch = (keyword) => {
+    setSearchKeyword(keyword);
   };
   // 폼 전송 처리 함수
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch(search);
+    onSearch(searchKeyword);
   };
   //--------------------위치선택&위치선택 모달창(알람모달과 구분 필요)
   //위치선택 값(모달 내부), 초기값은 [전국]이며, 전국일 경우 locationSecond는 빈값
@@ -115,18 +116,11 @@ export const SearchBar = ({
       }
     });
   }, [locationFirst, locationSecond]);
-  //------------알람 모달창 관련
-  const [isAlarmModalOpen, setIsAlarmModalOpen] = useState(false);
-  const openAlarmModal = () => {
-    setIsAlarmModalOpen(true);
-  };
-  const closeAlarmModal = () => {
-    setIsAlarmModalOpen(false);
-  };
-  const onSavedAlarmModal = () => {
-    // 알람모달에서 확인버튼 클릭 시
-    closeAlarmModal(); // 알람 모달을 닫음
-  };
+
+  //알람탭 display 옵션 set
+  const userToken = localStorage.getItem("token");
+  const hideTab = userToken ? "" : "none";
+
   return (
     <Style.Wrapper>
       <div>
@@ -167,21 +161,17 @@ export const SearchBar = ({
             </Modal>
           )}
         </Style.Location>
-        <AlarmHome></AlarmHome>
+        <div style={{ display: hideTab }}>
+          <AlarmButton />
+        </div>
       </div>
-      <Style.InputBox>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={search}
-            onChange={onChange}
-            placeholder="병원 이름을 검색해보세요"
-          />
-          <button type="submit" style={{ cursor: "pointer" }}>
-            <img alt="search-button" src={IconSearch} />
-          </button>
-        </form>
-      </Style.InputBox>
+      <SearchInput
+        onSearch={handleSearch}
+        value={searchKeyword}
+        onChange={onChange}
+        onSubmit={handleSubmit}
+        linkTo={`/search?query=${encodeURIComponent(searchKeyword)}`}
+      />
     </Style.Wrapper>
   );
 };

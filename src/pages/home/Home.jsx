@@ -35,15 +35,12 @@ import {
   NavigationBar,
   Container,
   Footer,
-  SearchBar,
+  SearchInput,
+  AlarmButton,
 } from "../../components/index";
 
-// 검색창
-import { SearchInput } from "./SearchInput";
 // 유튜브
 import { AutoplayYouTubeVideo } from "./Youtube";
-// 알림
-import { AlarmHome } from "./AlarmHome";
 
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import colors from "../../constants/colors";
@@ -110,7 +107,7 @@ export const Home = () => {
         setLongitude(response.data.data[0].userLon);
         setAddress(response.data.data[0].address);
       } catch (error) {
-        console.error("유저정보 실패: ", error);
+        console.error(error);
       }
     };
 
@@ -180,7 +177,7 @@ export const Home = () => {
           </MenuSeb>
 
           <MenuSeb style={{ display: hideTab }}>
-            <AlarmHome />
+            <AlarmButton />
           </MenuSeb>
         </TopMenuBar>
 
@@ -492,14 +489,9 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
         });
         const responseData = response.data.data;
         setHospitalData(responseData);
-        console.log(latitude, longitude, distance);
-        console.log("병원 정보 수", hospitalData);
         setLoading(false);
       } catch (error) {
-        console.error(
-          "병원 데이터를 가져오는 중에 오류가 발생했습니다.:",
-          error
-        );
+        console.error(error);
       }
     };
 
@@ -544,8 +536,6 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
     </>
   );
 };
-
-// console.log("병원 정보 수", hospitalData);
 
 const Card = styled.div`
   position: relative;
