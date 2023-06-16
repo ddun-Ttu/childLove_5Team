@@ -35,15 +35,12 @@ import {
   NavigationBar,
   Container,
   Footer,
-  SearchBar,
+  SearchInput,
+  AlarmButton,
 } from "../../components/index";
 
-// 검색창
-import { SearchInput } from "./SearchInput";
 // 유튜브
 import { AutoplayYouTubeVideo } from "./Youtube";
-// 알림
-import { AlarmHome } from "./AlarmHome";
 
 // 상수로 뽑아둔 color, fontSize 연결 링크
 import colors from "../../constants/colors";
@@ -180,7 +177,7 @@ export const Home = () => {
           </MenuSeb>
 
           <MenuSeb style={{ display: hideTab }}>
-            <AlarmHome />
+            <AlarmButton />
           </MenuSeb>
         </TopMenuBar>
 

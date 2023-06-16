@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { instance } from "../server/Fetcher";
-import { useQuery } from "react-query";
 import styled from "styled-components";
 import { calculateDday, formatDay, formatTime } from "../utils";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-export const Alarm = ({ onListChange }) => {
+export const AlarmList = ({ onListChange }) => {
   const testToken = localStorage.getItem("token");
   // 현재 날짜
   const activeDate = new Date();

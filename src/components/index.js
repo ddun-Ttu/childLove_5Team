@@ -6,10 +6,12 @@ import { Container } from "./Container";
 import { Footer } from "./Footer";
 import { SearchBar } from "./SearchBar";
 import { Modal } from "./Modal";
-import { Alarm } from "./Alarm";
+import { AlarmList } from "./AlarmList";
+import { SearchInput } from "./SearchInput";
+import { AlarmButton } from "./AlarmButton";
 
 export {
-  Alarm,
+  AlarmList,
   Button,
   CardBox,
   Header,
@@ -18,4 +20,6 @@ export {
   Footer,
   SearchBar,
   Modal,
+  SearchInput,
+  AlarmButton,
 };

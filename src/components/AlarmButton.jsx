@@ -1,24 +1,15 @@
-import * as Style from "../../components//styles/SearchBarStyle";
-import React, { useState, useEffect, useMemo } from "react";
+import * as Style from "./styles/SearchBarStyle";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { instance } from "../../server/Fetcher";
-
-//아이콘 & 행정구역데이터 - assets
-import {
-  addressList as locationData,
-  IconSearch,
-  IconDown,
-  IconAlarm,
-} from "../../assets/index";
 
 // 상수로 뽑아둔 color, fontSize 연결 링크
-import colors from "../../constants/colors";
+import colors from "../constants/colors";
 
 // 공통 컴포넌트
-import { Modal, Alarm } from "../../components/index";
+import { Modal, AlarmList } from "./index";
 import axios from "axios";
 
-export const AlarmHome = () => {
+export const AlarmButton = () => {
   const testToken = localStorage.getItem("token");
   //------------알람 모달창 관련
   const [isAlarmModalOpen, setIsAlarmModalOpen] = useState(false);
@@ -69,7 +60,7 @@ export const AlarmHome = () => {
             isOpen="true"
             onSaved={onSavedAlarmModal}
           >
-            <Alarm onListChange={onListChange} />
+            <AlarmList onListChange={onListChange} />
           </Modal>
         )}
       </div>
