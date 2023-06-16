@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 // 공통 컴포넌트
 import {
   Button,
@@ -42,20 +41,20 @@ export const Jail = () => {
     <>
       <JailContainer>
         <CardBox>
-            <img src={logo} alt="logo" />
-            <p>승인 대기중인 계정입니다</p>
-            <button onClick={() => window.location.reload()}>새로고침</button>
-            <button
-              onClick={() => {
-                localStorage.removeItem("token");
-                localStorage.removeItem("role");
-                localStorage.removeItem("user");
-                localStorage.removeItem("verified");
-                navigate("/");
-              }}
-            >
-              로그아웃
-            </button>
+          <img src={logo} alt="logo" />
+          <p>승인 대기중인 계정입니다</p>
+          <button onClick={() => window.location.reload()}>새로고침</button>
+          <button
+            onClick={() => {
+              localStorage.removeItem("token");
+              localStorage.removeItem("role");
+              localStorage.removeItem("user");
+              localStorage.removeItem("verified");
+              navigate("/");
+            }}
+          >
+            로그아웃
+          </button>
         </CardBox>
       </JailContainer>
     </>
