@@ -8,10 +8,10 @@ import {
   useNavigate,
 } from "react-router-dom";
 
-// 라이브러리
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
+// 메인 배너 이미지
+import banner1 from "./img/banner1.jpg";
+import banner2 from "./img/banner2.jpg";
+import banner3 from "./img/banner3.jpg";
 
 import axios from "axios";
 
@@ -52,9 +52,6 @@ import { AutoplayYouTubeVideo } from "./Youtube";
 import colors from "../../constants/colors";
 import fontSize from "../../constants/fontSize";
 
-// swiper
-import { SwiperBanner } from "./Swiper";
-
 // react-slick 라이브러리
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -91,12 +88,6 @@ export const Home = () => {
 
     navigate("/");
   };
-
-  // 키워드 검색어
-  // const [searchKeyword, setSearchKeyword] = useState("");
-
-  //키워드 검색 후 필터링 된 병원 리스트
-  // const [keywordFilteredHospitals, setKeywordFilteredHospitals] = useState([]);
 
   const handleSearch = (keyword) => {
     setSearchKeyword(keyword);
@@ -145,9 +136,6 @@ export const Home = () => {
   // 고정값 김포 경도위도
   const defaultLatitude = 37.64245641626587;
   const defaultLongitude = 126.64398423537274;
-  // 고정값 광명 경도위도
-  // const defaultLatitude = 37.472215621869594;
-  // const defaultLongitude = 126.8751105269487;
 
   return (
     <>
@@ -159,7 +147,6 @@ export const Home = () => {
           autoClose={4000}
           hideProgressBar
         />
-        {/* <MainLogoImg src={mainLogo} alt="mainLogo"></MainLogoImg> */}
 
         <TopMenuBar>
           <MenuLogo>
@@ -202,7 +189,7 @@ export const Home = () => {
           <Img src={MainBanner} alt="star"></Img>
         </Banner> */}
 
-        <SwiperBanner />
+        <MainBannerImg />
 
         <SiliderMargin>
           <MainSub>
@@ -450,6 +437,7 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
   const settings = {
     dots: true,
     infinite: true,
+    draggable: true,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 3,
@@ -606,4 +594,42 @@ const Guide = styled.p`
   margin: 10% 0 10% 0;
   color: #b2b2b2;
   // text-align: center;
+`;
+
+// 캐러셀 라이브러리
+const MainBannerImg = () => {
+  // 메인배너 이미지
+  const images = [{ img: banner1 }, { img: banner2 }, { img: banner3 }];
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 700,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true, // 자동 캐러셀
+    autoplaySpeed: 5000, // 자동 캐러셀 속도
+    pauseOnHover: true, // hover시 정지
+    fade: true,
+  };
+
+  return (
+    <BannerCon>
+      <Slider {...settings}>
+        {images.map((img) => (
+          <BannerImg src={img.img} alt={img.img} />
+        ))}
+      </Slider>
+    </BannerCon>
+  );
+};
+const BannerImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+`;
+
+const BannerCon = styled.div`
+  margin: 3% 0 8% 0;
 `;
