@@ -92,8 +92,10 @@ export const Login = () => {
 
         if (verified === false) {
           alert("승인 대기중입니다");
+          navigate("/jail");
+        } else {
+          window.location.href = "/";
         }
-        navigate("/jail");
       })
       .catch((error) => {
         // 오류처리
@@ -222,7 +224,7 @@ const LoginBtn = styled.div`
   margin: 5%;
 `;
 const Div = styled.div`
-  padding-bottom: 3%;
+  padding-bottom: 15%;
 `;
 const LoginUl = styled.div`
   display: flex;

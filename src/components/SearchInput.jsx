@@ -1,25 +1,11 @@
-import * as Style from "../../components/styles/SearchBarStyle";
-import React, { useState, useEffect, useMemo } from "react";
+import * as Style from "./styles/SearchBarStyle";
+import React from "react";
 import { Link } from "react-router-dom";
 
-//아이콘 & 행정구역데이터 - assets
-import {
-  addressList as locationData,
-  IconSearch,
-  IconDown,
-  IconAlarm,
-} from "../../assets/index";
+//아이콘
+import { IconSearch } from "../assets/index";
 
-export const SearchInput = ({
-  // onSearch,
-  onChange,
-  value,
-  linkTo,
-  onSubmit,
-}) => {
-  //--------------------검색부분
-  //검색어
-
+export const SearchInput = ({ onChange, value, linkTo, onSubmit }) => {
   return (
     <Style.Wrapper>
       <Style.InputBox style={{ marginTop: "0%" }}>

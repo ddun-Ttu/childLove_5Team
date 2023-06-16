@@ -168,9 +168,9 @@ const Detail = () => {
           <BtnBack onClick={() => navigate("/search")}>
             <img alt="icon-left" src={IconLeft}></img>
           </BtnBack>
-          <div>
+          <HeaderName>
             <h2>{label}</h2>
-          </div>
+          </HeaderName>
           <HeaderStar onClick={handleFavoriteClick}>
             {likeState ? (
               <img alt="like" src={yellowStar}></img>
@@ -240,7 +240,7 @@ const Detail = () => {
           </ArrowLeft>
         </SlideContainer>
         <TopContentContainer>
-          <div>{hospitalData.dutyName}</div>
+          <NameBox>{hospitalData.dutyName}</NameBox>
           <Button
             width={"73px"}
             height={"39px"}
@@ -258,7 +258,7 @@ const Detail = () => {
           ></Button>
           <UnderLine />
         </TopContentContainer>
-        <QueryMapBtn Link={`detail/map?id=${hospitalID}`}>
+        <QueryMapBtn onClick={() => navigate(`/detail/map?id=${hospitalID}`)}>
           <div>
             <img src={locationWhite} alt="" />
             <span>지도</span>
@@ -451,6 +451,10 @@ const HeaderWrap = styled.div`
   }
 `;
 
+const HeaderName = styled.div`
+  width: 80%;
+`;
+
 const BtnBack = styled.button`
   background: none;
   border: none;
@@ -503,7 +507,7 @@ const TopContentContainer = styled.div`
   position: relative;
   margin-top: 13px;
   width: 100%;
-  height: 83px;
+  height: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -532,6 +536,10 @@ const TopContentContainer = styled.div`
   }
 `;
 
+const NameBox = styled.div`
+  width: 65%;
+`;
+
 const UnderLine = styled.div`
   position: absolute;
   bottom: 0px;
@@ -540,6 +548,7 @@ const UnderLine = styled.div`
 `;
 
 const QueryMapBtn = styled.button`
+  cursor: pointer;
   display: none;
   margin-top: 20px;
   width: 90%;
