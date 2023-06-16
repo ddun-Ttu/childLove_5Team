@@ -57,6 +57,10 @@ export const SearchPage = () => {
   const [totalCount, setTotalCount] = useState(0);
   //검색 필터 옵션
   const [option, setOption] = useState(SORT_OPTIONS[0]);
+  // 검색 시 url query params 업데이트
+  useEffect(() => {
+    updateURL();
+  }, [searchKeyword]);
 
   // 옵션창 펼쳐졌는지
   const [isOpenOption, setIsOpenOption] = useState(false);
@@ -223,7 +227,6 @@ export const SearchPage = () => {
   // 키워드 검색 요청 시
   const handleSearch = (search) => {
     setSearchKeyword(search);
-    updateURL();
   };
 
   // 검색 시 url query params 업데이트
