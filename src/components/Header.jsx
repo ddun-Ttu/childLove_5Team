@@ -52,4 +52,8 @@ const BtnBack = styled.button`
   border: none;
   line-height: 80px;
   padding-top: 7px;
+
+  & img:hover {
+    filter: invert(70%);
+  }
 `;
