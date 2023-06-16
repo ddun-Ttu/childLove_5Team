@@ -15,6 +15,7 @@ import fontSize from "../constants/fontSize";
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { instance } from "../server/Fetcher";
 
 export const NavigationBar = () => {
   const userRole = localStorage.getItem("role");
@@ -46,17 +47,11 @@ export const NavigationBar = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (token) {
-      axios
-        .get("/users/get", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => {
-          if (res.data.data.adminVerified === false) {
-            navigate("/jail");
-          }
-        });
+      instance.get("/users/get").then((res) => {
+        if (res.data.data.adminVerified === false) {
+          navigate("/jail");
+        }
+      });
     }
   }, []);
   return (
