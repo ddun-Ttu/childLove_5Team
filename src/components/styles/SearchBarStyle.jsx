@@ -13,6 +13,11 @@ export const Wrapper = styled.div`
     justify-content: space-between;
   }
 
+  & > div p {
+    font-size: 16px;
+    width: 50px;
+  }
+
   & button {
     background: none;
     border: none;

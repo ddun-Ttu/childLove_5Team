@@ -60,51 +60,13 @@ export const CardBoxContent = styled.div`
     margin: 0;
   }
   & span {
-    white-space: nowrap;
-    margin-left: 5%;
+    white-space: pre-line;
+    text-align: left;
+    margin: 0 5%;
   }
 `;
 
 export const BtnHidden = styled.button`
   background: none;
   border: none;
-`;
-
-export const MoveMyLocation = styled.button`
-  display: block;
-  position: absolute;
-  width: 20%;
-  z-index: 3;
-  transform: translate(-50%, -50%);
-  bottom: 0%;
-  left: 60%;
-  z-index: 3;
-  font-size: 20px;
-
-  font-weight: 700;
-  color: white;
-  border: 1px solid #00954f;
-  border-radius: 5px;
-  background-color: #00ad5c;
-  cursor: pointer;
-  transform: translate(70%, -70%);
-  padding: 1% 3.5%;
-`;
-
-export const MyLocationBtn = styled.button`
-  position: absolute;
-  display: flex;
-  bottom: 0%;
-  left: 50%;
-  z-index: 3;
-  font-size: 20px;
-
-  font-weight: 700;
-  color: white;
-  border: 1px solid #00954f;
-  border-radius: 5px;
-  background-color: #00ad5c;
-  cursor: pointer;
-  transform: translate(-50%, -70%);
-  padding: 1% 3.5%;
 `;
