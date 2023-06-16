@@ -1,5 +1,6 @@
 import * as Style from "./styles/SearchBarStyle";
 import React, { useState, useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
 
 //아이콘 & 행정구역데이터 - assets
 import {
@@ -9,7 +10,7 @@ import {
 } from "../assets/index";
 
 // 공통 컴포넌트
-import { Modal, AlarmButton, SearchInput } from "../components/index";
+import { Modal, AlarmButton } from "../components/index";
 
 export const SearchBar = ({
   onSearch,
@@ -27,10 +28,12 @@ export const SearchBar = ({
   const handleSearch = (keyword) => {
     setSearchKeyword(keyword);
   };
+  //쿼리 url
+  // const [queryLink, setQueryLink] = (`/search?query=${encodeURIComponent(searchKeyword)}`);
   // 폼 전송 처리 함수
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSearch(searchKeyword);
+    await onSearch(searchKeyword);
   };
   //--------------------위치선택&위치선택 모달창(알람모달과 구분 필요)
   //위치선택 값(모달 내부), 초기값은 [전국]이며, 전국일 경우 locationSecond는 빈값
@@ -165,13 +168,19 @@ export const SearchBar = ({
           <AlarmButton />
         </div>
       </div>
-      <SearchInput
-        onSearch={handleSearch}
-        value={searchKeyword}
-        onChange={onChange}
-        onSubmit={handleSubmit}
-        linkTo={`/search?query=${encodeURIComponent(searchKeyword)}`}
-      />
+      <Style.InputBox style={{ marginTop: "0%" }}>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            value={searchKeyword}
+            onChange={onChange}
+            placeholder="병원 이름을 검색해보세요"
+          />
+          <button type="submit" style={{ cursor: "pointer" }}>
+            <img alt="search-button" src={IconSearch} />
+          </button>
+        </form>
+      </Style.InputBox>
     </Style.Wrapper>
   );
 };
