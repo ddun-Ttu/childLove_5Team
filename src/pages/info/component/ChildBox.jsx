@@ -22,19 +22,23 @@ const Space2 = styled.div`
 `;
 // 아이 이름 입력을 위한 inputbox
 const InputBox = styled.input`
-  width: 280px;
+  width: 270px;
   box-sizing: border-box;
   font-weight: bold;
   font-size: 24px;
   padding: 2%;
+  border: solid 1.5px #d9d9d9;
+  border-radius: 10px;
 `;
 // 아이 생년월일 입력을 위한 inputbox
 const Input2Box = styled.input`
-  width: 75px;
+  width: 65px;
   box-sizing: border-box;
   font-weight: bold;
   font-size: 11px;
   padding: 2%;
+  border: solid 1.5px #d9d9d9;
+  border-radius: 10px;
 `;
 // ChildBox의 저장버튼 구현
 const SaveButton = styled.button`
@@ -202,7 +206,7 @@ export const ChildBox = ({
       const formData = new FormData();
       formData.append("files", selectedImageFile);
       formData.append("kidId", id);
-
+      formData.append("imageName", "kid");
       try {
         const response = await instance.post("image", formData, {
           headers: {
@@ -270,7 +274,7 @@ export const ChildBox = ({
 
   const FemaleImageAfterSave = styled.img`
     width: 17px;
-    height: 27px;
+    height: 25px;
     margin-left: 5px;
   `;
 
@@ -303,15 +307,13 @@ export const ChildBox = ({
           <div>
             {isEditable ? (
               <>
-                <label htmlFor="kidNameInput" style={{ fontWeight: "bold" }}>
-                  이름
-                </label>
                 <InputBox
                   id="kidNameInput"
                   type="text"
                   value={kidName}
                   onChange={handleKidNameChange}
                   style={{ fontWeight: "bold" }}
+                  placeholder="이름을 입력해주세요"
                 />
               </>
             ) : (
@@ -342,7 +344,6 @@ export const ChildBox = ({
           <div>
             {isEditable ? (
               <>
-                <label htmlFor="birthYearInput">생년 </label>
                 <Input2Box
                   id="birthYearInput"
                   type="text"
@@ -350,10 +351,7 @@ export const ChildBox = ({
                   onChange={handleBirthYearChange}
                   style={{ fontWeight: "bold" }}
                 />
-                <label htmlFor="birthMonthInput" style={{ fontWeight: "bold" }}>
-                  {" "}
-                  월일{" "}
-                </label>
+                <label htmlFor="birthYearInput">년도</label>
                 <Input2Box
                   id="birthMonthInput"
                   type="text"
@@ -361,6 +359,9 @@ export const ChildBox = ({
                   onChange={handleBirthMonthChange}
                   style={{ fontWeight: "bold" }}
                 />
+                <label htmlFor="birthMonthInput" style={{ fontWeight: "bold" }}>
+                  월
+                </label>
                 <Input2Box
                   id="birthDayInput"
                   type="text"
@@ -368,6 +369,9 @@ export const ChildBox = ({
                   onChange={handleBirthDayChange}
                   style={{ fontWeight: "bold", marginLeft: "10px" }}
                 />
+                <label htmlFor="birthDayInput" style={{ fontWeight: "bold" }}>
+                  일
+                </label>
               </>
             ) : (
               <>
