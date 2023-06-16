@@ -121,7 +121,6 @@ export const SearchBar = ({
   const userToken = localStorage.getItem("token");
   const hideTab = userToken ? "" : "none";
 
-  console.log("서치바 유저토큰", userToken, "hideTab", hideTab);
   return (
     <Style.Wrapper>
       <div>

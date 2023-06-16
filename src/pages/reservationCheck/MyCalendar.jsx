@@ -37,8 +37,6 @@ export const MyCalendar = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
-
         // 추출된 정보들을 저장할 배열
         const resData = res.data.data;
         // hospital의 dutyName, reservedDate, reservedTime, memo만 추출한 배열
@@ -49,8 +47,6 @@ export const MyCalendar = () => {
           reservedTime: item.reservedTime,
           memo: item.memo,
         }));
-
-        console.log(extractedData);
 
         // 날짜와 시간에 따라 extractedData 배열 정렬
         extractedData.sort((a, b) => {
@@ -164,9 +160,6 @@ export const MyCalendar = () => {
             headers: {
               Authorization: `Bearer ${userToken}`,
             },
-          })
-          .then((res) => {
-            console.log(res.data);
           })
           .catch((error) => {
             console.error(error);

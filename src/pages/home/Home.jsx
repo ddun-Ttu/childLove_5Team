@@ -107,7 +107,7 @@ export const Home = () => {
         setLongitude(response.data.data[0].userLon);
         setAddress(response.data.data[0].address);
       } catch (error) {
-        console.error("유저정보 실패: ", error);
+        console.error(error);
       }
     };
 
@@ -489,14 +489,9 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
         });
         const responseData = response.data.data;
         setHospitalData(responseData);
-        console.log(latitude, longitude, distance);
-        console.log("병원 정보 수", hospitalData);
         setLoading(false);
       } catch (error) {
-        console.error(
-          "병원 데이터를 가져오는 중에 오류가 발생했습니다.:",
-          error
-        );
+        console.error(error);
       }
     };
 
@@ -541,8 +536,6 @@ const SimpleSlider = ({ latitude, longitude, distance }) => {
     </>
   );
 };
-
-// console.log("병원 정보 수", hospitalData);
 
 const Card = styled.div`
   position: relative;

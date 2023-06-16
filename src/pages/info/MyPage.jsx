@@ -156,7 +156,7 @@ function MyPage() {
     setLng(lng);
     setLat(lat);
   };
-  console.log(editData);
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -210,8 +210,6 @@ function MyPage() {
 
   const updateUser = async () => {
     try {
-      console.log(lat);
-      console.log(lng);
       const response = await instance.patch("users/update", {
         name: editData.name,
         phoneNumber: editData.phoneNumber,
@@ -220,10 +218,9 @@ function MyPage() {
         userLon: lng,
       });
       if (response.status === 200) {
-        console.log("hi");
         setEditData(response.data.data);
       } else {
-        console.error("Faile");
+        console.error(error);
       }
     } catch (error) {
       console.error(error);
@@ -242,9 +239,7 @@ function MyPage() {
     <Container>
       <Header
         label={"내정보"}
-        onClick={() => {
-          console.log("Button was clicked!");
-        }}
+        onClick={() => {}}
       />
       <Space />
       <Container>
