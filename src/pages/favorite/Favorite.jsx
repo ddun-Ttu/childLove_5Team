@@ -1,7 +1,12 @@
 import * as Style from "../search/styles/SearchPageStyle";
 
 // 공통 컴포넌트
-import { Container, Header, NavigationBar } from "../../components/index";
+import {
+  Container,
+  Footer,
+  Header,
+  NavigationBar,
+} from "../../components/index";
 
 //import문
 import React, { useState, useEffect } from "react";
@@ -109,6 +114,7 @@ export const Favorite = () => {
         </Style.SearchHeader>
         {renderHospitalCard()}
       </Style.Wrapper>
+      <Footer />
       <NavigationBar />
     </Container>
   );
