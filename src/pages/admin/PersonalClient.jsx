@@ -61,20 +61,37 @@ export const PersonalClient = () => {
     setCheckArray(copy);
   };
 
-  const arrayDelete = async () => {
-    console.log("idArray", checkArray);
+  // 전체 삭제를 위한 delete 요청
+  const allDeleteRequest = useMutation(async () => {
     await adminInstance.delete("/admin/deleteall", {
       data: {
         userIds: checkArray,
       },
     });
     queryClient.invalidateQueries("generalClient");
+  });
+
+  const handleAllDelete = () => {
+    allDeleteRequest.mutate();
   };
-  // 페이지네이션 데이터의 id와 체크된 열의 id 값 필터
-  const handleDelete = async (item) => {
-    console.log("삭제할 id:", item);
-    await adminInstance.delete(`admin/delete/${item.id}`); //React Query에서 'invalidateQueries' 기능 사용해서 업데이트 된 목록 다시
-    queryClient.invalidateQueries("generalClient");
+
+  // 단일 삭제를 위한 delete 요청
+  const sigleDeleteRequest = async (item) => {
+    return await adminInstance.delete(`admin/delete/${item.id}`);
+  };
+
+  const { mutate } = useMutation(sigleDeleteRequest, {
+    onSuccess: (data) => {
+      console.log(data);
+      queryClient.invalidateQueries("generalClient");
+    },
+    onError: (data) => {
+      console.log(data);
+    },
+  });
+
+  const handleSingleDelete = (item) => {
+    mutate(item);
   };
 
   if (generalQuery.isLoading) {
@@ -135,7 +152,7 @@ export const PersonalClient = () => {
                   label={"삭제"}
                   bgcolor={colors.primary}
                   btnColor={"white"}
-                  onClick={() => handleDelete(item)}
+                  onClick={() => handleSingleDelete(item)}
                 />
               </TableData>
             </TableRow>
@@ -149,7 +166,7 @@ export const PersonalClient = () => {
           label={"선택삭제"}
           bgcolor={colors.primary}
           btnColor={"white"}
-          onClick={arrayDelete}
+          onClick={handleAllDelete}
         />
       </AlignBtn>
       <ButtonBox>
