@@ -16,7 +16,7 @@ export const HospitalRegister = () => {
   const queryClient = useQueryClient();
 
   // 인스턴스 사용하는 함수
-  const listQuery = useQuery("list", async () => {
+  const listQuery = useQuery("requestList", async () => {
     const response = await adminInstance.get(
       "admin/get/notverifiedhospitalclient"
     ); // "/"는 baseURL에 추가된 경로입니다
@@ -24,8 +24,8 @@ export const HospitalRegister = () => {
     return response.data;
   });
 
-  const list = listQuery.data;
-  console.log(list);
+  const requestList = listQuery.data;
+
   const [searchInput, setSearchInput] = useState(""); // 검색창 인풋
   const [submitted, setSubmitted] = useState(false); // 검색창 submit 상태
   const [checkList, setCheckList] = useState([]); // 체크박스
@@ -75,7 +75,7 @@ export const HospitalRegister = () => {
   const handleRegister = async (item) => {
     console.log("삭제할 id:", item);
     await adminInstance.patch(`/admin/verify/${item.id}`); //React Query에서 'invalidateQueries' 기능 사용해서 업데이트 된 목록 다시
-    queryClient.invalidateQueries("list");
+    queryClient.invalidateQueries("requestList");
   };
 
   //페이지네이션 로직
@@ -90,7 +90,7 @@ export const HospitalRegister = () => {
     return <h1>로딩중입니다..</h1>;
   }
 
-  const filteredList = list.data?.filter(
+  const filteredList = requestList.data?.filter(
     (item) => !submitted || item.phoneNumber === searchInput
   );
 

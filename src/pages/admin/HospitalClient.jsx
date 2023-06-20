@@ -16,13 +16,13 @@ export const HospitalClient = () => {
   const queryClient = useQueryClient();
 
   // 인스턴스 사용하는 함수
-  const listQuery = useQuery("list", async () => {
+  const listQuery = useQuery("hospitalClient", async () => {
     const response = await adminInstance.get("/admin/get/hospitalclient"); // "/"는 baseURL에 추가된 경로입니다
     return response.data;
   });
 
-  const list = listQuery.data;
-  console.log(list);
+  const hospitalClient = listQuery.data;
+
   const [searchInput, setSearchInput] = useState(""); // 검색창 인풋
   const [submitted, setSubmitted] = useState(false); // 검색창 submit 상태
   const [checkList, setCheckList] = useState([]); // 체크박스
@@ -68,13 +68,13 @@ export const HospitalClient = () => {
         userIds: checkArray,
       },
     });
-    queryClient.invalidateQueries("list");
+    queryClient.invalidateQueries("hospitalClient");
   };
   // 페이지네이션 데이터의 id와 체크된 열의 id 값 필터
   const handleDelete = async (item) => {
     console.log("삭제할 id:", item);
     await adminInstance.delete(`admin/delete/${item.id}`); //React Query에서 'invalidateQueries' 기능 사용해서 업데이트 된 목록 다시
-    queryClient.invalidateQueries("list");
+    queryClient.invalidateQueries("hospitalClient");
   };
 
   //페이지네이션 로직
@@ -89,7 +89,7 @@ export const HospitalClient = () => {
     return <h1>로딩중입니다..</h1>;
   }
 
-  const filteredList = list.data?.filter(
+  const filteredList = hospitalClient.data?.filter(
     (item) => !submitted || item.phoneNumber === searchInput
   );
 
