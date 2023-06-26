@@ -39,8 +39,6 @@ export const NavigationBar = () => {
     myPageLink = "/modify";
   } else if (userRole === "client") {
     myPageLink = "/Mypage";
-  } else if (userRole === "admin") {
-    myPageLink = "/admin";
   } else {
     myPageLink = "/login";
   }
