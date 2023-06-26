@@ -10,7 +10,6 @@ import { adminInstance } from "../../server/Fetcher";
 export const PersonalClient = () => {
   const [currentPage, setCurrentPage] = useState(0); // 페이지 숫자 상태
   const maxPostPage = currentPage + 1;
-  const [checkArray, setCheckArray] = useState([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
 
   const queryClient = useQueryClient();
@@ -26,6 +25,8 @@ export const PersonalClient = () => {
   const [searchInput, setSearchInput] = useState(""); // 검색창 인풋
   const [submitted, setSubmitted] = useState(false); // 검색창 submit 상태
   const [checkList, setCheckList] = useState([]); // 체크박스
+
+  //검색창 인풋 값
   const onChange = (e) => {
     setSearchInput(e.target.value);
     setSubmitted(false);
@@ -37,18 +38,18 @@ export const PersonalClient = () => {
     setSubmitted(true);
   };
 
+  // 전체 선택/해제
   const allCheck = () => {
     setIsAllChecked(!isAllChecked);
     if (!isAllChecked) {
       const ids = paginatedList.map((item) => item.id);
-      const copy = [...ids];
-      checkList.push(...copy);
-      checkArray.push(...copy);
+      const copyList = [...ids];
+      checkList.push(...copyList);
     } else {
       setCheckList([]);
     }
   };
-  // 체크박스 확인하는 함수
+  // 단일 선택/해제
   const handleSingleCheck = (checked, id) => {
     if (checked) {
       setCheckList((prev) => [...prev, id]);
@@ -56,21 +57,22 @@ export const PersonalClient = () => {
       setCheckList((prev) => prev.filter((el) => el !== id));
     }
 
-    const copy = [...checkList];
-    copy.push(Number(id));
-    setCheckArray(copy);
+    const copyList = [...checkList];
+    copyList.push(Number(id));
+    setCheckList(copyList);
   };
 
   // 전체 삭제를 위한 delete 요청
   const allDeleteRequest = useMutation(async () => {
     await adminInstance.delete("/admin/deleteall", {
       data: {
-        userIds: checkArray,
+        userIds: checkList,
       },
     });
     queryClient.invalidateQueries("generalClient");
   });
 
+  // 단일 삭제
   const handleAllDelete = () => {
     allDeleteRequest.mutate();
   };
@@ -82,12 +84,9 @@ export const PersonalClient = () => {
 
   const { mutate } = useMutation(sigleDeleteRequest, {
     onSuccess: (data) => {
-      console.log(data);
       queryClient.invalidateQueries("generalClient");
     },
-    onError: (data) => {
-      console.log(data);
-    },
+    onError: (data) => {},
   });
 
   const handleSingleDelete = (item) => {
@@ -98,6 +97,7 @@ export const PersonalClient = () => {
     return <h1>로딩중입니다..</h1>;
   }
 
+  // e-mail 일치 검사로 유저 검색
   const filteredList = generalClient.data?.filter(
     (item) => !submitted || item.email === searchInput
   );
