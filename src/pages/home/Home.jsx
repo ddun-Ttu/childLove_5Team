@@ -56,6 +56,7 @@ import fontSize from "../../constants/fontSize";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { AdminHome } from "../admin/AdminHome";
 
 export const Home = () => {
   const token = localStorage.getItem("token");
@@ -137,6 +138,11 @@ export const Home = () => {
   const defaultLatitude = 37.64245641626587;
   const defaultLongitude = 126.64398423537274;
 
+  const role = localStorage.getItem("role");
+
+  if (role === "admin") {
+    return <AdminHome />;
+  }
   return (
     <>
       <Container>

@@ -61,7 +61,7 @@ export const NavigationBar = () => {
       <Nav>
         <NavUl>
           <NavLi>
-            <NavA to={reservationLink} disabled={userRole !== "client"}>
+            <NavA to={reservationLink} disabled={userRole === "manager"}>
               <NavImg src={reservation} alt="star"></NavImg>
               <NavP>예약현황</NavP>
             </NavA>
@@ -81,7 +81,7 @@ export const NavigationBar = () => {
           </NavLi>
 
           <NavLi>
-            <NavA to={favoriteLink} disabled={userRole !== "client"}>
+            <NavA to={favoriteLink} disabled={userRole === "manager"}>
               <NavImg src={star} alt="star"></NavImg>
               <NavP>즐겨찾기</NavP>
             </NavA>
