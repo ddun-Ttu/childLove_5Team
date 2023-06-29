@@ -2,14 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useNavigate,
-} from "react-router-dom";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 // 알림창 라이브러리
 import "react-toastify/dist/ReactToastify.css";
@@ -63,6 +56,7 @@ export const Login = () => {
     setNotAllow(true);
   }, [emailValid, pwValid]);
   const navigate = useNavigate();
+
   // 로그인 폼 전송
 
   const getUserLoginInfo = async () => {
@@ -94,7 +88,7 @@ export const Login = () => {
           alert("승인 대기중입니다");
           navigate("/jail");
         } else {
-          navigate("/");
+          navigate(-1);
         }
       })
       .catch((error) => {

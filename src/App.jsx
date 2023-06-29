@@ -1,6 +1,6 @@
 import { RegisterForm } from "./pages/registerForm/RegisterForm";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -22,11 +22,21 @@ import {
   ModifyForm,
 } from "./pages/index";
 
+const token = localStorage.getItem("token");
+
 function App() {
+  const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    if (token) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
+  }, [token]);
+
   return (
     <Router>
-      {" "}
-      {/* Router 컴포넌트 추가 */}
       <Routes>
         <Route
           path="/"
@@ -90,7 +100,7 @@ function App() {
               <Helmet>
                 <title>아이사랑 - 예약현황</title>
               </Helmet>
-              <ReservationChk />
+              {isLogin ? <ReservationChk /> : <Login />}
             </>
           }
         />
@@ -101,7 +111,7 @@ function App() {
               <Helmet>
                 <title>아이사랑 - 병원찾기</title>
               </Helmet>
-              <SearchPage />
+              {isLogin ? <SearchPage /> : <Login />}
             </>
           }
         />
@@ -112,7 +122,7 @@ function App() {
               <Helmet>
                 <title>아이사랑 - 병원상세</title>
               </Helmet>
-              <Detail />
+              {isLogin ? <Detail /> : <Login />}
             </>
           }
         />
@@ -123,7 +133,7 @@ function App() {
               <Helmet>
                 <title>아이사랑 - 예약하기</title>
               </Helmet>
-              <Reserve />
+              {isLogin ? <Reserve /> : <Login />}
             </>
           }
         />
@@ -134,7 +144,7 @@ function App() {
               <Helmet>
                 <title>아이사랑 - 병원위치찾기</title>
               </Helmet>
-              <MapHospital />
+              {isLogin ? <MapHospital /> : <Login />}
             </>
           }
         />
@@ -145,7 +155,7 @@ function App() {
               <Helmet>
                 <title>아이사랑 - 내정보</title>
               </Helmet>
-              <MyPage />
+              {isLogin ? <MyPage /> : <Login />}
             </>
           }
         />
@@ -156,7 +166,7 @@ function App() {
               <Helmet>
                 <title>아이사랑 - 아이정보</title>
               </Helmet>
-              <ChildPage />
+              {isLogin ? <ChildPage /> : <Login />}
             </>
           }
         />
@@ -167,7 +177,7 @@ function App() {
               <Helmet>
                 <title>아이사랑 - 즐겨찾기</title>
               </Helmet>
-              <Favorite />
+              {isLogin ? <Favorite /> : <Login />}
             </>
           }
         />
@@ -178,7 +188,7 @@ function App() {
               <Helmet>
                 <title>아이사랑 - 병원정보수정</title>
               </Helmet>
-              <ModifyForm />
+              {isLogin ? <ModifyForm /> : <Login />}
             </>
           }
         />

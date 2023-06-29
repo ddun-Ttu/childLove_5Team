@@ -60,6 +60,7 @@ import { AdminHome } from "../admin/AdminHome";
 
 export const Home = () => {
   const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
   let showTab;
   let hideTab;
   if (token) {
@@ -69,11 +70,10 @@ export const Home = () => {
     showTab = "";
     hideTab = "none";
   }
+
   const navigate = useNavigate();
   const handleLogout = () => {
     // 토큰 가져오기
-
-    const role = localStorage.getItem("role");
 
     if ((token, role)) {
       // 토큰이 존재하므로 삭제 진행
@@ -89,7 +89,8 @@ export const Home = () => {
 
     navigate("/");
   };
-
+  console.log("토큰", token);
+  console.log("롤", role);
   const handleSearch = (keyword) => {
     setSearchKeyword(keyword);
   };
@@ -137,8 +138,6 @@ export const Home = () => {
   // 고정값 김포 경도위도
   const defaultLatitude = 37.64245641626587;
   const defaultLongitude = 126.64398423537274;
-
-  const role = localStorage.getItem("role");
 
   if (role === "admin") {
     return <AdminHome />;
