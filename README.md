@@ -143,39 +143,14 @@ JWT_SECRET='sercretkey'
 DATABASE_URL='{MySQL DB 경로}'
 ```
 
-## 7. 서비스 구현 영상 및 테스트 자료
-
-- 각 API별 부하테스트
-    
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2e4263d1-17db-41bc-877a-990df561a4a8/Untitled.png)
-    
-- 회원가입 및 로그인
-    
-    ![registandlogin.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c98673f1-ad5e-4bba-85f3-a240b9a69d0b/registandlogin.gif)
-    
-- 내 정보 및 자녀 등록
-    
-    ![infoandkid.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d5f1950e-2423-4dcd-9e7d-00a921f5e5fe/infoandkid.gif)
-    
-- 병원 검색 및 예약
-    
-    ![searchandreserv.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0de681ad-2add-493b-82b6-0433a647692b/searchandreserv.gif)
-    
-- 병원 관계자 및 관리자
-    
-    ![hospitaluser.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/45b3c2a5-9028-4194-a5e8-16814e391842/hospitaluser.gif)
-    
-    ![admin.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6c3e09b6-3ec0-470e-bcf3-71e2f6229315/admin.gif)
-    
-
-## 8. 버전
+## 7. 버전
 
 - beta (0.9.0)
 
-## 9. 발표 ppt 파일
+## 8. 발표 ppt 파일
 
 [발표ppt.pdf](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/58c6fec0-29f6-42bf-89a8-99cfb7579fff/%E1%84%87%E1%85%A1%E1%86%AF%E1%84%91%E1%85%ADppt.pdf)
 
-## 10. 깃허브 주소
+## 9. 깃허브 주소
 
 https://github.com/ddun-Ttu/childLove_5Team
